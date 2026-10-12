@@ -1,0 +1,25 @@
+# Requirements snapshot
+
+InvenTree documentation source at tag `1.5.6` (API 530), downloaded 2026-10-10 from `https://raw.githubusercontent.com/inventree/InvenTree/1.5.6/docs/docs/`. Each file has a short provenance header. The only body change: `{{ image(...) }}` macros are rewritten as Markdown image links to `docs/images/` (52 screenshots, 5.5 MB, from `docs/docs/assets/images/` at the same tag) so they render in a Markdown preview. `{{ icon(...) }}` and `{{ globalsetting(...) }}` macros are left as-is.
+
+To look something up, start with [INDEX.md](INDEX.md) (every heading with file and line number), then read only the matching section.
+
+**Local RAG index.** `test-case-creator` retrieves requirement wording from a local vector index over these docs (`tools/rag/query_index.py "<question>"`) instead of reading the files directly; built with a local embedding model (`sentence-transformers/all-MiniLM-L6-v2`) and a persisted Chroma collection at `requirements/.rag-index/` (gitignored, rebuild with `python tools/rag/build_index.py` after any change here — see `tools/rag/requirements.txt` for the one-time `pip install`). `INDEX.md` stays as a fallback for the rare query that scores below the similarity floor, and as the human-readable reference.
+
+| File | Docs page | Words |
+|---|---|---|
+| [concepts-attachments.md](docs/concepts-attachments.md) | https://docs.inventree.org/en/stable/concepts/attachments/ | 426 |
+| [concepts-data_import.md](docs/concepts-data_import.md) | https://docs.inventree.org/en/stable/concepts/data_import/ | 1353 |
+| [concepts-parameters.md](docs/concepts-parameters.md) | https://docs.inventree.org/en/stable/concepts/parameters/ | 1691 |
+| [concepts-units.md](docs/concepts-units.md) | https://docs.inventree.org/en/stable/concepts/units/ | 611 |
+| [manufacturing-bom.md](docs/manufacturing-bom.md) | https://docs.inventree.org/en/stable/manufacturing/bom/ | 2314 |
+| [part-consumable.md](docs/part-consumable.md) | https://docs.inventree.org/en/stable/part/consumable/ | 478 |
+| [part-create.md](docs/part-create.md) | https://docs.inventree.org/en/stable/part/create/ | 555 |
+| [part-index.md](docs/part-index.md) | https://docs.inventree.org/en/stable/part/ | 1388 |
+| [part-revision.md](docs/part-revision.md) | https://docs.inventree.org/en/stable/part/revision/ | 647 |
+| [part-template.md](docs/part-template.md) | https://docs.inventree.org/en/stable/part/template/ | 306 |
+| [part-test.md](docs/part-test.md) | https://docs.inventree.org/en/stable/part/test/ | 499 |
+| [part-trackable.md](docs/part-trackable.md) | https://docs.inventree.org/en/stable/part/trackable/ | 501 |
+| [part-views.md](docs/part-views.md) | https://docs.inventree.org/en/stable/part/views/ | 1047 |
+| [part-virtual.md](docs/part-virtual.md) | https://docs.inventree.org/en/stable/part/virtual/ | 314 |
+| **Total** | | **12130** |

@@ -1,0 +1,8 @@
+# Open questions: Part
+
+| ID | Date | Functionality | Kind | Rule | Doc lines | Question | Affected cases | Status | Answer |
+|---|---|---|---|---|---|---|---|---|---|
+| Q-Part-01 | 2026-10-12 | Part data import | Conflict | R-Part-19 | [part-create.md#L21-22](../../requirements/docs/part-create.md#L21-L22), [concepts-data_import.md#L26-29](../../requirements/docs/concepts-data_import.md#L26-L29) | The *Add Parts* menu (and its *Import from File* option) needs "create" permission for the *Part* model, but general data import needs the user to be *staff* with the `change` permission for the model. Which permission set actually gates *Import from File*: Part-create, staff+change, or both? | UI-Part-008 | Open | |
+| Q-Part-02 | 2026-10-12 | Part data import | Open | R-Part-34 | [concepts-data_import.md#L13-25](../../requirements/docs/concepts-data_import.md#L13-L25) | The docs state the non-reversible-upload and backup warnings as documentation-page admonitions ("!!! danger", "!!! warning"), not as described UI elements. Does the import wizard itself display this warning text to the user (and where: on the import session page, a confirmation dialog, or not at all)? | UI-Part-021 | Open | |
+| Q-Part-03 | 2026-10-12 | Part data import | Open | R-Part-36, R-Part-38 | [concepts-data_import.md#L118-130](../../requirements/docs/concepts-data_import.md#L118-L130), [#L146-150](../../requirements/docs/concepts-data_import.md#L146-L150) | In an update-mode import session, what happens to a row whose identifier does not match any existing record: is it rejected with an Error state, silently skipped, or created as a new record (which the docs say must not happen in this mode)? | UI-Part-025 | Open | |
+

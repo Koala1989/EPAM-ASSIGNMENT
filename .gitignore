@@ -1,0 +1,38 @@
+# Secrets and local environment (templates stay tracked)
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
+*.pyc
+
+# Playwright MCP output (manual runs)
+/test-results/
+/.playwright-mcp/
+
+# Playwright UI automation
+/automation/ui/test-results/
+/automation/ui/playwright-report/
+/automation/ui/blob-report/
+/automation/ui/playwright/.cache/
+
+# Local RAG index and its venv (rebuildable: see tools/rag/requirements.txt)
+/requirements/.rag-index/
+/tools/rag/.venv/
+
+# Claude Code personal settings
+.claude/settings.local.json
+
+# OS and editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Local planning notes (not part of the submission)
+/agents/planning-handoff.md

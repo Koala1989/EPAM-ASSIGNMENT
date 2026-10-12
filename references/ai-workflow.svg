@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 700" width="1500" height="700" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9 z" fill="#5B4D3A"/>
+    </marker>
+  </defs>
+
+  <rect width="1500" height="700" fill="#F6F1E7"/>
+
+  <text x="30" y="46" font-size="26" font-weight="700" fill="#3B3226">AI-assisted manual test case workflow</text>
+  <text x="30" y="74" font-size="15" fill="#6B5D47">InvenTree Parts module · Claude Code agents · the architect reviews at every gate</text>
+
+  <!-- lanes -->
+  <rect x="20" y="95" width="1460" height="230" rx="14" fill="#EDE5D3"/>
+  <rect x="20" y="345" width="1460" height="190" rx="14" fill="#E4E8D9"/>
+  <rect x="20" y="555" width="1460" height="110" rx="14" fill="#EFE9DA"/>
+  <text x="40" y="120" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">AI AND TOOLS</text>
+  <text x="40" y="370" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">ARCHITECT (HUMAN)</text>
+  <text x="40" y="580" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">RESULT</text>
+
+  <!-- lane 1: sources and AI pipeline -->
+  <g fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2">
+    <rect x="40" y="140" width="210" height="150" rx="10"/>
+    <rect x="290" y="150" width="200" height="130" rx="10"/>
+  </g>
+  <g fill="#B9C48F" stroke="#6F7D3E" stroke-width="2">
+    <rect x="535" y="150" width="160" height="130" rx="10"/>
+    <rect x="965" y="150" width="170" height="130" rx="10"/>
+  </g>
+  <g fill="#E2B08F" stroke="#B5663C" stroke-width="2">
+    <rect x="735" y="150" width="190" height="130" rx="10"/>
+    <rect x="1175" y="150" width="190" height="130" rx="10"/>
+  </g>
+
+  <g fill="#3B3226" font-size="14">
+    <text x="55" y="172" font-size="17" font-weight="700">Sources</text>
+    <text x="55" y="198">Assignment brief</text>
+    <text x="55" y="220">InvenTree 1.5.6 docs</text>
+    <text x="55" y="242">(pinned snapshot)</text>
+    <text x="55" y="264">Running app (Docker, API)</text>
+
+    <text x="305" y="182" font-size="17" font-weight="700">Requirements</text>
+    <text x="305" y="204" font-size="17" font-weight="700">inventory</text>
+    <text x="305" y="230">8 Areas · 227 rules</text>
+    <text x="305" y="252">doc issues and gaps listed</text>
+
+    <text x="550" y="182" font-size="17" font-weight="700">/gen-test-cases</text>
+    <text x="550" y="208">skill: one trigger</text>
+    <text x="550" y="230">UI or API + feature</text>
+
+    <text x="750" y="182" font-size="17" font-weight="700">test-case-creator</text>
+    <text x="750" y="208">agent · Sonnet 5.5</text>
+    <text x="750" y="230">reads inventory + seed</text>
+    <text x="750" y="252">writes cases as Draft</text>
+
+    <text x="980" y="182" font-size="17" font-weight="700">Duplicate check</text>
+    <text x="980" y="208">python script</text>
+    <text x="980" y="230">score 0-100</text>
+    <text x="980" y="252">50+ lists its matches</text>
+
+    <text x="1190" y="182" font-size="17" font-weight="700">duplicate-judge</text>
+    <text x="1190" y="208">agent · Opus 5.5</text>
+    <text x="1190" y="230">independent · scores 50-80</text>
+    <text x="1190" y="252">Keep / Merge / Remove</text>
+  </g>
+
+  <g stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)">
+    <line x1="252" y1="215" x2="286" y2="215"/>
+    <line x1="492" y1="215" x2="531" y2="215"/>
+    <line x1="697" y1="215" x2="731" y2="215"/>
+    <line x1="927" y1="215" x2="961" y2="215"/>
+    <line x1="1137" y1="215" x2="1171" y2="215"/>
+  </g>
+
+  <!-- lane 2: human gates -->
+  <g fill="#F1DDB0" stroke="#A9822F" stroke-width="2">
+    <rect x="290" y="395" width="200" height="110" rx="10"/>
+    <rect x="735" y="395" width="190" height="110" rx="10"/>
+    <rect x="965" y="395" width="400" height="110" rx="10"/>
+  </g>
+  <g fill="#3B3226" font-size="14">
+    <text x="305" y="427" font-size="17" font-weight="700">Review inventory</text>
+    <text x="305" y="451">rules, doc issues, gaps</text>
+    <text x="305" y="473">before any case is written</text>
+
+    <text x="750" y="427" font-size="17" font-weight="700">Answer questions</text>
+    <text x="750" y="451">open-questions.md</text>
+    <text x="750" y="473">log findings, then re-run</text>
+
+    <text x="980" y="427" font-size="17" font-weight="700">Run and judge the cases</text>
+    <text x="980" y="451">execute with Playwright MCP, act on duplicate</text>
+    <text x="980" y="473">verdicts, fix case defects, log app findings</text>
+  </g>
+  <g stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-start="url(#arr)" marker-end="url(#arr)">
+    <line x1="390" y1="282" x2="390" y2="393"/>
+    <line x1="830" y1="282" x2="830" y2="393"/>
+    <line x1="1270" y1="282" x2="1270" y2="393"/>
+  </g>
+
+  <!-- lane 3: result -->
+  <g fill="#F1DDB0" stroke="#A9822F" stroke-width="2">
+    <rect x="965" y="585" width="190" height="70" rx="10"/>
+  </g>
+  <g fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2">
+    <rect x="1195" y="585" width="190" height="70" rx="10"/>
+  </g>
+  <g fill="#3B3226" font-size="14">
+    <text x="980" y="615" font-size="17" font-weight="700">Set Review field</text>
+    <text x="980" y="637">Draft to Approved</text>
+    <text x="1210" y="615" font-size="17" font-weight="700">Approved cases</text>
+    <text x="1210" y="637">feed API + UI tests next</text>
+  </g>
+  <g stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)">
+    <line x1="1060" y1="507" x2="1060" y2="581"/>
+    <line x1="1157" y1="620" x2="1191" y2="620"/>
+  </g>
+
+  <!-- legend -->
+  <g font-size="14" fill="#3B3226">
+    <rect x="40" y="598" width="20" height="20" rx="4" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+    <text x="68" y="614">AI agent</text>
+    <rect x="170" y="598" width="20" height="20" rx="4" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
+    <text x="198" y="614">Script or skill</text>
+    <rect x="340" y="598" width="20" height="20" rx="4" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+    <text x="368" y="614">Human step</text>
+    <rect x="490" y="598" width="20" height="20" rx="4" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+    <text x="518" y="614">Files and data</text>
+    <text x="40" y="646" fill="#6B5D47">Dashed arrows: output goes to the architect, answers and decisions come back.</text>
+  </g>
+</svg>

@@ -1,0 +1,24 @@
+{
+  "name": "epam_assignment",
+  "version": "1.0.0",
+  "description": "Playwright UI automation for the InvenTree Parts module (EPAM Quality Architect assignment)",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "report": "playwright show-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.4",
+    "eslint": "^9.39.5",
+    "eslint-plugin-playwright": "^2.12.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.1"
+  },
+  "private": true
+}

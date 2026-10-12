@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@playwright/mcp@0.0.83",
+        "--browser",
+        "chrome",
+        "--isolated",
+        "--output-dir",
+        "test-results/mcp"
+      ]
+    },
+    "playwright-test": {
+      "command": "node",
+      "args": [
+        "automation/ui/node_modules/@playwright/test/cli.js",
+        "run-test-mcp-server",
+        "--config",
+        "automation/ui/playwright.config.ts"
+      ]
+    }
+  }
+}
