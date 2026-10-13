@@ -13,7 +13,7 @@ You only coordinate. You do not write or edit specs, page objects, fixtures, con
 
 ## 1. Check the request
 
-The request must list one or more UI case IDs (`UI-<Area>-NNN`, e.g. `UI-Part-007`). If there are none, ask the user for them and stop. API case IDs (`API-...`) are not automated by these agents: list them as skipped.
+The request must list one or more UI case IDs (`UI-<Area>-NNN`, e.g. `UI-Part-007`). If there are none, ask the user for them and stop. API case IDs (`API-...`) belong to `/automate-api-cases`: list them as skipped, with that pointer.
 
 Handle the cases **one at a time, in the order given**: complete steps 2-7 for a case before starting the next. Agents may add page object code, and two cases changing the same files at once would conflict.
 

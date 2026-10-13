@@ -1,5 +1,5 @@
 import { test as base, APIRequestContext, APIResponse } from '@playwright/test';
-import { env, passwordFor } from '../config/env';
+import { credentialsFor, env } from '../config/env';
 import { createApiContext } from '../utils/api-client';
 import { qaName, qaSuffix } from '../utils/names';
 
@@ -114,7 +114,8 @@ export class TestData {
 export const test = base.extend<{ data: TestData }, { adminApi: APIRequestContext }>({
   adminApi: [
     async ({}, use) => {
-      const api = await createApiContext(env.baseURL, 'admin', passwordFor('admin'));
+      const { username, password } = credentialsFor('admin');
+      const api = await createApiContext(env.baseURL, username, password);
       await use(api);
       await api.dispose();
     },

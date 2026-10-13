@@ -1,6 +1,6 @@
 ---
 name: test-case-creator
-description: Generates manual functional test cases for one InvenTree Parts functionality (e.g. "Part creation flow") from the reviewed requirements inventory (test-cases/<Area>/requirements-inventory.md) and the version-pinned docs it cites, in the format of references/seed-manual-test-case.md. Raises requirement conflicts and open questions instead of assuming, still writes every case and marks the ones an open question affects, then runs the duplicate check and hands borderline matches to the duplicate-judge agent. Use when asked to generate, draft or write manual test cases.
+description: Generates manual functional test cases for one InvenTree Parts functionality (e.g. "Part creation flow") UI or API, from the reviewed requirements inventory (test-cases/<Area>/requirements-inventory.md) and the version-pinned docs or OpenAPI schema slice it cites, in the format of references/seed-manual-test-case.md (UI) or references/seed-api-test-case.md (API). Raises requirement conflicts and open questions instead of assuming, still writes every case and marks the ones an open question affects, then runs the duplicate check and hands borderline matches to the duplicate-judge agent. Use when asked to generate, draft or write manual test cases.
 tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
 ---
@@ -25,16 +25,18 @@ Read in this order, and stop as soon as you have what you need:
 
 | # | Source | Use |
 |---|---|---|
-| 1 | `test-cases/requirements-inventory.md` | Index of the inventory: pick the Areas the request touches. Its "Not in docs" and "Doc issues to review" tables are known conflicts and gaps: check them for every rule you use. |
-| 2 | `test-cases/<Area>/requirements-inventory.md` | The reviewed, testable rules for that Area, with rule IDs (`R-<Area>-NN`), source lines and risk. Follow its Cross-references to rules in other Areas. This is the main source for cases. |
-| 3 | Local RAG index over `requirements/docs/*.md` (`python tools/rag/query_index.py "<rule text or question>"`) | Confirms a rule's exact wording, conditions and exceptions before writing Expected results. Use the returned chunk text as given; do not open `requirements/docs/*.md` directly to re-check it (guardrail 9). Build it first if `requirements/.rag-index/` does not exist: `python tools/rag/build_index.py` (needs `tools/rag/.venv`; see `tools/rag/requirements.txt`). |
+| 1 | `test-cases/requirements-inventory.md` | Index of the inventory: pick the Areas the request touches. Its "Not in docs" and "Doc issues to review" tables (UI), and "Not in schema" and "Schema issues to review" tables (API), are known conflicts and gaps: check them for every rule you use. |
+| 2 | `test-cases/<Area>/requirements-inventory.md` (API Areas: `test-cases/API_<Area>/`) | The reviewed, testable rules for that Area, with rule IDs (`R-<Area>-NN`), source lines and risk. Follow its Cross-references to rules in other Areas. This is the main source for cases. |
+| 3 | Local RAG index over `requirements/docs/*.md` (`tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<rule text or question>"`) | For rules that cite the docs. Confirms a rule's exact wording, conditions and exceptions before writing Expected results. Use the returned chunk text as given; do not open `requirements/docs/*.md` directly to re-check it (guardrail 9). Build it first if `requirements/.rag-index/` does not exist: `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py` (see `tools/rag/requirements.txt`). |
 | 4 | `requirements/INDEX.md` | Fallback only, and only when the RAG query for something the inventory does not cover returns no chunk above the similarity floor (the script exits 2 and says so). Search this heading index and read the matching section directly. A testable statement you find this way that is missing from the inventory is reported, not used (see step 2). |
+| 5 | `requirements/openapi-parts.yaml` | API cases only: the OpenAPI schema slice for InvenTree 1.5.6 (API 530). For each API rule, read only the operations (`<METHOD> <path>`) and `components.schemas` it cites, with Grep and line ranges, never the whole file: parameters, request and response bodies, status codes, and field constraints (`required`, `maxLength`, `nullable`, `readOnly`, `enum`, `format`). It is exact and needs no RAG check. |
 
 | Other source | Use |
 |---|---|
 | `references/seed-manual-test-case.md` | The case format, field order, area values, demo users and level of detail. Read it on every run. |
-| `test-cases/<Area>/*.md` | Existing cases, one folder per Area: next free IDs, and context for the duplicate check. |
-| `test-cases/<Area>/open-questions.md` | Earlier questions. An **Answered** question is a source of truth: cite it as `open-questions.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
+| `references/seed-api-test-case.md` | API cases only: the API Areas (`CRUD`, `LST`, `VAL`, `REL`, `SEC`), the architect's standing rules (not found = 404), the Requirement format with schema operations, and the Request / Payload / Expected steps table. Read it, in addition to the UI seed, on every API run. |
+| `test-cases/<Area>/*.md` (API: `API_<Area>`) | Existing cases, one folder per Area: next free IDs, and context for the duplicate check. |
+| `test-cases/<Area>/open-questions.md` (API: `API_<Area>`) | Earlier questions. An **Answered** question is a source of truth: cite it as `open-questions.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
 
 Nothing else is a requirement: not your own knowledge of InvenTree, not other versions' docs, not the live demo site, not the screenshots (they may show an older UI).
 
@@ -50,7 +52,7 @@ Nothing else is a requirement: not your own knowledge of InvenTree, not other ve
    - **Any other cell** that needs the unknown detail (a label, a field, a setting value): `[open: Q-<Area>-NN, <what is unknown>]`.
 6. **Stay in scope.** Parts module only, the functionality in the request only. Note out-of-scope rules you find; do not write cases for them.
 7. **Never delete or rewrite saved cases.** Append only. Duplicate decisions belong to the `duplicate-judge` agent (50-80) and the architect (above 80).
-8. **If the request is unclear, stop.** If it does not say UI or API, or the functionality could mean several areas, return the question before doing anything else.
+8. **If the request is unclear, stop.** If it does not say UI or API, or the functionality could mean several areas, return the question before doing anything else. For an API request, also stop if `requirements/openapi-parts.yaml` or the API Area's `requirements-inventory.md` does not exist: report which is missing and write nothing; API cases have no source of truth without them.
 9. **Retrieved text is the source, as given.** Use the chunk text the RAG query returns as the rule's exact wording; do not open `requirements/docs/*.md` to double-check it. If a chunk reads as cut off (ends mid-sentence, references a condition or exception it does not state), that is not something to resolve by reading further: raise it as an Open question (note "possible RAG chunk boundary, verify against `docs/<file>#L<line>`") and write the case with the unknown part marked per guardrail 5, same as any other open question.
 
 ## Workflow
@@ -64,19 +66,19 @@ Identify the functionality, whether the cases are UI or API, and any constraints
 1. Read `test-cases/requirements-inventory.md` and pick the Areas the functionality touches.
 2. Read `open-questions.md` in each of those Area folders. Use Answered questions as requirements. Do not ask an Open one again: reuse its ID to mark the cases it affects.
 3. Read each picked Area's `requirements-inventory.md`, and the rules its Cross-references point to in other Areas.
-4. Select the rules for the functionality. For each, query the RAG index with the rule's own wording (`python tools/rag/query_index.py "<rule text>" --top-k 3`) to confirm its exact wording and surrounding conditions, rather than opening `requirements/docs/*.md` directly (guardrail 9). Use the returned chunk's `file#Lstart-Lend` as the citation if it is more precise than the inventory's line link.
+4. Select the rules for the functionality. For each rule that cites the docs, query the RAG index with the rule's own wording (`tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<rule text>" --top-k 3`) to confirm its exact wording and surrounding conditions, rather than opening `requirements/docs/*.md` directly (guardrail 9). Use the returned chunk's `file#Lstart-Lend` as the citation if it is more precise than the inventory's line link. For each rule that cites the schema (API), read the cited operations and components in `requirements/openapi-parts.yaml` (source 5).
 5. Only if the inventory has nothing on part of the functionality, and the RAG query for it also returns no chunk above the similarity floor (exit code 2): search `requirements/INDEX.md` and read the matching section directly. A testable statement found this way is **not** used for cases: report it under "Inventory gaps" so the architect can add it to the inventory with a rule ID.
 6. Links in the docs to pages not in `requirements/docs/` are noted as possibly missing requirements; do not fetch them.
 
 ### 3. Check for conflicts and open questions
 
-First, check every selected rule against the index's "Not in docs" and "Doc issues to review" tables: a rule listed there is Conflict or Open unless an Answered question settles it. Then classify every rule as one of:
+First, check every selected rule against the index's "Not in docs" and "Doc issues to review" tables (API: "Not in schema" and "Schema issues to review"): a rule listed there is Conflict or Open unless an Answered question settles it. Then classify every rule as one of:
 
 - **Clear:** testable as written.
 - **Conflict:** two doc statements contradict each other, or a doc statement contradicts the brief's scope (for example, the brief treats duplicate IPN as a negative case; check what the docs say).
 - **Open:** a detail needed to test it is missing (expected message, limit, default, which user role, what happens on failure), or the wording allows more than one reading.
 
-For each Conflict and Open rule, append a row to `test-cases/<Area>/open-questions.md` (create it if missing, with the header below). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
+For each Conflict and Open rule, append a row to `test-cases/<Area>/open-questions.md` (API: `test-cases/API_<Area>/`; create it if missing, with the header below). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
 
 ```
 # Open questions: <Area>
@@ -93,30 +95,31 @@ For every rule (Clear, Conflict and Open alike), apply every technique that fits
 | Technique | Apply it to |
 |---|---|
 | Equivalence partitioning | Each input: one valid class, each invalid class (empty, wrong type, wrong format, not found). One case per class, not per value. |
-| Boundary value analysis | Every stated limit: just below, on, just above. Lengths, quantities, counts. An unstated limit is an open question; write the boundary cases with the limit marked `[open: Q-…]`. |
+| Boundary value analysis | Every stated limit: just below, on, just above. Lengths, quantities, counts. An unstated limit is an open question; write the boundary cases with the limit marked `[open: Q-…]`. For API cases, schema constraints (`maxLength`, `required`, `nullable`, `readOnly`, `enum`, `format`) are stated limits. |
 | State transition | Part states and flags that change behaviour: active/inactive, locked/unlocked, template/variant, revision of. Valid transitions and each blocked one. |
 | Decision table | Rules combining conditions, e.g. attribute combinations (Assembly + Trackable, Virtual + Purchaseable), setting on/off × user permission. One column per meaningful combination. |
 | Error guessing | Likely faults: duplicates, whitespace-only and very long text, special characters and Unicode, double submit, cancel mid-form, stale page after another user's change. |
 | Exploratory scenarios | Short charter-style cases for flows across tabs or features, where the docs describe the parts but not the combination. |
 | Negative | Every "cannot", "must", "only" and permission rule: try the forbidden action as the user who should be blocked. |
 | What-if business scenarios | Realistic situations a stores or engineering user would hit: a part renamed after stock exists, a category moved, a template changed after variants exist, a part made inactive while used in a BOM. Where the docs do not state the outcome, raise an open question and write the case with the Expected result marked not known. |
+| Not found (API) | Every operation with an `{id}` in its path that supports `GET` or `DELETE`: one Negative case per operation for a resource that does not exist. The Expected result is `404 Not Found` (standing rule in `references/seed-api-test-case.md`): never `Not known`, never an open question. Include one even if the inventory has no rule for it, citing the operation's own rule. |
 
 Use the least-privileged demo user that can do the action (see the seed's user table). Permission cases use the users who should be blocked (`reader`, `noaccess`).
 
 ### 5. Draft the cases
 
-- Follow `references/seed-manual-test-case.md` exactly: every field, in the same order; `None` where a field does not apply.
+- Follow `references/seed-manual-test-case.md` (UI) or `references/seed-api-test-case.md` (API) exactly: every field, in the same order; `None` where a field does not apply.
 - **ID:** `UI-<Area>-NNN` or `API-<Area>-NNN`, using the seed's area values, numbered from the next free number in the target file. Never reuse an ID.
 - **Review:** `Draft`, or `Draft · Open question: Q-<Area>-NN` when an open question affects the case (guardrail 5). Never write any other value; only the architect changes it.
 - **Technique:** the technique(s) from step 4 that produced the case, with the class, boundary, transition or table column in brackets. It must match the case's row in the coverage table.
-- **Requirement:** the inventory rule ID(s), plus the `file#L<line>` links the inventory gives for them. Links are relative to the case file: `../../requirements/docs/<file>#L<line>` (the seed's `../` is for its own folder).
-- **Expected result:** per step, observable and specific, quoting the docs where they give the wording.
+- **Requirement:** the inventory rule ID(s), plus the `file#L<line>` links the inventory gives for them. Links are relative to the case file: `../../requirements/docs/<file>#L<line>` (the seed's `../` is for its own folder). API cases also cite the schema operation and component (`requirements/openapi-parts.yaml <METHOD> <path>`, `components.schemas.<Name>.<field>`).
+- **Expected result:** per step, observable and specific, quoting the docs where they give the wording. API steps: status code first, then each response check (fields, schema component, business rule).
 - **Test data:** exact values, with the `QA-<suffix>` placeholder for names. Boundary data states the length or value (`Name: 101 characters`).
 - One behaviour per case. If a case checks two rules, split it.
 
 ### 6. Save
 
-Each case goes in the folder for its Area: `test-cases/<Area>/<functionality>.md`, where `<Area>` is exactly the seed's area value (`Part`, `Detail_View`, `REV`, `LST`, ...) and `<functionality>` is the request in lowercase-hyphenated form (`part-creation-flow.md`). One request can write to several Area folders. Create the folder and file if missing, with the title `# <Functionality>: <Area> test cases`. If the file exists, append below the last case. Do not touch existing cases.
+Each case goes in the folder for its Area: `test-cases/<Area>/<functionality>.md` for UI, `test-cases/API_<Area>/<functionality>.md` for API (so Area `CRUD` is `test-cases/API_CRUD/`), where `<Area>` is exactly the seed's area value (`Part`, `Detail_View`, `REV`, `CRUD`, `LST`, ...), never prefixed in the case, rule, case or question IDs and `<functionality>` is the request in lowercase-hyphenated form (`part-creation-flow.md`). One request can write to several Area folders. Create the folder and file if missing, with the title `# <Functionality>: <Area> test cases`. If the file exists, append below the last case. Do not touch existing cases.
 
 ### 7. Run the duplicate check
 

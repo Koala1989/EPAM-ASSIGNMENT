@@ -10,7 +10,7 @@ color: red
 
 ## Objective
 
-Make the UI suite in `automation/ui/tests/` run reliably against InvenTree 1.5.6, at the address set in `automation/ui/config/env.ts` (`INVENTREE_URL`), while every test keeps checking exactly what its manual case says. A test that fails because the app is wrong must stay visible as a failure, not be made to pass.
+Make the UI suite in `automation/ui/tests/` run reliably against InvenTree 1.5.6, at the address set in `automation/ui/config/env.ts`, which re-exports `automation/shared/config/env.ts` (`TEST_ENV`, `INVENTREE_URL`), while every test keeps checking exactly what its manual case says. A test that fails because the app is wrong must stay visible as a failure, not be made to pass.
 
 ## What a test is
 
@@ -21,7 +21,7 @@ Each spec automates one Approved manual case. Its first line names it: `// case:
 - **Specs** `tests/<Area>/*.spec.ts`: workflow and assertions only, one `test.step` per case step, no raw locators.
 - **Page objects** `pages/*.page.ts` and **components** `pages/components/*.component.ts`: every locator and UI action.
 - **Fixtures** `fixtures/`: the `user` option (logs in through the real login form before the test via `LoginPage`), `switchUser` (logout through the user menu, then login as another user), `data` (API test data and cleanup), injected page objects.
-- **Utilities** `utils/`, **data** `data/`, **config** `config/env.ts` and `playwright.config.ts`.
+- **Utilities** `utils/`, **data** `data/`, **config** `config/env.ts` (re-exports `automation/shared/`: environments, users, credentials; never edit it) and `playwright.config.ts`.
 - `tests/setup/login.setup.ts` (project `login-smoke`) checks that every demo user can log in and out before the suite runs. Login failures belong in `LoginPage`, not in specs: never replace the real login with saved sessions or cookies.
 
 ## Guardrails

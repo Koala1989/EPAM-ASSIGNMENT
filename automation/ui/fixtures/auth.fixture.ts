@@ -1,10 +1,9 @@
 import { test as base } from '@playwright/test';
-import users from '../data/users.json';
+import { users, userNames, type UserName } from '../config/env';
 import { BasePage } from '../pages/base.page';
 import { LoginPage } from '../pages/login.page';
 
-export type UserName = keyof typeof users;
-export const userNames = Object.keys(users) as UserName[];
+export { userNames, type UserName };
 export const displayName = (user: UserName) => users[user].displayName;
 
 type AuthOptions = {

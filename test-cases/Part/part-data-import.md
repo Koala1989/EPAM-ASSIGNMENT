@@ -13,7 +13,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: None; Pre-steps: log in at `http://localhost/web`, open the *Parts* view. |
 | **Automation** | Yes: wizard launch check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -72,7 +72,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; a CSV file with one part row whose category column value is `QA-<suffix> Category`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file. |
 | **Automation** | Yes: file-based import with column mapping. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -102,7 +102,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`, with its database `ID` noted; a CSV file with one part row whose category column value is that category's `ID`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file. |
 | **Automation** | Yes: file-based import with ID mapping. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -131,7 +131,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: a CSV file with one part row whose category column value does not match any existing category by `ID` or `name`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file. |
 | **Automation** | No: needs a file crafted with an unresolvable reference. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -161,7 +161,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: None; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*. |
 | **Automation** | Yes: UI control check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -189,7 +189,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: a CSV file with at least one valid part row; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file and complete the field mapping step. |
 | **Automation** | No: involves navigation timing. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -218,7 +218,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: a CSV file with at least one valid part row; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file. |
 | **Automation** | Yes: list visibility check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -247,7 +247,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: None; Pre-steps: log in at `http://localhost/web`, open the Admin Center. |
 | **Automation** | Yes: UI step check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -276,7 +276,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: a CSV file with a `name` column and a column header that does not exactly match a field name (for example `part_desc` for Description); Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file. |
 | **Automation** | Yes: field mapping UI check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -306,7 +306,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; a CSV file with one valid part row (Name `QA-<suffix> Import Part`, category mapped to `QA-<suffix> Category`); Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file, map the fields, and process the data. |
 | **Automation** | Yes: core import flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -337,7 +337,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; a CSV file with one part row that has an empty Name column and category mapped to `QA-<suffix> Category`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file, map the fields, and process the data. |
 | **Automation** | Yes: error-state correction flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -368,7 +368,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; a CSV file with two valid part rows (`QA-<suffix> Keep Part`, `QA-<suffix> Remove Part`), both mapped to `QA-<suffix> Category`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file, map the fields, and process the data. |
 | **Automation** | Yes: per-row action check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -399,7 +399,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; a CSV file with one valid part row mapped to `QA-<suffix> Category`; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*, upload the file, map the fields, process the data, then select and confirm the row. |
 | **Automation** | Yes: session completion check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -456,7 +456,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: an existing part `QA-<suffix> Update Source`, created as `admin`, with its `ID` noted; a CSV file exported/prepared with one row containing that part's `ID`; Pre-steps: log in at `http://localhost/web`, open the Admin Center, start a new import session for the *Part* model with *Update Existing Records* selected, and upload the file. |
 | **Automation** | Yes: update-mode mapping check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -486,7 +486,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: None; Pre-steps: log in at `http://localhost/web`, open *Parts* > *Add Parts* > *Import from File*. |
 | **Automation** | Yes: UI control check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -515,7 +515,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `admin` (staff, full permissions); Settings: None; Data: an existing part `QA-<suffix> Update Target` with Description `Original description`, created as `admin`, with its `ID` noted; a CSV file with one row containing that part's `ID` and Description `QA-<suffix> Updated description`; Pre-steps: log in at `http://localhost/web`, open the Admin Center, start a new import session for the *Part* model with *Update Existing Records* selected, upload the file, and map the `ID` and Description columns. |
 | **Automation** | Yes: update-mode data check. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

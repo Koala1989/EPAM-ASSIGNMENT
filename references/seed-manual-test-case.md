@@ -1,6 +1,6 @@
 # Seed: manual functional test case
 
-The reference format for every manual test case. Agents copy the template, fill every field, and match the worked example for level of detail. A field that does not apply says `None`; it is never deleted.
+The reference format for every manual UI test case. API cases use `seed-api-test-case.md`, which shares these header fields. Agents copy the template, fill every field, and match the worked example for level of detail. A field that does not apply says `None`; it is never deleted.
 
 ---
 
@@ -11,8 +11,8 @@ The reference format for every manual test case. Agents copy the template, fill 
 | Field | Value |
 |---|---|
 | **Summary** | One sentence: what is verified, and under which condition. |
-| **Requirement** | `R-<Area>-NN` from `test-cases/<Area>/requirements-inventory.md`, plus the source link: `[file#heading](../requirements/docs/<file>#L<line>)`. API cases also cite the schema operation, e.g. `openapi.yaml POST /api/part/`. |
-| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants). API: `LST` · `VAL` · `REL` · `SEC` |
+| **Requirement** | `R-<Area>-NN` from `test-cases/<Area>/requirements-inventory.md`, plus the source link: `[file#heading](../requirements/docs/<file>#L<line>)`. API cases: see `seed-api-test-case.md`. |
+| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants). API: `CRUD` · `LST` · `VAL` · `REL` · `SEC` (defined in `seed-api-test-case.md`) |
 | **Type** | Positive · Negative · Boundary |
 | **Technique** | The test design technique(s) that produced the case, comma-separated: `Equivalence partitioning` · `Boundary value analysis` · `State transition` · `Decision table` · `Error guessing` · `Exploratory` · `Negative` · `What-if business scenario`. Add the class, boundary, transition or table column in brackets, e.g. `Boundary value analysis (max length + 1)`. |
 | **Priority** | P1 core flow or data integrity · P2 important behaviour · P3 cosmetic or rare edge |
@@ -69,7 +69,7 @@ Any other cell that needs a detail an open question leaves unknown: `[open: Q-<A
 
 **Postconditions and cleanup:** one new part exists in `QA-<suffix> Category`. Cleanup as `admin`: set the part inactive, delete it, then delete the category.
 
-**Notes:** check the required fields against the `Part` schema in `openapi.yaml` before writing negative cases for this form.
+**Notes:** check the required fields against the `Part` schema in `requirements/openapi-parts.yaml` before writing negative cases for this form.
 ---
 
 ## Demo users

@@ -1,5 +1,5 @@
 import { Locator, Page, expect } from '@playwright/test';
-import { passwordFor } from '../config/env';
+import { credentialsFor, type UserName } from '../config/env';
 import { BasePage } from './base.page';
 
 /** The login screen at /web/login. */
@@ -23,10 +23,10 @@ export class LoginPage extends BasePage {
 
   /**
    * Logs in through the login form, as a user would, and waits for the logged-in app shell.
-   * The password comes from config/env.ts.
+   * The login name and password come from config/env.ts, for the current TEST_ENV.
    */
-  async loginAs(username: string) {
-    const password = passwordFor(username);
+  async loginAs(user: UserName) {
+    const { username, password } = credentialsFor(user);
     if (!(await this.usernameInput.isVisible())) await this.open();
     // The form re-renders once server info loads: it can clear what was typed, and a click on Log In
     // during the re-render sends no login request. Retry the whole login until the app shell appears.

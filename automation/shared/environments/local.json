@@ -1,0 +1,8 @@
+{
+  "description": "Local Docker InvenTree 1.5.6 with the demo dataset",
+  "baseURL": "http://localhost",
+  "users": "users.local.json",
+  "demoPasswords": true,
+  "testTimeoutMs": 60000,
+  "expectTimeoutMs": 30000
+}

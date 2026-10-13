@@ -11,6 +11,7 @@ from pathlib import Path
 CASE_HEADING = re.compile(r"^###\s+(?P<id>[^:\s]+):\s*(?P<summary>.+?)\s*$")
 BLOCK_END = re.compile(r"^(#{1,3}\s|---\s*$)")
 CHECK_LINE = re.compile(r"^\*\*Duplicate check:\*\*")
+JUDGEMENT_LINE = re.compile(r"^\*\*Duplicate judgement:\*\*")
 FIELD_ROW = re.compile(r"^\|\s*\*\*(?P<name>[^*]+)\*\*\s*\|\s*(?P<value>.*?)\s*\|\s*$")
 STEP_ROW = re.compile(r"^\|\s*(?P<n>\d+)\s*\|(?P<rest>.*)\|\s*$")
 REQ_REF = re.compile(
@@ -167,7 +168,7 @@ def check_line(result):
 
 
 def write_back(path, by_line):
-    out, current = [], None
+    out, current, start = [], None, 0
 
     def close():
         if current is None or current["status"] == "Unique":
@@ -176,13 +177,24 @@ def write_back(path, by_line):
         while out and not out[-1].strip():
             out.pop()
             had_trailing = True
-        out.extend(["", check_line(current)] + ([""] if had_trailing else []))
+        # The check line goes before an existing judgement line (seed order: check, then judgement).
+        judged = next((i for i in range(len(out) - 1, start - 1, -1) if JUDGEMENT_LINE.match(out[i])), None)
+        if judged is None:
+            out.extend(["", check_line(current)])
+        else:
+            while judged > start and not out[judged - 1].strip():
+                del out[judged - 1]
+                judged -= 1
+            out[judged:judged] = ["", check_line(current), ""]
+        if had_trailing:
+            out.append("")
 
     for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         heading = CASE_HEADING.match(line)
         if heading or BLOCK_END.match(line):
             close()
             current = by_line.get(n) if heading else None
+            start = len(out)
         elif current is not None and CHECK_LINE.match(line):
             continue
         out.append(line)

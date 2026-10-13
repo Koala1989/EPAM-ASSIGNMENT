@@ -32,11 +32,9 @@ automation/ui/
 ├── playwright.config.ts        runner settings: projects, reporters, retries, workers; reads config/env.ts
 ├── CONVENTIONS.md
 ├── tsconfig.json, eslint.config.mjs   quality gates (§12)
-├── .env.example                every environment variable, with its default
 ├── config/
-│   └── env.ts                  baseURL, apiURL, timeouts, credentials from process.env with defaults
+│   └── env.ts                  re-exports ../../shared/config/env.ts (env, users, credentialsFor)
 ├── data/
-│   ├── users.json              demo users: username, role, what they may do (no passwords)
 │   └── <Area>/<name>.json      input matrices for data-driven tests
 ├── utils/
 │   ├── names.ts                QA-<8 hex> suffix and test record names
@@ -145,9 +143,10 @@ Stateless helpers with no Playwright test fixtures: pure functions and small fac
 ## 7. Data and configuration layer (`data/`, `config/`, `playwright.config.ts`)
 
 - **`playwright.config.ts`** holds runner settings only: test directory, projects (`setup`, `chromium`), reporters, retries, workers, trace and screenshot policy. It reads environment values from `config/env.ts`.
-- **`config/env.ts`** is the single place that reads `process.env`. It exports typed values with defaults for the local Docker instance: `INVENTREE_URL` (default `http://localhost`), timeouts, and user credentials. Tests, fixtures and page objects import from it; nothing else reads `process.env`.
-- **Secrets** come only from environment variables (or an untracked `.env`). The demo users' passwords are the documented defaults for the local demo dataset; any other environment sets them through `INVENTREE_<USER>_PASSWORD`. `.env.example` lists every variable. `LoginPage` reads passwords through `passwordFor()`; specs never contain them.
-- **`data/users.json`** lists each demo user's display name (the accessible name of the header user menu, used to log out), role and purpose. No passwords.
+- **`config/env.ts`** re-exports `automation/shared/config/env.ts`, the single place that reads `process.env` for both the UI and API suites. Tests, fixtures and page objects import from `config/env.ts`; nothing else reads `process.env`.
+- **Environments:** `TEST_ENV` (default `local`) selects `automation/shared/environments/<env>.json`: base URL, timeouts, users file, and whether the demo passwords apply. `INVENTREE_URL`, `TEST_TIMEOUT_MS` and `EXPECT_TIMEOUT_MS` override it.
+- **Secrets** come only from environment variables or the gitignored `automation/shared/.env.<env>` (template `automation/shared/.env.example`); variables already set win over the file. The demo dataset's passwords are defaults only for `local`; any other environment sets `INVENTREE_<USER>_PASSWORD`. `LoginPage` gets the login name and password through `credentialsFor(user)`; specs never contain them.
+- **Users:** `automation/shared/data/users.<env>.json` maps each user key specs use (`engineer`, `reader`, ...) to its login name, display name (the accessible name of the header user menu, used to log out), role and purpose. No passwords. Every environment defines the same keys as `users.local.json`.
 - **`data/`** holds test inputs as JSON (or CSV) matrices, e.g. boundary values for a field, one row per case variant with a `label` used in the test title. Files are named by Area and purpose: `data/Part/name-boundaries.json`.
 
 ## 8. Waiting, timing and stability

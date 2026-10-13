@@ -1,8 +1,0 @@
-{
-  "admin": { "displayName": "Adam Administrator", "role": "Superuser", "use": "Setup, cleanup and settings changes" },
-  "allaccess": { "displayName": "Ally Access", "role": "View, create and edit everything", "use": "Full create, edit and delete; purchase-order views" },
-  "engineer": { "displayName": "Robert Shuruncle", "role": "Manage parts, view stock", "use": "Default user for Parts cases" },
-  "reader": { "displayName": "Ronald Reader", "role": "View only", "use": "Checks that create and edit controls are hidden" },
-  "noaccess": { "displayName": "Norman Nothington", "role": "No permissions", "use": "Access-denied checks" },
-  "steven": { "displayName": "Steven Stafferson", "role": "Staff, some admin pages", "use": "Staff-only checks" }
-}

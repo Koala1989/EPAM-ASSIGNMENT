@@ -1,0 +1,15 @@
+# Requirements inventory: SEC (authentication and permissions)
+
+Rules stated in `requirements/openapi-parts.yaml` (InvenTree 1.5.6, API 530), plus `requirements/docs/` where cited. Built on 2026-10-13 from the schema slice; **pending architect review**. Risk: H core flow or data integrity, M important behaviour, L informational or rare. Risk values are the agent's proposal. Expected error status codes are not in the schema (see the index, Not in schema #1). Which roles each demo user has: `automation/ui/data/users.json` and the demo users table in `references/seed-manual-test-case.md`.
+
+| Rule ID | Rule | Source | Risk | Notes |
+|---|---|---|---|---|
+| R-SEC-01 | Every operation in the slice needs authentication: token (`Authorization: Token <key>`), basic auth, session cookie or OAuth2. None allows anonymous access. | [openapi-parts.yaml#L6112](../../requirements/openapi-parts.yaml#L6112), [openapi-parts.yaml#L747](../../requirements/openapi-parts.yaml#L747) | H | Status code for missing or invalid credentials not stated (Not in schema #1). |
+| R-SEC-02 | `GET /api/user/me/token/` returns the current user's API token. | [openapi-parts.yaml#L3463](../../requirements/openapi-parts.yaml#L3463) | H | |
+| R-SEC-03 | Viewing parts (`GET` list and detail) needs the Parts role's view permission (`r:view:part`). | [openapi-parts.yaml#L432](../../requirements/openapi-parts.yaml#L432), [openapi-parts.yaml#L2673](../../requirements/openapi-parts.yaml#L2673) | H | Schema issue #1: the Build role is listed too. |
+| R-SEC-04 | Creating a part needs `r:add:part`. | [openapi-parts.yaml#L747](../../requirements/openapi-parts.yaml#L747) | H | Schema issue #1. |
+| R-SEC-05 | Changing a part (`PUT`, `PATCH`) needs `r:change:part`. | [openapi-parts.yaml#L2730](../../requirements/openapi-parts.yaml#L2730), [openapi-parts.yaml#L2767](../../requirements/openapi-parts.yaml#L2767) | H | Schema issue #1. |
+| R-SEC-06 | Deleting a part needs `r:delete:part`. | [openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803) | H | Schema issue #1. |
+| R-SEC-07 | Category operations need the Part Categories role: `r:view:part_category`, `r:add:part_category`, `r:change:part_category`, `r:delete:part_category`. | [openapi-parts.yaml#L848](../../requirements/openapi-parts.yaml#L848), [openapi-parts.yaml#L947](../../requirements/openapi-parts.yaml#L947), [openapi-parts.yaml#L1333](../../requirements/openapi-parts.yaml#L1333), [openapi-parts.yaml#L1406](../../requirements/openapi-parts.yaml#L1406) | H | Schema issue #1. |
+| R-SEC-08 | Creating a supplier part needs `r:add:part` and `r:add:purchase_order`. | [openapi-parts.yaml#L185](../../requirements/openapi-parts.yaml#L185) | M | Schema issue #1. The UI found engineer can create supplier data but not view the Suppliers tab (findings F-03). |
+| R-SEC-09 | Scopes map to role groups: `r:<action>:<role>` reads "<method> for Role <role>" (e.g. `r:view:part`: "GET for Role Parts"). | [openapi-parts.yaml#L6112](../../requirements/openapi-parts.yaml#L6112) | M | |

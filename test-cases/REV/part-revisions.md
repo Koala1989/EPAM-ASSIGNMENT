@@ -41,7 +41,7 @@
 | **Tags** | Regression, Settings-dependent |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: assembly part `QA-<suffix> Assembly` and its revision `QA-<suffix> Assembly B` (Revision `B`, Revision Of the assembly), both created via `POST /api/part/` as `admin`; Pre-steps: log in, open the detail page of `QA-<suffix> Assembly`. |
 | **Automation** | Yes: stable form validation. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -69,7 +69,7 @@
 | **Tags** | Regression, Settings-dependent |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: template `QA-<suffix> Template` and its variant `QA-<suffix> Variant` (Variant Of the template, Assembly checked), created via `POST /api/part/` as `admin`; Pre-steps: log in, open the detail page of `QA-<suffix> Variant`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -96,7 +96,7 @@
 | **Tags** | Smoke, Regression, Settings-dependent |
 | **Prerequisites** | User: `reader` (view only); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: assembly `QA-<suffix> Assembly` (Revision `A`) and `QA-<suffix> Assembly B` (Revision `B`, Revision Of the first), created via `POST /api/part/` as `admin`; Pre-steps: log in, open the detail page of `QA-<suffix> Assembly`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -124,7 +124,7 @@
 | **Tags** | Regression, Settings-dependent |
 | **Prerequisites** | User: `reader` (view only); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: assembly `QA-<suffix> Solo`, no revisions, created via `POST /api/part/` as `admin`; Pre-steps: log in, open the detail page of `QA-<suffix> Solo`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -150,7 +150,7 @@
 | **Tags** | Regression, Settings-dependent |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: assembly `QA-<suffix> Assembly`, created via `POST /api/part/` as `admin`; Pre-steps: log in, open the detail page of the part. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -178,7 +178,7 @@
 | **Tags** | Regression, Cross-functional, Settings-dependent |
 | **Prerequisites** | User: `allaccess` (create and edit parts and stock); Settings: `PART_ENABLE_REVISION` = enabled [confirm in app: Q-REV-01]; Data: assembly `QA-<suffix> Assembly` with one stock item of quantity 10, created via `POST /api/part/` and `POST /api/stock/` as `admin`; Pre-steps: log in, open the part's *Stock* tab and note the item and quantity. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-10-13 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
