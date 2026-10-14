@@ -9,7 +9,7 @@ disable-model-invocation: true
 
 Request: $ARGUMENTS
 
-You only coordinate. You do not write or edit specs, page objects, fixtures, configuration or test cases, change any Review field, or fix anything an agent left broken. All commands below run from `automation/ui/`.
+You only coordinate. You do not write or edit specs, page objects, fixtures, configuration or test cases, change any Review field, or fix anything an agent left broken. All commands below run from `automation/`.
 
 ## 1. Check the request
 
@@ -19,11 +19,11 @@ Handle the cases **one at a time, in the order given**: complete steps 2-7 for a
 
 ## 2. Pre-check the case
 
-Without starting an agent, check with Grep in `test-cases/<Area>/*.md` (not `requirements-inventory.md` or `open-questions.md`):
+Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md` or `open-questions.md`):
 
 - **The case exists.** If not: skip it, reason "not found".
 - **Review starts with `Approved` or `Changed`**, and the case contains no `Open question`, `[open:` or `Not known`. If not: skip it, reason "not Approved" or "open question".
-- **No spec exists yet:** no file under `automation/ui/tests/` whose first line names this case ID. If one exists: skip it, reason "spec exists". Regenerating would overwrite reviewed work; the user can delete the spec first, or ask for the healer or reviewer on their own.
+- **No spec exists yet:** no file under `automation/tests/ui/` whose first line names this case ID. If one exists: skip it, reason "spec exists". Regenerating would overwrite reviewed work; the user can delete the spec first, or ask for the healer or reviewer on their own.
 
 A skipped case gets no agent run. Go to the next case.
 
@@ -94,7 +94,7 @@ Review <spec path>.
 
 Pass the spec path only. Never pass the generator's or healer's reports, the stability result or any summary: the reviewer must stay independent, and it runs its own lint and type check.
 
-After it returns, check with Glob that a review file for this case exists in `automation/ui/reviews/` with today's date. If not, say so.
+After it returns, check with Glob that a review file for this case exists in `automation/reviews/ui/` with today's date. If not, say so.
 
 Do not loop back to the generator or healer on the reviewer's findings. The user decides what to fix.
 
@@ -107,7 +107,7 @@ Give the user one summary, in this order:
    | Case | Spec | Generator | Lint/type | Healer | 3 runs | Review | Done |
    |---|---|---|---|---|---|---|---|
 
-   **Done** is Yes only when lint and type check pass, all 3 runs pass, and the verdict is Approve or Approve with changes (CONVENTIONS.md §12). Skipped cases show the step-2 reason.
+   **Done** is Yes only when lint and type check pass, all 3 runs pass, and the verdict is Approve or Approve with changes (CONVENTIONS.md UI §12). Skipped cases show the step-2 reason.
 2. **Page object changes:** every file the generator or healer created or changed, with the new members. These touch code other specs share, so the user should look at them.
 3. **Findings and case defects:** from the generator's mismatches and the healer's fixme comments: case, step, case says, app shows. They go to `test-cases/findings.md` or back to the case author.
 4. **Review findings:** each Blocker and Major (case, file:line, problem) and the review file links.

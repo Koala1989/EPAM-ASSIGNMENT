@@ -8,25 +8,25 @@ Each rule sits in one primary Area; other Areas point to it under "Cross-referen
 
 | Area | Covers | Rules | File |
 |---|---|---|---|
-| Part | Create Part form, part fields, import from file, update import, supplier import | 41 | [Part/requirements-inventory.md](Part/requirements-inventory.md) |
-| Detail_View | Header, image, Stock, Allocated, BOM, Build Orders, Used In, Suppliers, order tabs, Test Templates/Results, Related Parts, Attachments | 70 | [Detail_View/requirements-inventory.md](Detail_View/requirements-inventory.md) |
+| Part | Create Part form, part fields, import from file, update import, supplier import | 41 | [Part_Creation_and_Import/requirements-inventory.md](Part_Creation_and_Import/requirements-inventory.md) |
+| Detail_View | Header, image, Stock, Allocated, BOM, Build Orders, Used In, Suppliers, order tabs, Test Templates/Results, Related Parts, Attachments | 70 | [Part_Detail_View/requirements-inventory.md](Part_Detail_View/requirements-inventory.md) |
 | Categories | Hierarchy, category part list, filters | 7 | [Categories/requirements-inventory.md](Categories/requirements-inventory.md) |
-| ATT | Virtual, Assembly, Component, Testable, Trackable, Purchaseable, Salable, Consumable, Locked, Active | 29 | [ATT/requirements-inventory.md](ATT/requirements-inventory.md) |
-| Unit_measure | Part units, supplier part units, unit syntax, custom units, BOM quantities | 18 | [Unit_measure/requirements-inventory.md](Unit_measure/requirements-inventory.md) |
-| REV | Revision fields, restrictions, settings, creation, navigation | 15 | [REV/requirements-inventory.md](REV/requirements-inventory.md) |
-| Part_Params | Parameters, templates, uniqueness, category defaults, parametric tables, units | 36 | [Part_Params/requirements-inventory.md](Part_Params/requirements-inventory.md) |
-| Part_Template | Template flag, variants, serial and stock rules, cascading tests, inherited BOM | 11 | [Part_Template/requirements-inventory.md](Part_Template/requirements-inventory.md) |
+| ATT | Virtual, Assembly, Component, Testable, Trackable, Purchaseable, Salable, Consumable, Locked, Active | 29 | [Attributes/requirements-inventory.md](Attributes/requirements-inventory.md) |
+| Unit_measure | Part units, supplier part units, unit syntax, custom units, BOM quantities | 18 | [Units_of_Measure/requirements-inventory.md](Units_of_Measure/requirements-inventory.md) |
+| REV | Revision fields, restrictions, settings, creation, navigation | 15 | [Revisions/requirements-inventory.md](Revisions/requirements-inventory.md) |
+| Part_Params | Parameters, templates, uniqueness, category defaults, parametric tables, units | 36 | [Parameters/requirements-inventory.md](Parameters/requirements-inventory.md) |
+| Part_Template | Template flag, variants, serial and stock rules, cascading tests, inherited BOM | 11 | [Templates_and_Variants/requirements-inventory.md](Templates_and_Variants/requirements-inventory.md) |
 | **Total** | | **227** | |
 
 ## API Areas
 
 | Area | Covers | Rules | File |
 |---|---|---|---|
-| CRUD | Create, read, update, delete on Parts and Part Categories | 17 | [API_CRUD/requirements-inventory.md](API_CRUD/requirements-inventory.md) |
-| LST | Parts and category lists: pagination, filters, ordering, search | 16 | [API_LST/requirements-inventory.md](API_LST/requirements-inventory.md) |
-| VAL | Field validation: required, max lengths, nullable, read-only, write-only, types | 18 | [API_VAL/requirements-inventory.md](API_VAL/requirements-inventory.md) |
-| REL | Category, default location, category hierarchy, supplier links, locked parts | 11 | [API_REL/requirements-inventory.md](API_REL/requirements-inventory.md) |
-| SEC | Authentication, API token, role permissions per operation | 9 | [API_SEC/requirements-inventory.md](API_SEC/requirements-inventory.md) |
+| CRUD | Create, read, update, delete on Parts and Part Categories | 17 | [API_Create_Read_Update_Delete/requirements-inventory.md](API_Create_Read_Update_Delete/requirements-inventory.md) |
+| LST | Parts and category lists: pagination, filters, ordering, search | 16 | [API_Lists_and_Filters/requirements-inventory.md](API_Lists_and_Filters/requirements-inventory.md) |
+| VAL | Field validation: required, max lengths, nullable, read-only, write-only, types | 18 | [API_Field_Validation/requirements-inventory.md](API_Field_Validation/requirements-inventory.md) |
+| REL | Category, default location, category hierarchy, supplier links, locked parts | 11 | [API_Relationships/requirements-inventory.md](API_Relationships/requirements-inventory.md) |
+| SEC | Authentication, API token, role permissions per operation | 9 | [API_Security_and_Permissions/requirements-inventory.md](API_Security_and_Permissions/requirements-inventory.md) |
 | **Total** | | **71** | |
 
 ## Not in docs
@@ -82,7 +82,7 @@ Items the brief or the API rules need that the schema does not state. Cases for 
 | 6 | Bulk `PUT`/`PATCH` on list endpoints: how records are selected | The body is a plain `Part` or `Category` ([openapi-parts.yaml#L778](../requirements/openapi-parts.yaml#L778), [openapi-parts.yaml#L983](../requirements/openapi-parts.yaml#L983)). | CRUD |
 | 7 | List response when `limit` is not sent; default and maximum page size | The response is always documented as paginated ([openapi-parts.yaml#L432](../requirements/openapi-parts.yaml#L432)). | LST |
 
-Answered on 2026-10-13 (details in `API_CRUD/open-questions.md`): item 3 by Q-CRUD-03, item 4 by Q-CRUD-02, item 6 by Q-CRUD-04, and the unknown-ID part of item 1 by Q-CRUD-01 (`404 Not Found` for a `GET` or `DELETE` of a resource that does not exist; other error codes remain open). Item 7 is answered by Schema issue 8: a list without `limit` returns a plain array.
+Answered on 2026-10-13 (details in `API_Create_Read_Update_Delete/open-questions.md`): item 3 by Q-CRUD-03, item 4 by Q-CRUD-02, item 6 by Q-CRUD-04, and the unknown-ID part of item 1 by Q-CRUD-01 (`404 Not Found` for a `GET` or `DELETE` of a resource that does not exist; other error codes remain open). Item 7 is answered by Schema issue 8: a list without `limit` returns a plain array.
 
 ## Schema issues to review (API)
 

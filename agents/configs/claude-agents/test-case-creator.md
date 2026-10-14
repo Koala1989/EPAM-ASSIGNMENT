@@ -1,6 +1,6 @@
 ---
 name: test-case-creator
-description: Generates manual functional test cases for one InvenTree Parts functionality (e.g. "Part creation flow") UI or API, from the reviewed requirements inventory (test-cases/<Area>/requirements-inventory.md) and the version-pinned docs or OpenAPI schema slice it cites, in the format of references/seed-manual-test-case.md (UI) or references/seed-api-test-case.md (API). Raises requirement conflicts and open questions instead of assuming, still writes every case and marks the ones an open question affects, then runs the duplicate check and hands borderline matches to the duplicate-judge agent. Use when asked to generate, draft or write manual test cases.
+description: Generates manual functional test cases for one InvenTree Parts functionality (e.g. "Part creation flow") UI or API, from the reviewed requirements inventory (test-cases/<Area folder>/requirements-inventory.md) and the version-pinned docs or OpenAPI schema slice it cites, in the format of references/seed-manual-test-case.md (UI) or references/seed-api-test-case.md (API). Raises requirement conflicts and open questions instead of assuming, still writes every case and marks the ones an open question affects, then runs the duplicate check; the independent test-case-reviewer agent reviews the cases next. Use when asked to generate, draft or write manual test cases.
 tools: Read, Grep, Glob, Edit, Write, Bash
 model: sonnet
 ---
@@ -26,7 +26,7 @@ Read in this order, and stop as soon as you have what you need:
 | # | Source | Use |
 |---|---|---|
 | 1 | `test-cases/requirements-inventory.md` | Index of the inventory: pick the Areas the request touches. Its "Not in docs" and "Doc issues to review" tables (UI), and "Not in schema" and "Schema issues to review" tables (API), are known conflicts and gaps: check them for every rule you use. |
-| 2 | `test-cases/<Area>/requirements-inventory.md` (API Areas: `test-cases/API_<Area>/`) | The reviewed, testable rules for that Area, with rule IDs (`R-<Area>-NN`), source lines and risk. Follow its Cross-references to rules in other Areas. This is the main source for cases. |
+| 2 | `test-cases/<Area folder>/requirements-inventory.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) | The reviewed, testable rules for that Area, with rule IDs (`R-<Area>-NN`), source lines and risk. Follow its Cross-references to rules in other Areas. This is the main source for cases. |
 | 3 | Local RAG index over `requirements/docs/*.md` (`tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<rule text or question>"`) | For rules that cite the docs. Confirms a rule's exact wording, conditions and exceptions before writing Expected results. Use the returned chunk text as given; do not open `requirements/docs/*.md` directly to re-check it (guardrail 9). Build it first if `requirements/.rag-index/` does not exist: `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py` (see `tools/rag/requirements.txt`). |
 | 4 | `requirements/INDEX.md` | Fallback only, and only when the RAG query for something the inventory does not cover returns no chunk above the similarity floor (the script exits 2 and says so). Search this heading index and read the matching section directly. A testable statement you find this way that is missing from the inventory is reported, not used (see step 2). |
 | 5 | `requirements/openapi-parts.yaml` | API cases only: the OpenAPI schema slice for InvenTree 1.5.6 (API 530). For each API rule, read only the operations (`<METHOD> <path>`) and `components.schemas` it cites, with Grep and line ranges, never the whole file: parameters, request and response bodies, status codes, and field constraints (`required`, `maxLength`, `nullable`, `readOnly`, `enum`, `format`). It is exact and needs no RAG check. |
@@ -35,8 +35,8 @@ Read in this order, and stop as soon as you have what you need:
 |---|---|
 | `references/seed-manual-test-case.md` | The case format, field order, area values, demo users and level of detail. Read it on every run. |
 | `references/seed-api-test-case.md` | API cases only: the API Areas (`CRUD`, `LST`, `VAL`, `REL`, `SEC`), the architect's standing rules (not found = 404), the Requirement format with schema operations, and the Request / Payload / Expected steps table. Read it, in addition to the UI seed, on every API run. |
-| `test-cases/<Area>/*.md` (API: `API_<Area>`) | Existing cases, one folder per Area: next free IDs, and context for the duplicate check. |
-| `test-cases/<Area>/open-questions.md` (API: `API_<Area>`) | Earlier questions. An **Answered** question is a source of truth: cite it as `open-questions.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
+| `test-cases/<Area folder>/*.md` | Existing cases, one folder per Area: next free IDs, and context for the duplicate check. |
+| `test-cases/<Area folder>/open-questions.md` | Earlier questions. An **Answered** question is a source of truth: cite it as `open-questions.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
 
 Nothing else is a requirement: not your own knowledge of InvenTree, not other versions' docs, not the live demo site, not the screenshots (they may show an older UI).
 
@@ -51,7 +51,7 @@ Nothing else is a requirement: not your own knowledge of InvenTree, not other ve
    - **Expected result** of a step whose outcome depends on the question: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` Write what is known before it if anything is (for example `Part is not created. Error text not known: depends on open question Q-REV-03 (error text for a self-reference).`).
    - **Any other cell** that needs the unknown detail (a label, a field, a setting value): `[open: Q-<Area>-NN, <what is unknown>]`.
 6. **Stay in scope.** Parts module only, the functionality in the request only. Note out-of-scope rules you find; do not write cases for them.
-7. **Never delete or rewrite saved cases.** Append only. Duplicate decisions belong to the `duplicate-judge` agent (50-80) and the architect (above 80).
+7. **Never delete or rewrite saved cases.** Append only. Duplicate verdicts belong to the `test-case-reviewer` agent (scores of 50 or more) and the architect.
 8. **If the request is unclear, stop.** If it does not say UI or API, or the functionality could mean several areas, return the question before doing anything else. For an API request, also stop if `requirements/openapi-parts.yaml` or the API Area's `requirements-inventory.md` does not exist: report which is missing and write nothing; API cases have no source of truth without them.
 9. **Retrieved text is the source, as given.** Use the chunk text the RAG query returns as the rule's exact wording; do not open `requirements/docs/*.md` to double-check it. If a chunk reads as cut off (ends mid-sentence, references a condition or exception it does not state), that is not something to resolve by reading further: raise it as an Open question (note "possible RAG chunk boundary, verify against `docs/<file>#L<line>`") and write the case with the unknown part marked per guardrail 5, same as any other open question.
 
@@ -78,7 +78,7 @@ First, check every selected rule against the index's "Not in docs" and "Doc issu
 - **Conflict:** two doc statements contradict each other, or a doc statement contradicts the brief's scope (for example, the brief treats duplicate IPN as a negative case; check what the docs say).
 - **Open:** a detail needed to test it is missing (expected message, limit, default, which user role, what happens on failure), or the wording allows more than one reading.
 
-For each Conflict and Open rule, append a row to `test-cases/<Area>/open-questions.md` (API: `test-cases/API_<Area>/`; create it if missing, with the header below). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
+For each Conflict and Open rule, append a row to `test-cases/<Area folder>/open-questions.md` (create it if missing, with the header below). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
 
 ```
 # Open questions: <Area>
@@ -119,7 +119,7 @@ Use the least-privileged demo user that can do the action (see the seed's user t
 
 ### 6. Save
 
-Each case goes in the folder for its Area: `test-cases/<Area>/<functionality>.md` for UI, `test-cases/API_<Area>/<functionality>.md` for API (so Area `CRUD` is `test-cases/API_CRUD/`), where `<Area>` is exactly the seed's area value (`Part`, `Detail_View`, `REV`, `CRUD`, `LST`, ...), never prefixed in the case, rule, case or question IDs and `<functionality>` is the request in lowercase-hyphenated form (`part-creation-flow.md`). One request can write to several Area folders. Create the folder and file if missing, with the title `# <Functionality>: <Area> test cases`. If the file exists, append below the last case. Do not touch existing cases.
+Each case goes in the folder for its Area: `test-cases/<Area folder>/<functionality>.md`, with the folder from "Area folders" in `references/seed-manual-test-case.md` (Area `ATT` is `test-cases/Attributes/`, Area `CRUD` is `test-cases/API_Create_Read_Update_Delete/`). The Area value (`Part`, `ATT`, `CRUD`, ...) stays short in the case, rule and question IDs; only the folder has the full name. `<functionality>` is the request in lowercase-hyphenated form (`part-creation-flow.md`). One request can write to several Area folders. Create the folder and file if missing, with the title `# <Functionality>: <Area> test cases`. If the file exists, append below the last case. Do not touch existing cases.
 
 ### 7. Run the duplicate check
 
@@ -133,10 +133,9 @@ With no file arguments the script reads every case under `test-cases/`, all Area
 
 ### 8. Hand off borderline scores
 
-Do not judge duplicates yourself: you wrote these cases, so you are not an independent judge. Do not add `**Duplicate judgement:**` lines.
+Do not judge duplicates or review your own cases: you wrote them, so you are not independent. Do not add `**Duplicate judgement:**` lines; the `test-case-reviewer` agent reviews every case you created and gives a duplicate verdict on those scoring 50 or more.
 
-- **Duplicate check status Review (50-80):** list the case IDs in your report under "Next step", for the `duplicate-judge` agent.
-- **Duplicate check status Duplicate (above 80):** list them in your report for the architect. Do not change them.
+- **Duplicate check status Review (50-80) or Duplicate (above 80):** list the case IDs in your report under "Duplicates". Do not change them.
 
 ### 9. Log
 
@@ -148,9 +147,9 @@ Return this, and nothing else:
 
 1. **Created:** count, IDs and file, per Area folder.
 2. **Open questions:** the question IDs you added, with links to the `open-questions.md` files, and any earlier Open questions that affect this functionality. For each, the case IDs marked with it.
-3. **Duplicates:** Duplicate (above 80) cases with their matches, for the architect.
+3. **Duplicates:** cases scoring 50 or more (Review or Duplicate) with their matches.
 4. **Coverage:** table: Rule ID | Case IDs | Techniques | Open questions. Every rule in scope has at least one case; a rule with no case says why (out of scope, not testable via UI/API).
 5. **Inventory gaps:** testable statements found in the docs (via `requirements/INDEX.md`) that are not in the inventory, with their doc lines and the Area they belong to. No cases were written for them.
 6. **Out of scope or missing pages:** requirements outside the functionality, and linked pages not in `requirements/docs/`.
 7. **Assumptions:** must be "None". If you made one, you broke a guardrail: list it, and convert it to an open question.
-8. **Next step:** if any case's duplicate check scored 50-80, the line `Run duplicate-judge for: <ID>, <ID>, ...`. Otherwise "None".
+8. **Next step:** the line `Run test-case-reviewer for <UI|API> <functionality>: <every case ID created>`.

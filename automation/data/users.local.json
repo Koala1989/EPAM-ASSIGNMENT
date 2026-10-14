@@ -1,0 +1,8 @@
+{
+  "admin": { "username": "admin", "displayName": "Adam Administrator", "role": "Superuser", "use": "Setup, cleanup and settings changes" },
+  "allaccess": { "username": "allaccess", "displayName": "Ally Access", "role": "View, create and edit everything", "use": "Full create, edit and delete; purchase-order views" },
+  "engineer": { "username": "engineer", "displayName": "Robert Shuruncle", "role": "Manage parts, view stock", "use": "Default user for Parts cases" },
+  "reader": { "username": "reader", "displayName": "Ronald Reader", "role": "View only", "use": "Checks that create and edit controls are hidden" },
+  "noaccess": { "username": "noaccess", "displayName": "Norman Nothington", "role": "No permissions", "use": "Access-denied checks" },
+  "steven": { "username": "steven", "displayName": "Steven Stafferson", "role": "Staff, some admin pages", "use": "Staff-only checks" }
+}

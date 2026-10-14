@@ -26,6 +26,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT / "tools" / "rag"))
+sys.path.insert(0, str(REPO_ROOT / "tools"))
+from areas import area_folder  # noqa: E402
 
 SEED = REPO_ROOT / "references" / "seed-manual-test-case.md"
 INVENTORY_INDEX = REPO_ROOT / "test-cases" / "requirements-inventory.md"
@@ -96,7 +98,7 @@ def estimate_tokens(text: str) -> int:
 def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--area", required=True, help="Area folder under test-cases/, e.g. Part")
+    parser.add_argument("--area", required=True, help="Area value, e.g. Part or ATT (its folder is looked up)")
     parser.add_argument("--rule", action="append", required=True, help="rule ID; repeat for several")
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--ttl", choices=["5m", "1h"], default="5m")
@@ -106,7 +108,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="build and show the requests, call nothing")
     args = parser.parse_args()
 
-    inventory_path = REPO_ROOT / "test-cases" / args.area / "requirements-inventory.md"
+    inventory_path = area_folder(args.area) / "requirements-inventory.md"
     if not inventory_path.is_file():
         sys.exit(f"No inventory at {inventory_path}")
     area_inventory = read(inventory_path)

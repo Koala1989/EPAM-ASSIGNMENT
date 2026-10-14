@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 600" width="1500" height="600" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 z" fill="#5B4D3A"/></marker></defs>
+<rect width="1500" height="600" fill="#F6F1E7"/>
+<text x="30" y="46" font-size="26" font-weight="700" fill="#3B3226">AI-assisted manual test case workflow</text>
+<text x="30" y="74" font-size="15" fill="#6B5D47">InvenTree 1.5.6 Parts module · UI and API cases · requirements in, reviewed cases out, the architect approves</text>
+<rect x="20" y="95" width="440" height="405" rx="14" fill="#EDE5D3"/>
+<text x="40" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">1 · REQUIREMENTS & RAG</text>
+<rect x="500" y="95" width="500" height="405" rx="14" fill="#EDE5D3"/>
+<text x="520" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">2 · AI FLOW (/gen-test-cases)</text>
+<rect x="1040" y="95" width="440" height="405" rx="14" fill="#E4E8D9"/>
+<text x="1060" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">3 · HUMAN APPROVAL</text>
+<rect data-box="b1" x="45" y="145" width="390" height="150" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text data-in="b1" x="60" y="177" font-size="17" font-weight="700" fill="#3B3226">Requirements</text>
+<text data-in="b1" x="60" y="203" font-size="14" fill="#3B3226">InvenTree 1.5.6 docs + OpenAPI schema slice</text>
+<text data-in="b1" x="60" y="225" font-size="14" fill="#3B3226">inventory: UI 227 rules · API 71 rules</text>
+<text data-in="b1" x="60" y="247" font-size="14" fill="#3B3226">answered open questions count too</text>
+<rect data-box="b2" x="45" y="325" width="390" height="150" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
+<text data-in="b2" x="60" y="357" font-size="17" font-weight="700" fill="#3B3226">RAG</text>
+<text data-in="b2" x="60" y="383" font-size="14" fill="#3B3226">local index: ChromaDB + MiniLM over the docs</text>
+<text data-in="b2" x="60" y="405" font-size="14" fill="#3B3226">confirms each rule's exact wording</text>
+<text data-in="b2" x="60" y="427" font-size="14" fill="#3B3226">API rules: the schema is read directly</text>
+<rect data-box="b3" x="525" y="145" width="450" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text data-in="b3" x="540" y="177" font-size="17" font-weight="700" fill="#3B3226">test-case-creator · Sonnet 5.5</text>
+<text data-in="b3" x="540" y="203" font-size="14" fill="#3B3226">writes UI or API cases from the inventory, as Draft</text>
+<text data-in="b3" x="540" y="225" font-size="14" fill="#3B3226">raises open questions instead of assuming</text>
+<text data-in="b3" x="540" y="247" font-size="14" fill="#3B3226">runs the duplicate check</text>
+<rect data-box="b4" x="525" y="325" width="450" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text data-in="b4" x="540" y="357" font-size="17" font-weight="700" fill="#3B3226">test-case-reviewer · Opus 5.5</text>
+<text data-in="b4" x="540" y="383" font-size="14" fill="#3B3226">independent: rule coverage vs the inventory</text>
+<text data-in="b4" x="540" y="405" font-size="14" fill="#3B3226">case quality, open-question marking</text>
+<text data-in="b4" x="540" y="427" font-size="14" fill="#3B3226">duplicate verdict only when score is 50+</text>
+<line x1="750" y1="297" x2="750" y2="321" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<rect data-box="b5" x="1065" y="145" width="390" height="330" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text data-in="b5" x="1080" y="177" font-size="17" font-weight="700" fill="#3B3226">Human approval</text>
+<text data-in="b5" x="1080" y="203" font-size="14" fill="#3B3226">answer open questions</text>
+<text data-in="b5" x="1080" y="225" font-size="14" fill="#3B3226">act on the review: gaps, Majors,</text>
+<text data-in="b5" x="1080" y="247" font-size="14" fill="#3B3226">duplicate verdicts</text>
+<text data-in="b5" x="1080" y="269" font-size="14" fill="#3B3226">run the cases (UI or API)</text>
+<text data-in="b5" x="1080" y="291" font-size="14" fill="#3B3226">set Review: Draft to Approved</text>
+<text data-in="b5" x="1080" y="313" font-size="14" fill="#3B3226"></text>
+<text data-in="b5" x="1080" y="335" font-size="14" fill="#3B3226">Approved cases feed</text>
+<text data-in="b5" x="1080" y="357" font-size="14" fill="#3B3226">UI + API automation</text>
+<line x1="440" y1="310" x2="495" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="1000" y1="310" x2="1035" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<path d="M 1260 502 L 1260 535 L 750 535 L 750 506" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+<text x="840" y="527" font-size="14" fill="#6B5D47">answers and gaps go back: rerun /gen-test-cases</text>
+<rect x="40" y="560" width="20" height="20" rx="4" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="68" y="576" font-size="14" fill="#3B3226">AI agent</text>
+<rect x="190" y="560" width="20" height="20" rx="4" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
+<text x="218" y="576" font-size="14" fill="#3B3226">Script or skill</text>
+<rect x="340" y="560" width="20" height="20" rx="4" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text x="368" y="576" font-size="14" fill="#3B3226">Human step</text>
+<rect x="490" y="560" width="20" height="20" rx="4" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text x="518" y="576" font-size="14" fill="#3B3226">Files and data</text>
+</svg>

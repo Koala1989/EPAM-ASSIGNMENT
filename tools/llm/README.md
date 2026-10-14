@@ -26,7 +26,7 @@ A script that calls the Claude API directly and sets the cache breakpoint itself
 | System block 1 | Drafting instructions and guardrails | Yes |
 | System block 2 | `references/seed-manual-test-case.md` | Yes |
 | System block 3 | `test-cases/requirements-inventory.md` (index, Not in docs, Doc issues) | Yes |
-| System block 4 (`cache_control`) | `test-cases/<Area>/requirements-inventory.md` | Yes, breakpoint here |
+| System block 4 (`cache_control`) | `test-cases/<Area folder>/requirements-inventory.md` | Yes, breakpoint here |
 | User message | The rule's row + its top RAG passages from `tools/rag/` | No: differs per call |
 
 Design points:

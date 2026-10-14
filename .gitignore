@@ -14,16 +14,11 @@ __pycache__/
 /test-results/
 /.playwright-mcp/
 
-# Playwright UI automation
-/automation/ui/test-results/
-/automation/ui/playwright-report/
-/automation/ui/blob-report/
-/automation/ui/playwright/.cache/
-
-# Playwright API automation
-/automation/api/test-results/
-/automation/api/playwright-report/
-/automation/api/blob-report/
+# Playwright automation (UI and API)
+/automation/test-results/
+/automation/playwright-report/
+/automation/blob-report/
+/automation/playwright/.cache/
 
 # Local RAG index and its venv (rebuildable: see tools/rag/requirements.txt)
 /requirements/.rag-index/

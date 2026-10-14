@@ -9,7 +9,7 @@ Usage (needs PyYAML; the tools venv has it):
     tools/rag/.venv/Scripts/python.exe tools/slice_schema.py [--source <url or file>]
 
 The default source is <base URL>/api/schema/: $INVENTREE_URL if set, else the baseURL of
-automation/shared/environments/<TEST_ENV>.json (TEST_ENV defaults to local), the same
+automation/config/environments/<TEST_ENV>.json (TEST_ENV defaults to local), the same
 configuration the test suites use. The schema endpoint needs no login.
 """
 
@@ -57,7 +57,7 @@ def refs(node):
 
 
 def main():
-    environment = Path(__file__).resolve().parents[1] / "automation" / "shared" / "environments" / f"{os.environ.get('TEST_ENV') or 'local'}.json"
+    environment = Path(__file__).resolve().parents[1] / "automation" / "config" / "environments" / f"{os.environ.get('TEST_ENV') or 'local'}.json"
     base = os.environ.get("INVENTREE_URL") or json.loads(environment.read_text(encoding="utf-8"))["baseURL"]
     default = base.rstrip("/") + "/api/schema/"
     parser = argparse.ArgumentParser(description=__doc__,

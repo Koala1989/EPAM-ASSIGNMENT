@@ -1,0 +1,27 @@
+{
+  "name": "inventree-parts-automation",
+  "version": "1.0.0",
+  "description": "Playwright UI and API automation for the InvenTree Parts module (EPAM Quality Architect assignment)",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --project=chromium",
+    "test:api": "playwright test --project=api",
+    "test:smoke": "playwright test --grep @smoke",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "report": "playwright show-report"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "eslint": "^9.39.5",
+    "eslint-plugin-playwright": "^2.12.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.71.2",
+    "yaml": "^2.9.1"
+  }
+}

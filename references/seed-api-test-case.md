@@ -14,7 +14,7 @@ The reference format for every manual API test case. It uses the same header fie
 | `REL` | Relational integrity: category, default location, supplier and manufacturer links, conflicts when deleting or moving related records. |
 | `SEC` | Authentication and per-role permissions: missing or invalid token, users without the required permission. |
 
-Each case belongs to one Area. API cases live in `test-cases/API_<Area>/<functionality>.md` (e.g. `test-cases/API_CRUD/part-crud.md`); the Area value and the case, rule and question IDs (`API-CRUD-001`, `R-CRUD-01`, `Q-CRUD-01`) do not carry the prefix. A case that checks a CRUD call as a user who should be blocked is `SEC`; a create that fails on a bad field value is `VAL`.
+Each case belongs to one Area. API cases live in `test-cases/<Area folder>/<functionality>.md`, the Area's folder from "Area folders" in `seed-manual-test-case.md` (e.g. `CRUD` is `test-cases/API_Create_Read_Update_Delete/`); the Area value and the case, rule and question IDs (`API-CRUD-001`, `R-CRUD-01`, `Q-CRUD-01`) stay short. A case that checks a CRUD call as a user who should be blocked is `SEC`; a create that fails on a bad field value is `VAL`.
 
 ## Standing rules for API cases
 
@@ -31,7 +31,7 @@ Set by the architect. They apply to every API case and are not open questions.
 | Field | Value |
 |---|---|
 | **Summary** | One sentence: what is verified, and under which condition. |
-| **Requirement** | `R-<Area>-NN` from `test-cases/API_<Area>/requirements-inventory.md`, plus the schema operation: `requirements/openapi-parts.yaml <METHOD> <path>` and, where a field rule applies, the component: `components.schemas.<Name>.<field>`. Add a docs link if the rule cites one. |
+| **Requirement** | `R-<Area>-NN` from `test-cases/<Area folder>/requirements-inventory.md`, plus the schema operation: `requirements/openapi-parts.yaml <METHOD> <path>` and, where a field rule applies, the component: `components.schemas.<Name>.<field>`. Add a docs link if the rule cites one. |
 | **Area** | `CRUD` · `LST` · `VAL` · `REL` · `SEC` (see API Areas above) |
 | **Type** | Positive · Negative · Boundary |
 | **Technique** | As in the UI seed. Schema constraints (`required`, `maxLength`, `nullable`, `readOnly`, `enum`, `format`) are stated limits: name them, e.g. `Boundary value analysis (name maxLength + 1)`. |

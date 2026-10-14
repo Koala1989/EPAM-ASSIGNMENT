@@ -11,8 +11,8 @@ The reference format for every manual UI test case. API cases use `seed-api-test
 | Field | Value |
 |---|---|
 | **Summary** | One sentence: what is verified, and under which condition. |
-| **Requirement** | `R-<Area>-NN` from `test-cases/<Area>/requirements-inventory.md`, plus the source link: `[file#heading](../requirements/docs/<file>#L<line>)`. API cases: see `seed-api-test-case.md`. |
-| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants). API: `CRUD` · `LST` · `VAL` · `REL` · `SEC` (defined in `seed-api-test-case.md`) |
+| **Requirement** | `R-<Area>-NN` from `test-cases/<Area folder>/requirements-inventory.md`, plus the source link: `[file#heading](../requirements/docs/<file>#L<line>)`. API cases: see `seed-api-test-case.md`. |
+| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants). API: `CRUD` · `LST` · `VAL` · `REL` · `SEC` (defined in `seed-api-test-case.md`). Each Area's folder: see Area folders below. |
 | **Type** | Positive · Negative · Boundary |
 | **Technique** | The test design technique(s) that produced the case, comma-separated: `Equivalence partitioning` · `Boundary value analysis` · `State transition` · `Decision table` · `Error guessing` · `Exploratory` · `Negative` · `What-if business scenario`. Add the class, boundary, transition or table column in brackets, e.g. `Boundary value analysis (max length + 1)`. |
 | **Priority** | P1 core flow or data integrity · P2 important behaviour · P3 cosmetic or rare edge |
@@ -33,9 +33,9 @@ Any other cell that needs a detail an open question leaves unknown: `[open: Q-<A
 
 **Notes:** any trap, mismatch between the docs and the app, or finding reference (`test-cases/findings.md#...`). `None` otherwise.
 
-**Duplicate check:** written by `python tools/dedupe_cases.py --case <ID>` after the case is saved, never by hand, and only when the score is 50 or more: `<score> · <Review / Duplicate> · matches: <links to matching cases with their scores>`. No line means the case is unique (score below 50). 50-80: Review, judged by the LLM. Above 80: Duplicate, flagged for the architect; never deleted by an agent.
+**Duplicate check:** written by `python tools/dedupe_cases.py --case <ID>` after the case is saved, never by hand, and only when the score is 50 or more: `<score> · <Review / Duplicate> · matches: <links to matching cases with their scores>`. No line means the case is unique (score below 50). 50-80: Review; above 80: Duplicate. Both get a verdict from the `test-case-reviewer` agent; never deleted by an agent.
 
-**Duplicate judgement:** only on Review cases, written by the independent `duplicate-judge` agent (never by the agent that wrote the case) after reading every listed match: `<Keep / Merge into <ID> / Remove / Escalate> · <one-sentence reason> · duplicate-judge, <date>`. The script never overwrites this line. The architect acts on Merge, Remove and Escalate.
+**Duplicate judgement:** only on cases with a Duplicate check line (score 50 or more), written by the independent `test-case-reviewer` agent (never by the agent that wrote the case) after reading every listed match: `<Keep / Merge into <ID> / Remove / Escalate> · <one-sentence reason> · test-case-reviewer, <date>`. Older lines name `duplicate-judge`, the agent it replaced. The script never overwrites this line. The architect acts on Merge, Remove and Escalate.
 
 ---
 
@@ -70,6 +70,30 @@ Any other cell that needs a detail an open question leaves unknown: `[open: Q-<A
 **Postconditions and cleanup:** one new part exists in `QA-<suffix> Category`. Cleanup as `admin`: set the part inactive, delete it, then delete the category.
 
 **Notes:** check the required fields against the `Part` schema in `requirements/openapi-parts.yaml` before writing negative cases for this form.
+---
+
+## Area folders
+
+Each Area has a short value, used in the Area field and in every ID (`UI-ATT-001`, `R-ATT-01`, `Q-ATT-01`), and a folder under `test-cases/` with a full name. Paths in agents and docs write the folder as `test-cases/<Area folder>/`.
+
+| Area | Folder | Covers |
+|---|---|---|
+| `Part` | `Part_Creation_and_Import` | Create Part form, part fields, import from file |
+| `Detail_View` | `Part_Detail_View` | Detail view header and tabs |
+| `Categories` | `Categories` | Category hierarchy, category part list, filters |
+| `ATT` | `Attributes` | Virtual, Assembly, Component, Testable, Trackable, Purchaseable, Salable, Locked, Active |
+| `Unit_measure` | `Units_of_Measure` | Part and supplier part units |
+| `REV` | `Revisions` | Revisions |
+| `Part_Params` | `Parameters` | Parameters and templates |
+| `Part_Template` | `Templates_and_Variants` | Template parts and variants |
+| `CRUD` (API) | `API_Create_Read_Update_Delete` | Create, read, update, delete on parts and categories |
+| `LST` (API) | `API_Lists_and_Filters` | Lists: pagination, filters, ordering, search |
+| `VAL` (API) | `API_Field_Validation` | Field validation |
+| `REL` (API) | `API_Relationships` | Category, location, supplier links |
+| `SEC` (API) | `API_Security_and_Permissions` | Authentication and role permissions |
+
+A new Area gets a row here and a folder with a `requirements-inventory.md`; the tools find the folder from the inventory's rule IDs (`tools/areas.py`).
+
 ---
 
 ## Demo users
