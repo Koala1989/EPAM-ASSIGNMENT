@@ -53,7 +53,7 @@ It lists every rule of those Areas with the cases citing it. Exit code 1 means a
 - **Gap:** the rule belongs to this functionality (its text is about the behaviour the functionality names) and no case tests it. A Major.
 - **Out of scope:** the rule belongs to another functionality of the same Area (for example import rules when reviewing Part creation). Say which.
 
-Then check depth for every covered rule: a rule that states a limit needs its boundary cases (below, on, above); a "must", "cannot" or "only" needs a negative case; a permission rule needs the blocked user's case. API: every `{id}` operation with `GET` or `DELETE` in scope needs its `404 Not Found` case (seed standing rule). A missing one is a Major.
+Then check depth for every covered rule: a rule that states a limit needs its boundary cases (below, on, above); a "must", "cannot" or "only" needs a negative case; a permission rule needs the blocked user's case; a "visible only if" rule needs the hidden case. A functionality with no Negative case at all is a Major, unless no rule in scope restricts anything. API: every `{id}` operation with `GET` or `DELETE` in scope needs its `404 Not Found` case (seed standing rule). A missing one is a Major.
 
 ### 3. Each case
 
@@ -63,6 +63,7 @@ Then check depth for every covered rule: a rule that states a limit needs its bo
 | Specific Expected results | Vague ("works", "succeeds", "error shown") where the rule or schema gives the value, status code or message. |
 | No assumptions | An Expected result states behaviour the cited sources do not, and no Answered question settles it. It must be an open question instead. |
 | Open-question marking | A case affected by an Open question is not `Draft · Open question: Q-<Area>-NN`, or the unknown part is not marked; or a case is marked with a question that does not affect it. |
+| Rule outcome stated | An Expected result is only `Not known: ...` (or a `Proposed` outcome) although a rule the case cites states the outcome; the rule's outcome must come first, as fact, then `Open: Q-...`. Also a `Proposed` outcome written as fact without its label. |
 | Seed format | A field is missing, out of order, or the Steps table has the wrong columns; Requirement lacks the rule ID or its source link. |
 | One behaviour | The case checks two rules that should be separate cases. |
 | Technique | The Technique field does not match what the case does (class, boundary, transition, column). |

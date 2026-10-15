@@ -193,7 +193,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=2`, `offset=3` | `200 OK` is expected for an empty page, but the schema does not state it. Not known: depends on open question Q-LST-04 (status and body for an offset at or beyond `count`; `count` itself is `3`). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=2`, `offset=3` | `200 OK` is expected for an empty page, but the schema does not state it. Open: Q-LST-04 (status and body for an offset at or beyond `count`; `count` itself is `3`). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -248,7 +248,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=0` | Not known: depends on open question Q-LST-04 (status and body for `limit=0`: error, empty page, or all parts). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=0` | Proposed, to confirm in Q-LST-04: `200 OK`, an empty `results` page, and `count` equal to the number of parts in the category (R-LST-02: `limit` sets the number of results per page). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -277,7 +277,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=-1` | Not known: depends on open question Q-LST-04 (status and body for a negative `limit`). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=-1` | Proposed, to confirm in Q-LST-04: `400 Bad Request` with an error for `limit`; a page size cannot be negative. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -306,7 +306,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=100000` | The three parts are expected, but the schema states no maximum page size. Not known: depends on open question Q-LST-04 (maximum `limit` and whether a larger value is rejected or capped). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=100000` | The three parts are expected, but the schema states no maximum page size. Open: Q-LST-04 (maximum `limit` and whether a larger value is rejected or capped). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -335,7 +335,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=abc` | Not known: depends on open question Q-LST-09 (status and body for a non-integer `limit`). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=abc` | Proposed, to confirm in Q-LST-09: `400 Bad Request` with an error for `limit`; `abc` is not a number. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -611,7 +611,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `ordering=notafield` | Not known: depends on open question Q-LST-01 (status and body for an `ordering` value outside the `enum`: error, or ignored with the default order). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `ordering=notafield` | The results are not ordered by `notafield` (R-LST-05: `ordering` accepts only the listed values). Open: Q-LST-01 (an error status and body, or `200 OK` with the default order). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -640,7 +640,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `ordering=description` | Not known: depends on open question Q-LST-01 (status and body for an `ordering` value outside the `enum`). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `ordering=description` | The results are not ordered by `description` (R-LST-05: `ordering` accepts only the listed values, and `description` is not one of them). Open: Q-LST-01 (an error status and body, or `200 OK` with the default order). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -727,7 +727,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/` as `reader` | `parent=<Root pk>`, `limit=10`, `ordering=notafield` | Not known: depends on open question Q-LST-01 (status and body for an `ordering` value outside the `enum`). |
+| 1 | `GET /api/part/category/` as `reader` | `parent=<Root pk>`, `limit=10`, `ordering=notafield` | The results are not ordered by `notafield` (R-LST-14: `ordering` takes the values the schema lists). Open: Q-LST-01 (an error status and body, or `200 OK` with the default order). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -926,7 +926,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `search=qa-<suffix> widget alpha` | Not known: depends on open question Q-LST-03 (whether `search` is case-insensitive; `QA-<suffix> Widget Alpha` is expected only if it is). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `search=qa-<suffix> widget alpha` | Proposed, to confirm in Q-LST-03: `200 OK`, and `results` include `QA-<suffix> Widget Alpha` (`search` is not case-sensitive). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -955,7 +955,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `search=Widget` | Not known: depends on open question Q-LST-03 (whether `search` matches part of a word; `QA-<suffix> Widget Alpha` is expected only if it does). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10`, `search=Widget` | Proposed, to confirm in Q-LST-03: `200 OK`, and `results` include `QA-<suffix> Widget Alpha` (`search` matches part of a name). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1129,7 +1129,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<Root pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. `QA-<suffix> PR` is in the results. Not known: depends on open question Q-LST-05 (default of `cascade`: whether `QA-<suffix> PC` and `QA-<suffix> PG` are also returned). |
+| 1 | `GET /api/part/` as `reader` | `category=<Root pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. `QA-<suffix> PR` is in the results. Open: Q-LST-05 (default of `cascade`: whether `QA-<suffix> PC` and `QA-<suffix> PG` are also returned). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1158,7 +1158,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=null`, `search=QA-<suffix>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. `QA-<suffix> No Cat` is in the results. Not known: depends on open question Q-LST-06 (whether the literal `null` is accepted although the parameter is typed `integer`; `QA-<suffix> In Cat` is expected to be absent only if it is). |
+| 1 | `GET /api/part/` as `reader` | `category=null`, `search=QA-<suffix>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. `QA-<suffix> No Cat` is in the results. Open: Q-LST-06 (whether the literal `null` is accepted although the parameter is typed `integer`; `QA-<suffix> In Cat` is expected to be absent only if it is). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1187,7 +1187,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<deleted category pk>`, `limit=10` | Not known: depends on open question Q-LST-09 (status and body for a category ID that matches no category: empty page or a validation error). |
+| 1 | `GET /api/part/` as `reader` | `category=<deleted category pk>`, `limit=10` | Proposed, to confirm in Q-LST-09: `200 OK` with `count` `0` and empty `results`; no part has the deleted category (R-LST-06). |
 
 **Postconditions and cleanup:** None beyond the setup: the category is already deleted.
 
@@ -1216,7 +1216,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=abc`, `limit=10` | Not known: depends on open question Q-LST-09 (status and body for a non-numeric `category`). |
+| 1 | `GET /api/part/` as `reader` | `category=abc`, `limit=10` | Proposed, to confirm in Q-LST-09: `400 Bad Request` with an error for `category`; `abc` is neither a numeric ID nor `null` (R-LST-06). |
 
 **Postconditions and cleanup:** None: no data created.
 
@@ -1303,7 +1303,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. The filter is not applied, so `QA-<suffix> Live` and `QA-<suffix> Dead` are expected. Not known: depends on open question Q-LST-05 (the schema states no default for `active`; if inactive parts are hidden by default the count is `1`). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. The filter is not applied, so `QA-<suffix> Live` and `QA-<suffix> Dead` are expected. Open: Q-LST-05 (the schema states no default for `active`; if inactive parts are hidden by default the count is `1`). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1332,7 +1332,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `active=maybe`, `limit=10` | Not known: depends on open question Q-LST-09 (status and body for a non-boolean filter value). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `active=maybe`, `limit=10` | Proposed, to confirm in Q-LST-09: `400 Bad Request` with an error for `active`; `maybe` is not a boolean (R-LST-08). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1535,7 +1535,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `name_regex=[`, `limit=10` (the `[` is URL-encoded as `%5B`) | Not known: depends on open question Q-LST-02 (status and body for an invalid regular expression: validation error, empty page, or server error). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `name_regex=[`, `limit=10` (the `[` is URL-encoded as `%5B`) | Proposed, to confirm in Q-LST-02: `400 Bad Request` with an error for `name_regex`; never a `500` server error. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1651,7 +1651,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_after=<creation_date of P1>`, `limit=10` | Not known: depends on open question Q-LST-08 (whether `created_after` is inclusive of the given day). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_after=<creation_date of P1>`, `limit=10` | Proposed, to confirm in Q-LST-08: `200 OK`, and P1 is not in `results` (`created_after` excludes the given day). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1680,7 +1680,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_before=<creation_date of P1>`, `limit=10` | Not known: depends on open question Q-LST-08 (whether `created_before` is inclusive of the given day). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_before=<creation_date of P1>`, `limit=10` | Proposed, to confirm in Q-LST-08: `200 OK`, and P1 is not in `results` (`created_before` excludes the given day). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1709,7 +1709,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_after=31/12/2025`, `limit=10` | Not known: depends on open question Q-LST-09 (status and body for a malformed date). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `created_after=31/12/2025`, `limit=10` | Proposed, to confirm in Q-LST-09: `400 Bad Request` with an error for `created_after`; `31/12/2025` is not a `YYYY-MM-DD` date (R-LST-11). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1814,7 +1814,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<Active Cat pk>`, `active=true`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. Not known: depends on open question Q-LST-07 (that all filters sent must match is implied, not stated; `QA-<suffix> Live` only is expected if they do). |
+| 1 | `GET /api/part/` as `reader` | `category=<Active Cat pk>`, `active=true`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. Open: Q-LST-07 (that all filters sent must match is implied, not stated; `QA-<suffix> Live` only is expected if they do). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1843,7 +1843,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `assembly=true`, `active=true`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. Not known: depends on open question Q-LST-07 (that all filters sent must match is implied, not stated; `QA-<suffix> X1` only is expected if they do). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `assembly=true`, `active=true`, `limit=10` | `200 OK`. Body is valid against `PaginatedPartList`. Open: Q-LST-07 (that all filters sent must match is implied, not stated; `QA-<suffix> X1` only is expected if they do). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1872,7 +1872,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `search=QA-<suffix>`, `ordering=-name`, `limit=1`, `offset=1` | `200 OK`. Body is valid against `PaginatedPartList`. Not known: depends on open question Q-LST-07 (that all parameters apply together is implied, not stated; `count` `3` and the single result `QA-<suffix> Banana` are expected if they do). |
+| 1 | `GET /api/part/` as `reader` | `category=<cat pk>`, `search=QA-<suffix>`, `ordering=-name`, `limit=1`, `offset=1` | `200 OK`. Body is valid against `PaginatedPartList`. Open: Q-LST-07 (that all parameters apply together is implied, not stated; `count` `3` and the single result `QA-<suffix> Banana` are expected if they do). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -1959,7 +1959,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/` as `reader` | `parent=<Root pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedCategoryList`. `QA-<suffix> Child` is in the results. Not known: depends on open question Q-LST-05 (default of `cascade`: whether `QA-<suffix> Grand` is also returned). |
+| 1 | `GET /api/part/category/` as `reader` | `parent=<Root pk>`, `limit=10` | `200 OK`. Body is valid against `PaginatedCategoryList`. `QA-<suffix> Child` is in the results. Open: Q-LST-05 (default of `cascade`: whether `QA-<suffix> Grand` is also returned). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -2075,7 +2075,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/` as `reader` | `depth=1`, `limit=100` | `200 OK`. Body is valid against `PaginatedCategoryList`. Not known: depends on open question Q-LST-10 (whether the top level is depth 0 or 1, and whether `depth` means exactly that level or up to it). |
+| 1 | `GET /api/part/category/` as `reader` | `depth=1`, `limit=100` | `200 OK`. Body is valid against `PaginatedCategoryList`. Open: Q-LST-10 (whether the top level is depth 0 or 1, and whether `depth` means exactly that level or up to it). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 
@@ -2104,7 +2104,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/` as `reader` | `name=QA-<suffix> Child`, `limit=10` | `200 OK`. Body is valid against `PaginatedCategoryList`. `QA-<suffix> Child` is in the results. Not known: depends on open question Q-LST-11 (whether `name` is an exact or a partial, case-insensitive match, so whether `QA-<suffix> Grand` could also appear). |
+| 1 | `GET /api/part/category/` as `reader` | `name=QA-<suffix> Child`, `limit=10` | `200 OK`. Body is valid against `PaginatedCategoryList`. `QA-<suffix> Child` is in the results. Open: Q-LST-11 (whether `name` is an exact or a partial, case-insensitive match, so whether `QA-<suffix> Grand` could also appear). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: for each part `PATCH /api/part/<pk>/` with `{"active": false}` and `DELETE /api/part/<pk>/` (`204`); then for each category, children first, `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}`.
 

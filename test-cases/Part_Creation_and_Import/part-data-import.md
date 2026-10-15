@@ -49,8 +49,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the *Add Parts* dropdown above the parts table. | None | Not known: depends on open question Q-Part-01 (whether *Import from File* is gated by Part-create permission, by staff+change permission, or both). |
-| 2 | If the option is shown, select *Import from File*. | None | Not known: depends on open question Q-Part-01 (whether the wizard opens, or access is refused, for a non-staff user with create permission). |
+| 1 | Open the *Add Parts* dropdown above the parts table. | None | Proposed, to confirm in Q-Part-01: *Import from File* is not shown, because importing needs staff status and the `change` permission (R-Part-19). |
+| 2 | If the option is shown, select *Import from File*. | None | The import wizard does not open for this user (R-Part-19: importing needs staff status and the `change` permission). Open: Q-Part-01 (how access is refused). |
 
 **Postconditions and cleanup:** none, no data created.
 
@@ -434,7 +434,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Check the import wizard, before uploading a file, for a warning about the action being non-reversible. | None | Not known: depends on open question Q-Part-02 (whether, and where, the wizard displays a non-reversible-action warning to the user). |
+| 1 | Check the import wizard, before uploading a file, for a warning about the action being non-reversible. | None | Proposed, to confirm in Q-Part-02: the wizard shows a warning that the import cannot be undone (R-Part-34: bulk upload is non-reversible). |
 
 **Postconditions and cleanup:** none, no data created.
 
@@ -551,8 +551,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Process the data. | None | The row with the matching `ID` is shown as *Pending*, matched to `QA-<suffix> Update Target`. Not known: depends on open question Q-Part-03 (the status shown for the row whose `ID` matches no existing part: Error, silently skipped, or something else). |
-| 2 | Attempt to proceed with the non-matching row. | None | Not known: depends on open question Q-Part-03 (whether the session can complete with this row present, and whether a new part is created from it, which the docs say must not happen in this mode). |
+| 1 | Process the data. | None | The row with the matching `ID` is shown as *Pending*, matched to `QA-<suffix> Update Target`. Open: Q-Part-03 (the status shown for the row whose `ID` matches no existing part: Error, silently skipped, or something else). |
+| 2 | Attempt to proceed with the non-matching row. | None | No new part is created from the non-matching row (R-Part-36: creating and updating cannot be mixed in one import session). Open: Q-Part-03 (whether the session can complete with the row present). |
 
 **Postconditions and cleanup:** cleanup as `admin`: delete the import session, delete any record created from the non-matching row (if the open question is answered to confirm one was created), then delete `QA-<suffix> Update Target`.
 
@@ -581,8 +581,8 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open *Add Parts* > *Import from File*. | None | The data import wizard opens at the file upload step. |
-| 2 | Upload the unsupported file and submit. | File: `QA-<suffix>-notes.txt` | Not known: depends on open question Q-Part-04 (whether the file is rejected, the error message, and whether a session is created). |
-| 3 | Restart the wizard and upload the empty file. | File: `QA-<suffix>-empty.csv` | Not known: depends on open question Q-Part-04 (behaviour for an empty file). |
+| 2 | Upload the unsupported file and submit. | File: `QA-<suffix>-notes.txt` | Proposed, to confirm in Q-Part-04: the file is rejected with an error and no import session is created. Open: Q-Part-04 (the error message). |
+| 3 | Restart the wizard and upload the empty file. | File: `QA-<suffix>-empty.csv` | Proposed, to confirm in Q-Part-04: the file is rejected with an error and no rows are imported. Open: Q-Part-04 (the error message). |
 
 **Postconditions and cleanup:** a session may exist, depending on Q-Part-04. Cleanup as `admin`: delete any `QA-<suffix>` import session from the Admin Center.
 
@@ -610,8 +610,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | At the mapping step, leave the `ID` field unmapped and proceed. | None | Not known: depends on open question Q-Part-05 (whether the wizard blocks proceeding or shows an error). |
-| 2 | If processing runs, check the row states. | None | Not known: depends on open question Q-Part-05 (row state and whether `QA-<suffix> Update Target` is changed). |
+| 1 | At the mapping step, leave the `ID` field unmapped and proceed. | None | The wizard does not update records while the `ID` field is unmapped (R-Part-35: the `ID` field must be mapped). Open: Q-Part-05 (whether it blocks proceeding or shows an error, and the text). |
+| 2 | If processing runs, check the row states. | None | `QA-<suffix> Update Target` is not changed (R-Part-35). Open: Q-Part-05 (the row state). |
 
 **Postconditions and cleanup:** cleanup as `admin`: delete the import session, set the part inactive, then delete it.
 
@@ -640,7 +640,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Check the row status. | None | The row is shown as *Error*. |
-| 2 | Try to select and import the row without editing it. | None | The row is not imported and stays in *Error* state. Not known: depends on open question Q-Part-06 (whether the import control is disabled or hidden, or an error is shown). |
+| 2 | Try to select and import the row without editing it. | None | The row is not imported and stays in *Error* state. Open: Q-Part-06 (whether the import control is disabled or hidden, or an error is shown). |
 | 3 | Search the *Parts* view for any part created by the row. | Empty name; category `QA-<suffix> Category` | No part is created in `QA-<suffix> Category`. |
 
 **Postconditions and cleanup:** no part created. Cleanup as `admin`: delete the import session, then the category.

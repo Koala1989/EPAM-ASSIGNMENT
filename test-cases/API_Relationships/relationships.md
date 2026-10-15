@@ -81,7 +81,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Orphan", "category": <deleted category pk>}` | A part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a category ID that does not exist). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Orphan", "category": <deleted category pk>}` | A part is not created. Open: Q-REL-01 (status code and error body for a category ID that does not exist). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix> Orphan`, `limit=10` | `200 OK`. `count` is `0`: no part with this name exists. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
@@ -111,7 +111,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"category": <deleted category pk>}` | The part is not changed. Not known: depends on open question Q-REL-01 (status code and error body for a category ID that does not exist). |
+| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"category": <deleted category pk>}` | The part is not changed. Open: Q-REL-01 (status code and error body for a category ID that does not exist). |
 | 2 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. `category` still equals the pk of `QA-<suffix> Category`. |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`), then `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
@@ -141,7 +141,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Direct Part", "category": <structural category pk>}` | The part is not created. Not known: depends on open question Q-REL-02 (status code and error body when a part is assigned to a structural category). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Direct Part", "category": <structural category pk>}` | The part is not created. Open: Q-REL-02 (status code and error body when a part is assigned to a structural category). |
 | 2 | `GET /api/part/` as `engineer` | `category=<structural category pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`). Then `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
@@ -201,7 +201,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"category": <structural category pk>}` | The part is not moved. Not known: depends on open question Q-REL-02 (status code and error body when a part is assigned to a structural category). |
+| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"category": <structural category pk>}` | The part is not moved. Open: Q-REL-02 (status code and error body when a part is assigned to a structural category). |
 | 2 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. `category` still equals the pk of `QA-<suffix> Category`. |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`), then `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for both categories.
@@ -231,7 +231,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/category/<category pk>/` as `engineer` | `{"structural": true}` | Not known: depends on open question Q-REL-02 (whether the change is accepted or refused when the category already contains a part, and the status and body if refused). |
+| 1 | `PATCH /api/part/category/<category pk>/` as `engineer` | `{"structural": true}` | The category does not become structural while a part is assigned to it directly (R-REL-02: parts may not be assigned directly to a structural category). Open: Q-REL-02 (whether the change is refused, and the status and body). |
 | 2 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. The part is kept; `category` still equals the category `pk`. |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`), then `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
@@ -317,7 +317,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> No Location", "default_location": <deleted location pk>}` | A part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a location ID that does not exist). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> No Location", "default_location": <deleted location pk>}` | A part is not created. Open: Q-REL-01 (status code and error body for a location ID that does not exist). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix> No Location`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
@@ -407,8 +407,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Part", "category": <category pk>}` | `201 Created`. Body is valid against `Part`. Not known: depends on open question Q-REL-03 (the value of `category_default_location` and whether `default_location` is filled from the category). |
-| 2 | `GET /api/part/<pk from step 1>/` as `engineer` | None | `200 OK`. `category_default_location` is an integer or `null` (schema type). Not known: depends on open question Q-REL-03 (the value of `category_default_location` and whether `default_location` is filled from the category). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Part", "category": <category pk>}` | `201 Created`. Body is valid against `Part`. Open: Q-REL-03 (the value of `category_default_location` and whether `default_location` is filled from the category). |
+| 2 | `GET /api/part/<pk from step 1>/` as `engineer` | None | `200 OK`. `category_default_location` is an integer or `null` (schema type). Open: Q-REL-03 (the value of `category_default_location` and whether `default_location` is filled from the category). |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); then as `admin` `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`), then `DELETE /api/stock/location/<pk>/` (`204`; whether a body is needed is not in the schema).
 
@@ -433,7 +433,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. `default_location` is `null`. Not known: depends on open question Q-REL-03 (the value of `category_default_location` when the category has no default location). |
+| 1 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. `default_location` is `null`. Open: Q-REL-03 (the value of `category_default_location` when the category has no default location). |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`), then `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
 
@@ -579,7 +579,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Orphan Child", "parent": <deleted category pk>}` | A category is not created. Not known: depends on open question Q-REL-01 (status code and error body for a parent ID that does not exist). |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Orphan Child", "parent": <deleted category pk>}` | A category is not created. Open: Q-REL-01 (status code and error body for a parent ID that does not exist). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix> Orphan Child`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a category: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
@@ -605,8 +605,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/category/<category pk>/` as `engineer` | `{"parent": <the same category pk>}` | Not known: depends on open question Q-REL-04 (whether a self-parent is rejected, and the status code and error body). |
-| 2 | `GET /api/part/category/<category pk>/` as `engineer` | None | `200 OK`. Not known: depends on open question Q-REL-04 (whether `parent` is unchanged after the attempt). |
+| 1 | `PATCH /api/part/category/<category pk>/` as `engineer` | `{"parent": <the same category pk>}` | Proposed, to confirm in Q-REL-04: the request is rejected and the category's `parent` is unchanged; a category cannot be its own parent. Open: Q-REL-04 (status code and error body). |
+| 2 | `GET /api/part/category/<category pk>/` as `engineer` | None | `200 OK`. Open: Q-REL-04 (whether `parent` is unchanged after the attempt). |
 
 **Postconditions and cleanup:** As `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`).
 
@@ -635,8 +635,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/category/<Top pk>/` as `engineer` | `{"parent": <Leaf pk>}` | Not known: depends on open question Q-REL-04 (whether a circular parent is rejected, and the status code and error body). |
-| 2 | `GET /api/part/category/<Top pk>/` as `engineer` | None | `200 OK`. Not known: depends on open question Q-REL-04 (whether `parent` is unchanged after the attempt). |
+| 1 | `PATCH /api/part/category/<Top pk>/` as `engineer` | `{"parent": <Leaf pk>}` | Proposed, to confirm in Q-REL-04: the request is rejected and `Top` keeps its parent; a category cannot move under its own child. Open: Q-REL-04 (status code and error body). |
+| 2 | `GET /api/part/category/<Top pk>/` as `engineer` | None | `200 OK`. Open: Q-REL-04 (whether `parent` is unchanged after the attempt). |
 
 **Postconditions and cleanup:** As `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for Leaf, Mid, then Top (if step 1 was accepted, delete in the order that the resulting hierarchy allows).
 
@@ -665,9 +665,9 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/<Top pk>/` as `engineer` | None | `200 OK`. Body is valid against `Category`; `level` is an integer and `pathstring` a string. Not known: depends on open question Q-REL-05 (the `level` value of a top-level category and the `pathstring` format). |
-| 2 | `GET /api/part/category/<Mid pk>/` as `engineer` | None | `200 OK`. Not known: depends on open question Q-REL-05 (the `level` value and `pathstring` of a second-level category). |
-| 3 | `GET /api/part/category/<Leaf pk>/` as `engineer` | None | `200 OK`. Not known: depends on open question Q-REL-05 (the `level` value and `pathstring` of a third-level category). |
+| 1 | `GET /api/part/category/<Top pk>/` as `engineer` | None | `200 OK`. Body is valid against `Category`; `level` is an integer and `pathstring` a string. Open: Q-REL-05 (the `level` value of a top-level category and the `pathstring` format). |
+| 2 | `GET /api/part/category/<Mid pk>/` as `engineer` | None | `200 OK`. Open: Q-REL-05 (the `level` value and `pathstring` of a second-level category). |
+| 3 | `GET /api/part/category/<Leaf pk>/` as `engineer` | None | `200 OK`. Open: Q-REL-05 (the `level` value and `pathstring` of a third-level category). |
 
 **Postconditions and cleanup:** As `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for Leaf, Mid, then Top.
 
@@ -692,9 +692,9 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `GET /api/part/category/<Mid pk>/` as `engineer` | None | `200 OK`. `level` and `pathstring` are recorded for comparison. Not known: depends on open question Q-REL-05 (the format of `pathstring`). |
+| 1 | `GET /api/part/category/<Mid pk>/` as `engineer` | None | `200 OK`. `level` and `pathstring` are recorded for comparison. Open: Q-REL-05 (the format of `pathstring`). |
 | 2 | `PATCH /api/part/category/<Mid pk>/` as `engineer` | `{"parent": <Parent B pk>}` | `200 OK`. `parent` equals the Parent B `pk`. |
-| 3 | `GET /api/part/category/<Leaf pk>/` as `engineer` | None | `200 OK`. `parent` is still the Mid `pk`. Not known: depends on open question Q-REL-05 (the new `level` and `pathstring` of the moved child (whether `pathstring` now starts with the Parent B name)). |
+| 3 | `GET /api/part/category/<Leaf pk>/` as `engineer` | None | `200 OK`. `parent` is still the Mid `pk`. Open: Q-REL-05 (the new `level` and `pathstring` of the moved child (whether `pathstring` now starts with the Parent B name)). |
 
 **Postconditions and cleanup:** As `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for Leaf, Mid, Parent A and Parent B.
 
@@ -745,7 +745,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>}` | A supplier part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a missing required field `SKU`). |
+| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>}` | A supplier part is not created. Open: Q-REL-01 (status code and error body for a missing required field `SKU`). |
 | 2 | `GET /api/company/part/` as `admin` | `part=<part pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin` (`204`). As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
@@ -775,7 +775,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-2"}` | A supplier part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a missing required field `part`). |
+| 1 | `POST /api/company/part/` as `admin` | `{"supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-2"}` | A supplier part is not created. Open: Q-REL-01 (status code and error body for a missing required field `part`). |
 | 2 | `GET /api/company/part/` as `admin` | `part=<part pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin` (`204`). As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
@@ -805,7 +805,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "SKU": "QA-<suffix>-SKU-2"}` | A supplier part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a missing required field `supplier`). |
+| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "SKU": "QA-<suffix>-SKU-2"}` | A supplier part is not created. Open: Q-REL-01 (status code and error body for a missing required field `supplier`). |
 | 2 | `GET /api/company/part/` as `admin` | `part=<part pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin` (`204`). As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
@@ -860,7 +860,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>, "SKU": "<101 characters>"}` | A supplier part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a value over `maxLength`). |
+| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>, "SKU": "<101 characters>"}` | A supplier part is not created. Open: Q-REL-01 (status code and error body for a value over `maxLength`). |
 | 2 | `GET /api/company/part/` as `admin` | `part=<part pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin`. As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
@@ -886,7 +886,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"part": <deleted part pk>, "supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-3"}` | A supplier part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a part ID that does not exist). |
+| 1 | `POST /api/company/part/` as `admin` | `{"part": <deleted part pk>, "supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-3"}` | A supplier part is not created. Open: Q-REL-01 (status code and error body for a part ID that does not exist). |
 | 2 | `GET /api/company/part/` as `admin` | `supplier=<supplier pk>`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin`. Delete the supplier company.
@@ -916,7 +916,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-4"}` | Not known: depends on open question Q-REL-06 (whether the request is accepted for a part that is not purchaseable, and the status and body if refused). |
+| 1 | `POST /api/company/part/` as `admin` | `{"part": <part pk>, "supplier": <supplier pk>, "SKU": "QA-<suffix>-SKU-4"}` | Proposed, to confirm in Q-REL-06: the request is rejected and no supplier part is created; only Purchaseable parts are linked to supplier parts (R-ATT-18). Open: Q-REL-06 (status code and error body). |
 
 **Postconditions and cleanup:** If step 1 created a supplier part: `DELETE /api/company/part/<pk>/` as `admin`. As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
 
@@ -1004,7 +1004,7 @@
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
 | 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Sourced Part", "purchaseable": true, "initial_supplier": {"supplier": <supplier pk>, "sku": "QA-<suffix>-SKU-5"}}` | `201 Created`. `name` equals the payload; `initial_supplier` is not in the response (write-only). |
-| 2 | `GET /api/company/part/` as `admin` | `part=<pk from step 1>`, `limit=10` | `200 OK`. Supplier information was added for the part: Not known: depends on open question Q-REL-07 (whether a supplier part with `supplier` and `SKU` equal to the payload is the result). |
+| 2 | `GET /api/company/part/` as `admin` | `part=<pk from step 1>`, `limit=10` | `200 OK`. Supplier information was added for the part: Open: Q-REL-07 (whether a supplier part with `supplier` and `SKU` equal to the payload is the result). |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete any supplier part created in step 1 (`DELETE /api/company/part/<pk>/`) and the supplier company.
 
@@ -1034,7 +1034,7 @@
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
 | 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Sourced Part 2", "purchaseable": true, "initial_supplier": {"supplier": <supplier pk>, "sku": "QA-<suffix>-SKU-6", "manufacturer": <manufacturer pk>, "mpn": "QA-<suffix>-MPN-6"}}` | `201 Created`. `name` equals the payload. |
-| 2 | `GET /api/company/part/` as `admin` | `part=<pk from step 1>`, `limit=10` | `200 OK`. Not known: depends on open question Q-REL-07 (how the supplier and manufacturer information appears (supplier part `SKU`, `manufacturer_part`, `MPN`)). |
+| 2 | `GET /api/company/part/` as `admin` | `part=<pk from step 1>`, `limit=10` | `200 OK`. Open: Q-REL-07 (how the supplier and manufacturer information appears (supplier part `SKU`, `manufacturer_part`, `MPN`)). |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete any supplier or manufacturer part created in step 1, then both companies.
 
@@ -1089,8 +1089,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Bad Supplier", "purchaseable": true, "initial_supplier": {"supplier": <deleted supplier pk>, "sku": "QA-<suffix>-SKU-7"}}` | Not known: depends on open question Q-REL-01 (whether the request is rejected and the status code and error body for an ID that does not exist). |
-| 2 | `GET /api/part/` as `admin` | `search=QA-<suffix> Bad Supplier`, `limit=10` | `200 OK`. Not known: depends on open question Q-REL-01 (whether the part exists after a rejected request). |
+| 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Bad Supplier", "purchaseable": true, "initial_supplier": {"supplier": <deleted supplier pk>, "sku": "QA-<suffix>-SKU-7"}}` | Proposed, to confirm in Q-REL-01: the request is rejected and no part is created; the supplier does not exist. Open: Q-REL-01 (status code and error body). |
+| 2 | `GET /api/part/` as `admin` | `search=QA-<suffix> Bad Supplier`, `limit=10` | `200 OK`. Open: Q-REL-01 (whether the part exists after a rejected request). |
 
 **Postconditions and cleanup:** If a part exists after step 1: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
 
@@ -1115,7 +1115,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Sku Only", "initial_supplier": {"sku": "QA-<suffix>-SKU-8"}}` | Not known: depends on open question Q-REL-07 (whether the part is created, whether the `sku` is ignored, and the status and body if rejected). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Sku Only", "initial_supplier": {"sku": "QA-<suffix>-SKU-8"}}` | Proposed, to confirm in Q-REL-07: the request is rejected and no part is created; a supplier part needs a supplier (R-REL-08). Open: Q-REL-07 (status code and error body). |
 
 **Postconditions and cleanup:** If a part was created: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
 
@@ -1140,7 +1140,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Long Sku", "purchaseable": true, "initial_supplier": {"supplier": <supplier pk>, "sku": "<101 characters>"}}` | No supplier part with a 101-character `SKU` exists. Not known: depends on open question Q-REL-01 (status code and error body for a value over `maxLength`, and whether the part itself is created). |
+| 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Long Sku", "purchaseable": true, "initial_supplier": {"supplier": <supplier pk>, "sku": "<101 characters>"}}` | No supplier part with a 101-character `SKU` exists. Open: Q-REL-01 (status code and error body for a value over `maxLength`, and whether the part itself is created). |
 
 **Postconditions and cleanup:** If a part was created: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); delete the supplier company.
 
@@ -1221,7 +1221,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Lost Variant", "variant_of": <deleted part pk>}` | A part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a part ID that does not exist). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Lost Variant", "variant_of": <deleted part pk>}` | A part is not created. Open: Q-REL-01 (status code and error body for a part ID that does not exist). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix> Lost Variant`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
@@ -1251,7 +1251,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Variant Of Plain", "variant_of": <Plain pk>}` | Not known: depends on open question Q-REL-08 (whether the API refuses a variant of a part that is not a template, and the status and body). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Variant Of Plain", "variant_of": <Plain pk>}` | The request is rejected and no variant is created (R-Part_Template-03: variants can be created only of a Template part). Open: Q-REL-08 (status code and error body). |
 
 **Postconditions and cleanup:** If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`); then for `QA-<suffix> Plain`.
 
@@ -1276,8 +1276,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<template pk>/` as `engineer` | `{"variant_of": <the same pk>}` | Not known: depends on open question Q-REL-08 (whether a part may reference itself as its template, and the status and body). |
-| 2 | `GET /api/part/<template pk>/` as `engineer` | None | `200 OK`. Not known: depends on open question Q-REL-08 (whether `variant_of` is unchanged after the attempt). |
+| 1 | `PATCH /api/part/<template pk>/` as `engineer` | `{"variant_of": <the same pk>}` | Proposed, to confirm in Q-REL-08: the request is rejected and `variant_of` is unchanged; a part cannot be its own template. Open: Q-REL-08 (status code and error body). |
+| 2 | `GET /api/part/<template pk>/` as `engineer` | None | `200 OK`. Open: Q-REL-08 (whether `variant_of` is unchanged after the attempt). |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
 
@@ -1331,8 +1331,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Original", "revision": "B", "revision_of": <Original pk>}` | Not known: depends on open question Q-REL-08 (whether the request is accepted with the default revision settings, and the status and body if refused). If accepted: `201 Created`, and `revision_of` equals the Original `pk`. |
-| 2 | `GET /api/part/<Original pk>/` as `engineer` | None | `200 OK`. `revision_count` is an integer (read-only). Not known: depends on open question Q-REL-08 (the `revision_count` value after the revision is created). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Original", "revision": "B", "revision_of": <Original pk>}` | `201 Created`, and `revision_of` equals the Original `pk` (R-REL-10, R-REV-01: a revision is a part linked to the original). Open: Q-REL-08 (whether the default revision settings allow it; if refused, the status and body). |
+| 2 | `GET /api/part/<Original pk>/` as `engineer` | None | `200 OK`. `revision_count` is an integer (read-only). Open: Q-REL-08 (the `revision_count` value after the revision is created). |
 
 **Postconditions and cleanup:** Delete both parts as `admin` (`PATCH` inactive, `DELETE`).
 
@@ -1357,7 +1357,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Lost Revision", "revision": "B", "revision_of": <deleted part pk>}` | A part is not created. Not known: depends on open question Q-REL-01 (status code and error body for a part ID that does not exist). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Lost Revision", "revision": "B", "revision_of": <deleted part pk>}` | A part is not created. Open: Q-REL-01 (status code and error body for a part ID that does not exist). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix> Lost Revision`, `limit=10` | `200 OK`. `count` is `0`. |
 
 **Postconditions and cleanup:** None if rejected. If step 1 created a part: As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
@@ -1387,7 +1387,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"revision_of": <the same pk>}` | The change is not accepted (a part cannot be a revision of itself). Not known: depends on open question Q-REL-08 (status code and error body for a self-referencing `revision_of`). |
+| 1 | `PATCH /api/part/<part pk>/` as `engineer` | `{"revision_of": <the same pk>}` | The change is not accepted (a part cannot be a revision of itself). Open: Q-REL-08 (status code and error body for a self-referencing `revision_of`). |
 | 2 | `GET /api/part/<part pk>/` as `engineer` | None | `200 OK`. `revision_of` is `null`. |
 
 **Postconditions and cleanup:** As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
@@ -1417,7 +1417,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<part pk>/` as `admin` | `{"description": "QA-<suffix> changed"}` | The part is not edited ("Locked parts cannot be edited"). Not known: depends on open question Q-REL-09 (status code and error body for an edit of a locked part). |
+| 1 | `PATCH /api/part/<part pk>/` as `admin` | `{"description": "QA-<suffix> changed"}` | The part is not edited ("Locked parts cannot be edited"). Open: Q-REL-09 (status code and error body for an edit of a locked part). |
 | 2 | `GET /api/part/<part pk>/` as `admin` | None | `200 OK`. `description` is unchanged and `locked` is `true`. |
 
 **Postconditions and cleanup:** Set `locked` `false` (see case on unlocking, Q-REL-09), then As `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`). Restore `PART_ENABLE_LOCKING` to its starting value.
@@ -1443,7 +1443,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `DELETE /api/part/<part pk>/` as `admin` | None | The part is not deleted. Not known: depends on open question Q-REL-09 (status code and error body for a delete of a locked part). |
+| 1 | `DELETE /api/part/<part pk>/` as `admin` | None | The part is not deleted. Open: Q-REL-09 (status code and error body for a delete of a locked part). |
 | 2 | `GET /api/part/<part pk>/` as `admin` | None | `200 OK`. The part still exists with `locked` `true`. |
 
 **Postconditions and cleanup:** Unlock (Q-REL-09), `DELETE /api/part/<pk>/` (`204`). Restore `PART_ENABLE_LOCKING`.
@@ -1469,8 +1469,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `PATCH /api/part/<part pk>/` as `admin` | `{"locked": false}` | Not known: depends on open question Q-REL-09 (whether a locked part can be unlocked through the API while locking is on, and the status and body if not). |
-| 2 | `GET /api/part/<part pk>/` as `admin` | None | `200 OK`. Not known: depends on open question Q-REL-09 (the value of `locked` after the attempt). |
+| 1 | `PATCH /api/part/<part pk>/` as `admin` | `{"locked": false}` | Proposed, to confirm in Q-REL-09: `200 OK` and `locked` is `false`; unlocking is how a locked part becomes editable again (R-REL-11). |
+| 2 | `GET /api/part/<part pk>/` as `admin` | None | `200 OK`. Open: Q-REL-09 (the value of `locked` after the attempt). |
 
 **Postconditions and cleanup:** Make sure the part is unlocked, then `DELETE /api/part/<pk>/` (`204`). Restore `PART_ENABLE_LOCKING`.
 

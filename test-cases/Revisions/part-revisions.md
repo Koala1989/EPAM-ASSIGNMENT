@@ -214,7 +214,7 @@
 |---|---|---|---|
 | 1 | Open the part actions menu (three vertical dots, top right) and select *Duplicate Part*. | None | The *Duplicate Part* form opens. |
 | 2 | Set *Revision Of* to the original and *Revision* to a new code. Change no other field. | Revision Of: `QA-<suffix> Assembly`<br>Revision: `B` | Fields accept the values. |
-| 3 | Press *Submit*. | None | Not known: depends on open question Q-REV-02 (whether the unchanged Name, which the docs call unique, is accepted). If accepted: the form closes and the browser opens the new part. |
+| 3 | Press *Submit*. | None | Proposed, to confirm in Q-REV-02: the revision is accepted with the unchanged Name; the form closes and the browser opens the new revision (R-REV-13). |
 
 **Postconditions and cleanup:** original, and revision if created. Cleanup as `admin`: make each part inactive, then delete the revision and the original.
 
@@ -240,7 +240,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Look for the link to the original part on the revision page. | None | A link to `QA-<suffix> Assembly` is shown at [open: Q-REV-07, location and label]. |
-| 2 | Open the link. | None | Not known: depends on open question Q-REV-07 (whether the link opens the original's detail page). |
+| 2 | Open the link. | None | Proposed, to confirm in Q-REV-07: the detail page of the original part opens (R-REV-13: the revision shows its link to the original). |
 
 **Postconditions and cleanup:** no change. Cleanup as `admin`: make both parts inactive, then delete the revision and the original.
 
@@ -294,7 +294,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the form where *Revision Of* can be set on this part [open: Q-REV-03, form, for example *Edit Part*]. | None | The form opens. |
-| 2 | Try to set *Revision Of* to the part itself and a revision code. | Revision Of: `QA-<suffix> Assembly`<br>Revision: `B` | Not known: depends on open question Q-REV-03 (whether the part is offered in the field or rejected on Submit). |
+| 2 | Try to set *Revision Of* to the part itself and a revision code. | Revision Of: `QA-<suffix> Assembly`<br>Revision: `B` | The part does not become a revision of itself (R-REV-06). Open: Q-REV-03 (whether the part is left out of the field or rejected on Submit, and the error text). |
 | 3 | Submit if possible. | None | The part is not saved as a revision of itself. Error text not known: depends on open question Q-REV-03. |
 | 4 | Reopen the part's details. | None | *Revision Of* is empty and the revision is unchanged. |
 
@@ -322,7 +322,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the part actions menu and select *Duplicate Part*. | None | The *Duplicate Part* form opens. |
-| 2 | Set the revision fields and a distinct Name. Set the template reference to the other template if the form allows it [open: Q-REV-04, which field]. | Revision Of: `QA-<suffix> Variant`<br>Revision: `B`<br>Name: `QA-<suffix> Variant Rev B`<br>Template: `QA-<suffix> Template B` | Not known: depends on open question Q-REV-04 (whether the form lets the template be changed). |
+| 2 | Set the revision fields and a distinct Name. Set the template reference to the other template if the form allows it [open: Q-REV-04, which field]. | Revision Of: `QA-<suffix> Variant`<br>Revision: `B`<br>Name: `QA-<suffix> Variant Rev B`<br>Template: `QA-<suffix> Template B` | The revision is not saved with `QA-<suffix> Template B` as its template (R-REV-10: a revision of a variant points to the same template as the original). Open: Q-REV-04 (whether the form offers the template field, or rejects it on Submit). |
 | 3 | Press *Submit*. | None | No revision is created. Error text not known: depends on open question Q-REV-04. |
 
 **Postconditions and cleanup:** two templates and the variant. Cleanup as `admin`: make all inactive, then delete the variant and the templates.
@@ -348,8 +348,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the part actions menu and select *Duplicate Part*. | None | Not known: depends on open question Q-REV-01 (what the disabled state changes; the form opens or the action is unavailable). |
-| 2 | Look for the *Revision* and *Revision Of* fields. | None | Not known: depends on open question Q-REV-01 (whether the fields are hidden). |
+| 1 | Open the part actions menu and select *Duplicate Part*. | None | Proposed, to confirm in Q-REV-01: the *Duplicate Part* form opens; duplicating does not need revisions. |
+| 2 | Look for the *Revision* and *Revision Of* fields. | None | Proposed, to confirm in Q-REV-01: the *Revision* and *Revision Of* fields are not shown (R-REV-11: revisions are controlled by `PART_ENABLE_REVISION`). |
 
 **Postconditions and cleanup:** restore the setting as `admin`. Make the part inactive, then delete it.
 
@@ -374,7 +374,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Select *Duplicate Part* from the actions menu. | None | Not known: depends on open question Q-REV-01 (the form opens or the action is unavailable). |
+| 1 | Select *Duplicate Part* from the actions menu. | None | Proposed, to confirm in Q-REV-01: the *Duplicate Part* form opens. |
 | 2 | Set revision fields and a distinct Name; press *Submit*. | Revision Of: `QA-<suffix> Plain`<br>Revision: `B`<br>Name: `QA-<suffix> Plain B` | No revision is created. Error text not known: depends on open question Q-REV-01. |
 
 **Postconditions and cleanup:** restore both settings as `admin`. Make the part inactive, then delete it.
@@ -401,7 +401,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Select *Duplicate Part* from the actions menu. | None | The *Duplicate Part* form opens. |
-| 2 | Set revision fields and a distinct Name; press *Submit*. | Revision Of: `QA-<suffix> Plain`<br>Revision: `B`<br>Name: `QA-<suffix> Plain B` | Not known: depends on open question Q-REV-01 (the setting description is missing). Expected: the revision is created and its page opens. |
+| 2 | Set revision fields and a distinct Name; press *Submit*. | Revision Of: `QA-<suffix> Plain`<br>Revision: `B`<br>Name: `QA-<suffix> Plain B` | Proposed, to confirm in Q-REV-01: the revision is created and its page opens (R-REV-11: with `PART_REVISION_ASSEMBLY_ONLY` off, revisions are not limited to assemblies). |
 
 **Postconditions and cleanup:** restore the settings as `admin`. Make both parts inactive, then delete the revision and the original.
 
@@ -428,7 +428,7 @@
 |---|---|---|---|
 | 1 | Select *Duplicate Part* from the actions menu. | None | The form opens. |
 | 2 | Set the revision fields with a lowercase code and a distinct Name. | Revision Of: `QA-<suffix> Assembly`<br>Revision: `b`<br>Name: `QA-<suffix> Assembly lower b` | Fields accept the values. |
-| 3 | Press *Submit*. | None | Not known: depends on open question Q-REV-06 (whether `b` and `B` are the same code). |
+| 3 | Press *Submit*. | None | Proposed, to confirm in Q-REV-06: the revision is rejected; `b` and `B` count as the same revision code (R-REV-07). Open: Q-REV-06 (the error text). |
 
 **Postconditions and cleanup:** original, revision B, and a second revision if created. Cleanup as `admin`: make all inactive, then delete revisions first.
 
@@ -454,7 +454,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Select *Duplicate Part* from the actions menu. | None | The form opens. |
-| 2 | Set *Revision Of* to the revision, a new code and a distinct Name; press *Submit*. | Revision Of: `QA-<suffix> Assembly B`<br>Revision: `C`<br>Name: `QA-<suffix> Assembly C` | Not known: depends on open question Q-REV-06 (whether a revision of a revision is allowed, and where the new part appears in the revision selector). |
+| 2 | Set *Revision Of* to the revision, a new code and a distinct Name; press *Submit*. | Revision Of: `QA-<suffix> Assembly B`<br>Revision: `C`<br>Name: `QA-<suffix> Assembly C` | Proposed, to confirm in Q-REV-06: the revision is rejected and `QA-<suffix> Assembly C` is not created; the brief lists revision-of-revision prevention as a negative scenario. Open: Q-REV-06 (the error text). |
 
 **Postconditions and cleanup:** original, B, and C if created. Cleanup as `admin`: make all inactive, then delete newest first.
 

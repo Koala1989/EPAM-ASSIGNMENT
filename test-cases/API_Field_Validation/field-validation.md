@@ -19,7 +19,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"description": "QA-<suffix> no name"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"description": "QA-<suffix> no name"}` | The request is rejected and no part is created (R-VAL-01: `name` is required). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -78,7 +78,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | The request is rejected and no part is created (R-VAL-01: `name` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -108,7 +108,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": null, "description": "QA-<suffix> null name"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": null, "description": "QA-<suffix> null name"}` | The request is rejected and no part is created (R-VAL-01: `name` is a required string). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -138,8 +138,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "", "description": "QA-<suffix> empty name"}` | Not known: depends on open questions Q-VAL-01, Q-VAL-04 (whether an empty `name` is rejected, and the status and error body). |
-| 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Not known: depends on open question Q-VAL-04 (`count` is `0` if the request is rejected, `1` if it is accepted). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "", "description": "QA-<suffix> empty name"}` | Proposed, to confirm in Q-VAL-04: the request is rejected and no part is created, because `name` is required (R-VAL-01). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
+| 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Proposed, to confirm in Q-VAL-04: `200 OK` with `count` `0`; the request in step 1 created no part. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -168,8 +168,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "   ", "description": "QA-<suffix> blank name"}` | Not known: depends on open questions Q-VAL-01, Q-VAL-04 (whether a whitespace-only `name` is rejected, stored trimmed or stored as is, and the status and error body). |
-| 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Not known: depends on open question Q-VAL-04 (`count` is `0` if the request is rejected, `1` if it is accepted). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "   ", "description": "QA-<suffix> blank name"}` | Proposed, to confirm in Q-VAL-04: the request is rejected and no part is created; a whitespace-only `name` counts as empty (R-VAL-01: `name` is required). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
+| 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Proposed, to confirm in Q-VAL-04: `200 OK` with `count` `0`; the request in step 1 created no part. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -227,7 +227,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Desc 251", "description": "251 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Desc 251", "description": "251 characters"}` | The request is rejected and no part is created (R-VAL-02: `description` is at most 250 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -286,7 +286,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> IPN 101", "IPN": "QA-<suffix> + padding, 101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> IPN 101", "IPN": "QA-<suffix> + padding, 101 characters"}` | The request is rejected and no part is created (R-VAL-03: `IPN` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -345,7 +345,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Keywords 251", "keywords": "251 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Keywords 251", "keywords": "251 characters"}` | The request is rejected and no part is created (R-VAL-04: `keywords` is at most 250 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -433,7 +433,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link empty", "link": ""}` | `201 Created`. Body is valid against `Part`. Not known: depends on open question Q-VAL-07 (whether the response `link` is `""` or `null`). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link empty", "link": ""}` | `201 Created`. Body is valid against `Part`. Open: Q-VAL-07 (whether the response `link` is `""` or `null`). |
 
 **Postconditions and cleanup:** The records created by the steps. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -491,7 +491,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link bad", "link": "not a url"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link bad", "link": "not a url"}` | The request is rejected and no part is created (R-VAL-05: `link` must be a URI or an empty string). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -550,7 +550,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link 2001", "link": "https://example.org/ + path padding, 2001 characters in total"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Link 2001", "link": "https://example.org/ + path padding, 2001 characters in total"}` | The request is rejected and no part is created (R-VAL-05: `link` is at most 2000 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -638,7 +638,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Units 21", "units": "21 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Units 21", "units": "21 characters"}` | The request is rejected and no part is created (R-VAL-06: `units` is at most 20 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -668,7 +668,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Rev 100", "revision": "100 characters"}` | Not known: depends on open question Q-VAL-06 (whether the revision settings allow a `revision` on a part that is not a revision of another part). If created: `201 Created`, body valid against `Part`, `revision` equals the payload. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Rev 100", "revision": "100 characters"}` | `201 Created`, body valid against `Part`, `revision` equals the payload (R-VAL-07: 100 characters is within the limit). Open: Q-VAL-06 (whether the revision settings allow a `revision` on a part that is not a revision of another part). |
 
 **Postconditions and cleanup:** The records created by the steps. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -697,7 +697,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Rev 101", "revision": "101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Rev 101", "revision": "101 characters"}` | The request is rejected and no part is created (R-VAL-07: `revision` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -756,7 +756,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry -1", "default_expiry": -1}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry -1", "default_expiry": -1}` | The request is rejected and no part is created (R-VAL-08: `default_expiry` is at least 0). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -815,7 +815,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry max+1", "default_expiry": 2147483648}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry max+1", "default_expiry": 2147483648}` | The request is rejected and no part is created (R-VAL-08: `default_expiry` is at most 2147483647). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -845,7 +845,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry text", "default_expiry": "abc"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Expiry text", "default_expiry": "abc"}` | The request is rejected and no part is created (R-VAL-08, R-VAL-10: `default_expiry` is an integer). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -933,7 +933,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock text", "minimum_stock": "abc"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock text", "minimum_stock": "abc"}` | The request is rejected and no part is created (R-VAL-09, R-VAL-10: `minimum_stock` is a number). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -963,7 +963,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock negative", "minimum_stock": -1}` | Not known: depends on open question Q-VAL-03 (whether a negative `minimum_stock` is accepted, and the status and body if rejected). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock negative", "minimum_stock": -1}` | Proposed, to confirm in Q-VAL-03: the request is rejected and no part is created; a stock level cannot be negative. Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 
 **Postconditions and cleanup:** The records created by the steps. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -992,7 +992,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock min>max", "minimum_stock": 100, "maximum_stock": 10}` | Not known: depends on open question Q-VAL-03 (whether `minimum_stock` greater than `maximum_stock` is accepted or rejected, and the status and body). |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock min>max", "minimum_stock": 100, "maximum_stock": 10}` | Proposed, to confirm in Q-VAL-03: the request is rejected and no part is created; the minimum stock cannot exceed the maximum. Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -1017,7 +1017,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Category text", "category": "abc"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Category text", "category": "abc"}` | The request is rejected and no part is created (R-VAL-10: `category` is an integer ID). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1047,7 +1047,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Location text", "default_location": "abc"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Location text", "default_location": "abc"}` | The request is rejected and no part is created (R-VAL-10: `default_location` is an integer ID). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1077,7 +1077,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Variant text", "variant_of": "abc"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Variant text", "variant_of": "abc"}` | The request is rejected and no part is created (R-VAL-10: `variant_of` is an integer ID). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1107,7 +1107,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Virtual text", "virtual": "maybe"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Virtual text", "virtual": "maybe"}` | The request is rejected and no part is created (R-VAL-10: the attribute flags are booleans). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1166,7 +1166,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> ReadOnly pk", "pk": 999999}` | Not known: depends on open question Q-VAL-02 (whether the request is accepted with the read-only value ignored, or rejected, and the status and body). If a part is created, its `pk` is not `999999`. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> ReadOnly pk", "pk": 999999}` | The read-only `pk` is not taken from the request: if a part is created, its `pk` is not `999999` (R-VAL-11). Open: Q-VAL-02 (whether the request is accepted with the value ignored or rejected, and the status and body). |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -1196,7 +1196,7 @@
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
 | 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> ReadOnly full_name"}` | `201 Created`. Body is valid against `Part`; `full_name` is `QA-<suffix> ReadOnly full_name` (name only, so the default `PART_NAME_FORMAT` gives the name; Q-CRUD-05). |
-| 2 | `PATCH /api/part/<pk from step 1>/` as `engineer` | `{"full_name": "QA-<suffix> Forged name"}` | Not known: depends on open question Q-VAL-02 (whether the request is accepted with the read-only field ignored, or rejected, and the status and body). |
+| 2 | `PATCH /api/part/<pk from step 1>/` as `engineer` | `{"full_name": "QA-<suffix> Forged name"}` | The read-only `full_name` is not taken from the request: the stored `full_name` is unchanged (R-VAL-11). Open: Q-VAL-02 (whether the request is accepted with the field ignored or rejected, and the status and body). |
 | 3 | `GET /api/part/<pk from step 1>/` as `engineer` | None | `200 OK`. `full_name` is still `QA-<suffix> ReadOnly full_name` and `name` is unchanged. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1222,7 +1222,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> ReadOnly category_name", "category": "<category pk>", "category_name": "QA-<suffix> Forged category"}` | Not known: depends on open question Q-VAL-02 (whether the request is accepted with the read-only field ignored, or rejected, and the status and body). If a part is created, `category_name` is `QA-<suffix> Category`, not the value sent. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> ReadOnly category_name", "category": "<category pk>", "category_name": "QA-<suffix> Forged category"}` | The read-only `category_name` is not taken from the request: if a part is created, `category_name` is `QA-<suffix> Category`, not the value sent (R-VAL-11). Open: Q-VAL-02 (whether the request is accepted with the field ignored or rejected, and the status and body). |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`); then delete the category with `DELETE /api/part/category/<pk>/` and both flags `false`.
 
@@ -1278,7 +1278,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"description": "QA-<suffix> no name"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the category is not created or changed. |
+| 1 | `POST /api/part/category/` as `engineer` | `{"description": "QA-<suffix> no name"}` | The request is rejected and no category is created (R-VAL-13: category `name` is required). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no category was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1337,7 +1337,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the category is not created or changed. |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | The request is rejected and no category is created (R-VAL-13: category `name` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no category was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1367,8 +1367,8 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "", "description": "QA-<suffix> empty name"}` | Not known: depends on open questions Q-VAL-01, Q-VAL-04 (whether an empty `name` is rejected, and the status and error body). |
-| 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Not known: depends on open question Q-VAL-04 (`count` is `0` if the request is rejected, `1` if it is accepted). |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "", "description": "QA-<suffix> empty name"}` | Proposed, to confirm in Q-VAL-04: the request is rejected and no category is created, because `name` is required (R-VAL-13). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
+| 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | Proposed, to confirm in Q-VAL-04: `200 OK` with `count` `0`; the request in step 1 created no category. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
 
@@ -1426,7 +1426,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Desc 251", "description": "251 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the category is not created or changed. |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Desc 251", "description": "251 characters"}` | The request is rejected and no category is created (R-VAL-14: category `description` is at most 250 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no category was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1485,7 +1485,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Keywords 251", "default_keywords": "251 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the category is not created or changed. |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Keywords 251", "default_keywords": "251 characters"}` | The request is rejected and no category is created (R-VAL-14: `default_keywords` is at most 250 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no category was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1569,7 +1569,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Icon 101", "icon": "101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the category is not created or changed. |
+| 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> Cat Icon 101", "icon": "101 characters"}` | The request is rejected and no category is created (R-VAL-14: `icon` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/category/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no category was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1600,7 +1600,7 @@
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
 | 1 | `POST /api/part/category/` as `engineer` | `{"name": "QA-<suffix> RO Category"}` | `201 Created`. Body is valid against `Category`; `pathstring` is `QA-<suffix> RO Category`. Record the returned `level`. |
-| 2 | `PATCH /api/part/category/<pk from step 1>/` as `engineer` | `{"level": 5, "pathstring": "QA-<suffix>/Forged"}` | Not known: depends on open question Q-VAL-02 (whether the request is accepted with the read-only fields ignored, or rejected, and the status and body). |
+| 2 | `PATCH /api/part/category/<pk from step 1>/` as `engineer` | `{"level": 5, "pathstring": "QA-<suffix>/Forged"}` | The read-only `level` and `pathstring` are not taken from the request: the stored values are unchanged (R-VAL-15). Open: Q-VAL-02 (whether the request is accepted with the fields ignored or rejected, and the status and body). |
 | 3 | `GET /api/part/category/<pk from step 1>/` as `engineer` | None | `200 OK`. `level` equals the value recorded in step 1 and `pathstring` is still `QA-<suffix> RO Category`. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: `DELETE /api/part/category/<pk>/` with `{"delete_parts": false, "delete_child_categories": false}` (`204`) for each category the case created.
@@ -1658,7 +1658,7 @@
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
 | 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Patch Long"}` | `201 Created`. Body is valid against `Part`. |
-| 2 | `PATCH /api/part/<pk from step 1>/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 2 | `PATCH /api/part/<pk from step 1>/` as `engineer` | `{"name": "QA-<suffix> + padding, 101 characters"}` | The request is rejected and the part is not changed (R-VAL-01: `name` is at most 100 characters). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 3 | `GET /api/part/<pk from step 1>/` as `engineer` | None | `200 OK`. `name` is still `QA-<suffix> Patch Long`. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1773,7 +1773,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer`, `Content-Type: text/plain` | Body `name=QA-<suffix> Plain` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer`, `Content-Type: text/plain` | Body `name=QA-<suffix> Plain` | The request is rejected and no part is created (R-VAL-17: bodies are accepted as `application/json`, `application/x-www-form-urlencoded` and `multipart/form-data` only). Open: Q-VAL-01 (status code and error body for an unsupported content type). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1803,7 +1803,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock no qty", "initial_stock": {}}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock no qty", "initial_stock": {}}` | The request is rejected and no part is created (R-VAL-18: `initial_stock.quantity` is required when `initial_stock` is sent). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1833,7 +1833,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty text", "initial_stock": {"quantity": "abc"}}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty text", "initial_stock": {"quantity": "abc"}}` | The request is rejected and no part is created (R-VAL-18 and the schema: `initial_stock.quantity` is a decimal number). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1863,7 +1863,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 10 digits", "initial_stock": {"quantity": "9999999999"}}` | Not known: depends on open question Q-VAL-03 (the largest stock quantity the app stores; the schema pattern allows 10 integer digits). If created: `201 Created`, body valid against `Part`, `name` equals the payload. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 10 digits", "initial_stock": {"quantity": "9999999999"}}` | `201 Created`, body valid against `Part`, `name` equals the payload (the schema pattern for `initial_stock.quantity` allows 10 integer digits, R-VAL-18). Open: Q-VAL-03 (the largest stock quantity the app stores). |
 
 **Postconditions and cleanup:** The records created by the steps. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 
@@ -1892,7 +1892,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 11 digits", "initial_stock": {"quantity": "99999999999"}}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 11 digits", "initial_stock": {"quantity": "99999999999"}}` | The request is rejected and no part is created (R-VAL-18 and the schema: `initial_stock.quantity` has at most 10 integer digits). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1922,7 +1922,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 6 decimals", "initial_stock": {"quantity": "1.123456"}}` | Not known: depends on open question Q-VAL-01 (status code and error body for a request that fails field validation). Known: the part is not created or changed. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty 6 decimals", "initial_stock": {"quantity": "1.123456"}}` | The request is rejected and no part is created (R-VAL-18 and the schema: `initial_stock.quantity` has at most 5 decimal places). Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 | 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix>`, `limit=10` | `200 OK`. `count` is `0` and `results` is empty: no part was created. |
 
 **Postconditions and cleanup:** No record is created if the request is rejected; if the API accepts it, the record it creates is cleaned up. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
@@ -1952,7 +1952,7 @@
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty negative", "initial_stock": {"quantity": "-1"}}` | Not known: depends on open question Q-VAL-03 (whether a negative initial quantity is accepted, and the status and body if rejected). The pattern allows a leading `-`, which does not decide it. |
+| 1 | `POST /api/part/` as `engineer` | `{"name": "QA-<suffix> Stock qty negative", "initial_stock": {"quantity": "-1"}}` | Proposed, to confirm in Q-VAL-03: the request is rejected and no part is created; an initial stock quantity cannot be negative. Open: Q-VAL-01 (status code and error body for a request that fails field validation). |
 
 **Postconditions and cleanup:** The records created by the steps. Cleanup as `admin`: for each part the case created, `PATCH /api/part/<pk>/` with `{"active": false}`, then `DELETE /api/part/<pk>/` (`204`).
 

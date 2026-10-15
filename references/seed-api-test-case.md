@@ -45,7 +45,7 @@ Set by the architect. They apply to every API case and are not open questions.
 
 | # | Request | Payload / parameters | Expected result |
 |---|---|---|---|
-| 1 | One call per step: `<METHOD> <path>` as `<user>`. Paths only, never a host or port. | Exact JSON body or query parameters. `None` for none. | Status code first, then each check on the response: fields and values, the response body valid against its schema component, headers if relevant, and the business rule (e.g. the record is or is not created). Never "succeeds". Unknown outcome: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` |
+| 1 | One call per step: `<METHOD> <path>` as `<user>`. Paths only, never a host or port. | Exact JSON body or query parameters. `None` for none. | Status code first, then each check on the response: fields and values, the response body valid against its schema component, headers if relevant, and the business rule (e.g. the record is or is not created). Never "succeeds". Partly unknown outcome: what the cited rule or schema states first, as fact, then `Open: Q-<Area>-NN (<what is unknown>).` (e.g. `The part is not created (R-VAL-01). Open: Q-VAL-01 (status code and error body).`). No rule states it: `Proposed, to confirm in Q-<Area>-NN: <outcome>.` Only if nothing can be proposed: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` |
 
 Keep three columns in this order: the duplicate check reads them as action, test data and expected result.
 

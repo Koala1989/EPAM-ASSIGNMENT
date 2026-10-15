@@ -25,7 +25,7 @@ The reference format for every manual UI test case. API cases use `seed-api-test
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | One user action per step. | Exact values entered. | Observable and specific: a message, a value, a field state, a URL, a status code. Never "works correctly". If an open question leaves it unclear: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).`, after anything that is known. |
+| 1 | One user action per step. | Exact values entered. | Observable and specific: a message, a value, a field state, a URL, a status code. Never "works correctly". If an open question leaves part of it unclear, first what the cited rule states, as fact, then the unknown: `No stock item is created for the part (R-ATT-02). Open: Q-ATT-08 (whether the part is left out of the selector or the form is rejected, and the error text).` If no rule states the outcome: `Proposed, to confirm in Q-<Area>-NN: <outcome>.` Only if nothing can be proposed: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` |
 
 Any other cell that needs a detail an open question leaves unknown: `[open: Q-<Area>-NN, <what is unknown>]`.
 

@@ -21,7 +21,7 @@ Automate one Approved manual API test case of InvenTree's Parts module (1.5.6, A
 
 ## Guardrails
 
-1. **Approved cases only.** The Review field must start with `Approved` or `Changed`. If it is `Draft`, `Rejected`, mentions `Open question`, or any cell contains `[open: ...]` or `Not known`, stop and report; write nothing.
+1. **Approved cases only.** The Review field must start with `Approved` or `Changed`. Anything else (`Draft`, `Draft · Open question: ...`, `Rejected`): stop and report; write nothing. The Review field is the only gate: an Approved case is automated as written, including any `Open:` or `Proposed` wording the architect approved with it (assert the stated outcome; leave an unknown detail such as an error text unasserted and say so in the report).
 2. **The case is the specification.** One `test.step` per case step, titled `<n>. <case request>`, in order. Every Expected result becomes at least one assertion in its step: the status code first (`toHaveStatus`), then the schema (`expect.soft(...).toMatchSchema`, always soft) when the case states it, then each field value and business rule the case names. Do not add, skip, merge, reorder or reinterpret steps, and never assert less than the case states (no `toBeOK()` for a stated code, no `toMatchObject` where the case gives the whole value).
 3. **Send exactly the case's input.** Negative cases send the invalid payload, missing field, wrong type, bad token or forbidden user as given. Never correct it in the spec, a client or a helper.
 4. **Clients only.** Specs never call `get`/`post`/`put`/`patch`/`delete`/`fetch` on a request context, never import from `@playwright/test`, never contain a host or full URL (lint fails on all of these).

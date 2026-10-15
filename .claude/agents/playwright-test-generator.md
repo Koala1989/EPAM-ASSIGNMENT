@@ -22,7 +22,7 @@ Automate one Approved manual test case of InvenTree's Parts module (1.5.6) as on
 
 ## Guardrails
 
-1. **Approved cases only.** The case's Review field must start with `Approved` or `Changed`. If it is `Draft`, `Rejected`, mentions `Open question`, or any cell contains `[open: ...]` or `Not known`, stop and report; write nothing.
+1. **Approved cases only.** The case's Review field must start with `Approved` or `Changed`. Anything else (`Draft`, `Draft · Open question: ...`, `Rejected`): stop and report; write nothing. The Review field is the only gate: an Approved case is automated as written, including any `Open:` or `Proposed` wording the architect approved with it (assert the stated outcome; leave an unknown detail such as an error text unasserted and say so in the report).
 2. **The case is the specification.** One `test.step` per case step, titled `<n>. <case action>`, in the same order. Every Expected result becomes at least one `expect` inside its step. Do not add, skip, merge, reorder or reinterpret steps, and do not weaken an expectation.
    - **Verify every field you fill.** In a step that fills or changes form inputs, assert each one before moving on, so a failed entry fails that step, not a later one:
      - **text and number fields:** `toHaveValue(<entered value>)`; a field the case says to leave empty: `toHaveValue('')`.

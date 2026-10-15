@@ -50,7 +50,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the *Create Part* form. | None | The form opens. |
-| 2 | Read the value of the unit field before typing. | None | Not known: depends on open question Q-Unit_measure-01 (blank per part-index.md#L120, or `pcs` per part-views.md#L44). |
+| 2 | Read the value of the unit field before typing. | None | The unit field is blank (R-Unit_measure-02). Open: Q-Unit_measure-01 (part-views.md#L44 gives `pcs` instead). |
 
 **Postconditions and cleanup:** No record created. Close the form.
 
@@ -77,7 +77,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Create a part and leave the unit field untouched. | Name: `QA-<suffix> Piece Part`<br>Description: `No unit`<br>Category: `QA-<suffix> Category` | The part is created. |
-| 2 | Check the part details. | None | Not known: depends on open question Q-Unit_measure-01 (the unit shown is blank per part-index.md#L120, or `pcs` per part-views.md#L44). Quantities are dimensionless pieces. |
+| 2 | Check the part details. | None | The unit shown is blank and quantities are dimensionless pieces (R-Unit_measure-02). Open: Q-Unit_measure-01 (part-views.md#L44 gives `pcs` instead). |
 
 **Postconditions and cleanup:** One part. Cleanup as `admin`: set inactive, delete, then delete the category.
 
@@ -213,8 +213,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Edit the base part and change its unit. | Unit: `kg` (field [open: Q-Unit_measure-02, label of the units field]) | Not known: depends on open question Q-Unit_measure-05 (change rejected, supplier part unit reset, or left as is). |
-| 2 | Open the supplier part `QA-<suffix>-SKU1`. | None | Not known: depends on open question Q-Unit_measure-05 (the unit the supplier part shows). |
+| 1 | Edit the base part and change its unit. | Unit: `kg` (field [open: Q-Unit_measure-02, label of the units field]) | Proposed, to confirm in Q-Unit_measure-05: the change is rejected with an error, because the supplier part `QA-<suffix>-SKU1` is in `metres`, which is not compatible with `kg` (R-Unit_measure-04, R-Unit_measure-05). Open: Q-Unit_measure-05 (the error text). |
+| 2 | Open the supplier part `QA-<suffix>-SKU1`. | None | Proposed, to confirm in Q-Unit_measure-05: the supplier part still shows `metres`. |
 
 **Postconditions and cleanup:** Restore the base part's unit if changed. Cleanup as `admin`: delete the supplier part, make the part inactive and delete it, then delete the supplier.
 
@@ -489,7 +489,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the settings panel and select the *Physical Units* tab. | None | The tab opens. |
-| 2 | Look for the built-in units. | None | Not known: depends on open question Q-Unit_measure-06 (whether `piece`, `each`, `dozen`, `hundred`, `thousand` are listed in the tab). Their meanings are one item, one item, 12, 100 and 1000, all dimensionless. |
+| 2 | Look for the built-in units. | None | The tab lists `piece`, `each`, `dozen`, `hundred` and `thousand`, meaning one item, one item, 12, 100 and 1000, all dimensionless (R-Unit_measure-12). Open: Q-Unit_measure-06 (whether the built-in units appear in this tab). |
 
 **Postconditions and cleanup:** None.
 
@@ -542,8 +542,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Log in as `reader` and try to open the settings panel and the *Physical Units* tab. | None | Not known: depends on open question Q-Unit_measure-06 (permission required, and whether the tab is hidden or read-only). |
-| 2 | Log out, log in as `noaccess` and repeat. | None | Not known: depends on open question Q-Unit_measure-06 (same). |
+| 1 | Log in as `reader` and try to open the settings panel and the *Physical Units* tab. | None | Proposed, to confirm in Q-Unit_measure-06: `reader` can open the *Physical Units* tab but has no controls to create, edit or delete a unit. |
+| 2 | Log out, log in as `noaccess` and repeat. | None | Proposed, to confirm in Q-Unit_measure-06: the settings panel and the *Physical Units* tab are not available to `noaccess`. |
 
 **Postconditions and cleanup:** None.
 
@@ -630,7 +630,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the *Physical Units* tab and start creating a unit. | None | The create form opens. Fields [open: Q-Unit_measure-06, fields and labels]. |
-| 2 | Enter the name and a definition other than `1`. | Name: `qa<suffix>bad`<br>Definition: `2` | Not known: depends on open question Q-Unit_measure-08 (rejection, message, or the unit is saved with a different meaning). |
+| 2 | Enter the name and a definition other than `1`. | Name: `qa<suffix>bad`<br>Definition: `2` | No valid dimensionless unit `qa<suffix>bad` is created (R-Unit_measure-15: a dimensionless unit's definition must be `1`). Open: Q-Unit_measure-08 (whether it is rejected and the message, or saved with a different meaning). |
 
 **Postconditions and cleanup:** If saved, delete the unit as `admin`.
 

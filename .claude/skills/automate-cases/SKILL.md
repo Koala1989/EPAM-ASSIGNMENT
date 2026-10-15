@@ -22,7 +22,7 @@ Handle the cases **one at a time, in the order given**: complete steps 2-7 for a
 Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md` or `open-questions.md`):
 
 - **The case exists.** If not: skip it, reason "not found".
-- **Review starts with `Approved` or `Changed`**, and the case contains no `Open question`, `[open:` or `Not known`. If not: skip it, reason "not Approved" or "open question".
+- **Review starts with `Approved` or `Changed`.** This is the only check on the case's content. If not: skip it, reason "not Approved".
 - **No spec exists yet:** no file under `automation/tests/ui/` whose first line names this case ID. If one exists: skip it, reason "spec exists". Regenerating would overwrite reviewed work; the user can delete the spec first, or ask for the healer or reviewer on their own.
 
 A skipped case gets no agent run. Go to the next case.

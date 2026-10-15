@@ -43,13 +43,27 @@ Nothing else is a requirement: not your own knowledge of InvenTree, not other ve
 ## Guardrails
 
 1. **Do not assume anything.** Every Expected result, limit, default, error message, permission and UI label must trace to a cited doc line. If it does not, it is an open question.
+   - **Never infer the opposite of a rule.** A rule that says what happens when a condition holds says nothing about when it does not. Only the words `only`, `must`, `cannot`, `never` or `not` state the opposite. Without them, the opposite outcome is written `Proposed, to confirm in Q-<Area>-NN: ...`, never as fact. "Only if" works in one direction only: it states the outcome when the condition is false, not when it is true. Past mistakes this rule prevents:
+
+     | Rule says | Stated as fact by mistake | Correct |
+     |---|---|---|
+     | Bodies are accepted as JSON, form-urlencoded and multipart (R-VAL-17) | A `text/plain` body is rejected | `Proposed`: rejected |
+     | *Validate BOM* is shown when the BOM must be validated again (R-Detail_View-67) | The button is hidden once the BOM is validated | `Proposed`: hidden |
+     | A compatible unit is allowed (R-Unit_measure) | An incompatible unit is rejected | `Proposed`: rejected |
+     | Tables that support parametric filtering have a *Parametric View* button (R-Part_Params-21) | Other tables have no button | `Proposed`: no button |
+     | The *Allocated* tab is only visible if the part is a Component or Salable (R-Detail_View-17) | The tab is shown for a Component part | Hidden when neither: fact. Shown for a Component part: `Proposed` |
 2. **No citation, no case.** Each case cites at least one inventory rule ID and its `file#L<line>` in Requirement. A behaviour with no rule ID is an inventory gap, not a case.
 3. **Unstated details stay visible.** Where a case needs a detail the docs leave out (an exact error text, a button label not in the docs, a setting's default), raise it as an open question and mark it in the case (guardrail 5). Never invent the value.
 4. **Unresolved macros are gaps.** `{{ globalsetting("X") }}` and `{{ icon(...) }}` in the docs mean the rendered text (a setting's description and default, an icon's meaning) is missing. Treat it as an open question.
 5. **Always write the case; mark what is open.** An open question never stops a case from being written. Every rule gets its cases, including Conflict and Open rules. In each case affected by an open question:
    - **Review:** `Draft · Open question: Q-<Area>-NN` (list every question that affects the case, comma-separated).
-   - **Expected result** of a step whose outcome depends on the question: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` Write what is known before it if anything is (for example `Part is not created. Error text not known: depends on open question Q-REV-03 (error text for a self-reference).`).
+   - **Expected result** of a step whose outcome depends on the question has two parts, in this order:
+     1. **What the cited rule states, as fact.** Whenever a rule the case cites says anything about the step's outcome ("cannot have stock", "is not created", "is hidden"), write that outcome in full, with the rule ID: `No stock item is created for the part (R-ATT-02).` Never leave it out because a detail is unknown.
+     2. **What is unknown:** `Open: Q-<Area>-NN (<what is unknown>).` For example: `The part is not created (R-REV-11). Open: Q-REV-03 (error text for a self-reference).`
+     - **No rule states the outcome** (the step goes beyond every cited rule): write the outcome the request or the rule's purpose implies, labelled `Proposed, to confirm in Q-<Area>-NN: <outcome>.`, and put the same proposal in the question so the architect can answer yes or no. A proposal is never written as fact.
+     - **Bare `Not known`** is allowed only when no rule states the outcome and none can be proposed: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).`
    - **Any other cell** that needs the unknown detail (a label, a field, a setting value): `[open: Q-<Area>-NN, <what is unknown>]`.
+   - **A missing name is never a reason to skip a rule.** When the docs do not name the setting, control, page or menu a case needs (for example "this behaviour can be disabled" with no setting given), write the case anyway, with that step or prerequisite marked `[open: Q-<Area>-NN, <what is not named>]`.
 6. **Stay in scope.** Parts module only, the functionality in the request only. Note out-of-scope rules you find; do not write cases for them.
 7. **Never delete or rewrite saved cases.** Append only. Duplicate verdicts belong to the `test-case-reviewer` agent (scores of 50 or more) and the architect.
 8. **If the request is unclear, stop.** If it does not say UI or API, or the functionality could mean several areas, return the question before doing anything else. For an API request, also stop if `requirements/openapi-parts.yaml` or the API Area's `requirements-inventory.md` does not exist: report which is missing and write nothing; API cases have no source of truth without them.
@@ -101,10 +115,19 @@ For every rule (Clear, Conflict and Open alike), apply every technique that fits
 | Error guessing | Likely faults: duplicates, whitespace-only and very long text, special characters and Unicode, double submit, cancel mid-form, stale page after another user's change. |
 | Exploratory scenarios | Short charter-style cases for flows across tabs or features, where the docs describe the parts but not the combination. |
 | Negative | Every "cannot", "must", "only" and permission rule: try the forbidden action as the user who should be blocked. |
-| What-if business scenarios | Realistic situations a stores or engineering user would hit: a part renamed after stock exists, a category moved, a template changed after variants exist, a part made inactive while used in a BOM. Where the docs do not state the outcome, raise an open question and write the case with the Expected result marked not known. |
+| What-if business scenarios | Realistic situations a stores or engineering user would hit: a part renamed after stock exists, a category moved, a template changed after variants exist, a part made inactive while used in a BOM. Where the docs do not state the outcome, raise an open question and write the case with the Expected result marked per guardrail 5 (rule outcome, then `Open:`, or `Proposed, to confirm in`). |
 | Not found (API) | Every operation with an `{id}` in its path that supports `GET` or `DELETE`: one Negative case per operation for a resource that does not exist. The Expected result is `404 Not Found` (standing rule in `references/seed-api-test-case.md`): never `Not known`, never an open question. Include one even if the inventory has no rule for it, citing the operation's own rule. |
 
 Use the least-privileged demo user that can do the action (see the seed's user table). Permission cases use the users who should be blocked (`reader`, `noaccess`).
+
+**Negative depth, every functionality.** The plan always includes Negative or Boundary cases, even when the rules are worded positively. At minimum:
+
+- each action the functionality performs (create, edit, open, delete, change a setting), tried by a user who should be blocked (`reader` for edits, `noaccess` for viewing);
+- each input or field: error guessing (empty, whitespace-only, too long, special characters, duplicate);
+- each "visible only if", "only", "cannot" or "must": the opposite condition (the tab hidden when the condition is false, the forbidden action blocked);
+- each rule worded only positively ("is accepted", "is shown when", "is allowed"): the opposite condition too, with its outcome `Proposed` (guardrail 1, never infer the opposite).
+
+Where the rules do not state the outcome, the case is still written, with its Expected result per guardrail 5 (`Proposed, to confirm in Q-...` or `Open:`). Report the Positive / Negative / Boundary counts in the coverage table; a functionality with no Negative case must say why in the report.
 
 ### 5. Draft the cases
 
@@ -148,7 +171,7 @@ Return this, and nothing else:
 1. **Created:** count, IDs and file, per Area folder.
 2. **Open questions:** the question IDs you added, with links to the `open-questions.md` files, and any earlier Open questions that affect this functionality. For each, the case IDs marked with it.
 3. **Duplicates:** cases scoring 50 or more (Review or Duplicate) with their matches.
-4. **Coverage:** table: Rule ID | Case IDs | Techniques | Open questions. Every rule in scope has at least one case; a rule with no case says why (out of scope, not testable via UI/API).
+4. **Coverage:** table: Rule ID | Case IDs | Techniques | Open questions. Every rule in scope has at least one case; a rule with no case says why (out of scope, not testable via UI/API). Below it, one line: `Types: <n> Positive · <n> Negative · <n> Boundary`.
 5. **Inventory gaps:** testable statements found in the docs (via `requirements/INDEX.md`) that are not in the inventory, with their doc lines and the Area they belong to. No cases were written for them.
 6. **Out of scope or missing pages:** requirements outside the functionality, and linked pages not in `requirements/docs/`.
 7. **Assumptions:** must be "None". If you made one, you broke a guardrail: list it, and convert it to an open question.
