@@ -56,6 +56,8 @@ Also check:
 - **Order and titles:** one `test.step` per case step, in order, titled `<n>. <case action>`.
 - **Prerequisites:** user (`test.use({ user })` matches the case; a user change in a step uses `switchUser`, never saved sessions or a second browser context), settings (`data.setSetting` for each one stated), data (each record created through `data`, names via `data.name`), pre-steps.
 - **Cleanup:** every record the steps create through the UI is registered (`data.trackPart` or equivalent).
+- **Form checks:** in a step that fills a form, every field the step fills, changes or clears is asserted, and so is every field its Expected result names. A missing one is Missing. An assertion on a field the step only leaves untouched, and that the Expected result does not name, is a Minor (noise the case did not ask for).
+- **Absence checks:** a `toBeHidden`, `not.toBeVisible` or `toHaveCount(0)` that no Expected result states is a Minor (it passes before the element would appear, so it proves nothing). One the case does state but that runs before the action that would show the element (e.g. "no form error" checked before *Submit*) is a Major: it can pass while the behaviour is wrong.
 - **Traceability:** first-line `// case:` header, test title `<case ID>: <case title>`, `describe` named after the functionality, tags matching the case's Tags.
 - **Review status:** the case's Review field is Approved or Changed; anything else is a Blocker (the spec should not exist yet).
 

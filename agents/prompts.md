@@ -1,13 +1,13 @@
 # Agent prompts
 
-Selected prompts from my Claude Code sessions (10–16 October 2026): the 96 of my 337 prompts that show how I directed the agents. That means designing and refining their instructions, the case formats and conventions, the duplicate rules, the project structure, and cutting tokens and run time. Routine prompts are left out (below). The instructions the agents work under are in [`system-instructions.md`](system-instructions.md).
+Selected prompts from my Claude Code sessions (10–16 October 2026): the 102 of my 361 prompts that show how I directed the agents. That means designing and refining their instructions, the case formats and conventions, the duplicate rules, the project structure, and cutting tokens and run time. Routine prompts are left out (below). The instructions the agents work under are in [`system-instructions.md`](system-instructions.md).
 
 ## What is in this file
 
 | Section | Contents |
 |---|---|
-| [Prompts by theme](#prompts-by-theme) | 96 prompts I typed, grouped by theme, in time order within each theme. Verbatim, typos included. |
-| [Skill runs](#skill-runs) | All 35 skill commands I ran. They generated the test cases and the automation. |
+| [Prompts by theme](#prompts-by-theme) | 102 prompts I typed, grouped by theme, in time order within each theme. Verbatim, typos included. |
+| [Skill runs](#skill-runs) | All 40 skill commands I ran. They generated the test cases and the automation. |
 | [How the agents are briefed](#how-the-agents-are-briefed) | The fixed prompts the skills send to each agent, and 4 early briefings written in full before the skills existed. |
 
 **Left out:**
@@ -15,7 +15,7 @@ Selected prompts from my Claude Code sessions (10–16 October 2026): the 96 of 
 - questions about the generated code or tools ("what does this fixture do?"), and token or cost look-ups;
 - prompts that fixed individual cases from review findings. The review files and each case's Review field record those changes;
 - prompts for recording the demo videos;
-- the other 112 agent prompts. They are the fixed prompts in the table below, with only the case IDs or paths changing.
+- the other 117 agent prompts. They are the fixed prompts in the table below, with only the case IDs or paths changing.
 
 **How it was produced.** [`tools/export_prompts.py`](../tools/export_prompts.py) reads the session transcripts in `~/.claude/projects/c--EPAM-Assignment/` and keeps the prompts listed in [`tools/prompts_selection.json`](../tools/prompts_selection.json). `python tools/export_prompts.py --all --out <file>` writes the full log instead: every prompt, skill command and agent prompt, by day. Pasted text up to 1,500 characters is kept whole; longer pastes are shortened, with their length noted, and demo passwords are masked. The planning before 10 October happened in a separate claude.ai chat and is not in the transcripts.
 
@@ -25,10 +25,10 @@ Selected prompts from my Claude Code sessions (10–16 October 2026): the 96 of 
 |---|---|---|
 | [Requirements and knowledge base](#requirements-and-knowledge-base) | 9 | Pinning the docs to 1.5.6, a rule inventory per Area, and a local RAG index, with questions on how retrieval is scoped and kept current. |
 | [Test case format and design rules](#test-case-format-and-design-rules) | 17 | The seed formats, Areas, the Review field, how open questions are written into cases, where each technique applies, cross-functional scope and data-driven cases. |
-| [Agent instructions: writing and refining them](#agent-instructions-writing-and-refining-them) | 17 | Creating each agent, then tightening its instructions from what went wrong: guardrails, an assertion for every filled field, never inferring the opposite of a rule, missed negative cases, generator traces. |
+| [Agent instructions: writing and refining them](#agent-instructions-writing-and-refining-them) | 20 | Creating each agent, then tightening its instructions from what went wrong: guardrails, an assertion for every filled field (and no checks on untouched fields or unasked absences), never inferring the opposite of a rule, missed negative cases, generator traces. |
 | [Duplicate detection and independent review](#duplicate-detection-and-independent-review) | 9 | A scored duplicate checker, an LLM judge for borderline scores, merging the judge into a full reviewer, rule coverage checks and the log of what the reviewer caught. |
 | [Orchestration and running the agents](#orchestration-and-running-the-agents) | 10 | From starting agents by hand to one skill per stage, many cases per run, unattended headless runs, and prompts that name only the functionality. |
-| [Automation framework and conventions](#automation-framework-and-conventions) | 8 | The layered Playwright framework, real-form login, one config for UI and API, environments, and schema checks that report without hiding the other checks. |
+| [Automation framework and conventions](#automation-framework-and-conventions) | 11 | The layered Playwright framework, real-form login (only as the test's own user, with no all-users login step), one config for UI and API, environments, and schema checks that report without hiding the other checks. |
 | [Tokens, cost and speed](#tokens-cost-and-speed) | 11 | Cutting what the agents read and run: a heading index, Area-wise inventories, agent file size, prompt caching, skipping login runs, smaller page snapshots. |
 | [Verification against the app and approval](#verification-against-the-app-and-approval) | 6 | Running cases through Playwright MCP and the API before approving them, automating only Approved cases, and turning a wrong assumption into a finding. |
 | [Project structure and deliverables](#project-structure-and-deliverables) | 9 | CLAUDE.md, folder naming, one automation project, the submission documents, and keeping the case folders tidy. |
@@ -208,7 +208,7 @@ I just regenerated the test cases and noticed it does not include the expected s
 
 ### Agent instructions: writing and refining them
 
-Creating each agent, then tightening its instructions from what went wrong: guardrails, an assertion for every filled field, never inferring the opposite of a rule, missed negative cases, generator traces.
+Creating each agent, then tightening its instructions from what went wrong: guardrails, an assertion for every filled field (and no checks on untouched fields or unasked absences), never inferring the opposite of a rule, missed negative cases, generator traces.
 
 **27. 2026-10-10 10:27 UTC**
 
@@ -365,23 +365,41 @@ Read c:\EPAM_Assignment\automation\pages\components\f
 one question - we changed the healer invocation: now it should only runs if the generator reports a failure. My question is - is generator performing a dry run ?
 ````
 
+**44. 2026-10-16 13:15 UTC**
+
+````text
+check one more thing: during video creation of part creation test I noticed that the automation generator agent added a lot of fields that were not updated like IPN, Link etc. While it was only supposed to check the Name as it was name creation, explain why this might have happened.
+````
+
+**45. 2026-10-16 13:18 UTC**
+
+````text
+Lets improvise that to keep low noise and put assertions for modified fields and the fields that are expected to be modified or asserted.
+````
+
+**46. 2026-10-16 13:22 UTC**
+
+````text
+also I noticed that it is asserting a hidden element - that should be avoided. Through automation specifically checking to assert invisibility unless explicitly asked is redundent and results in flaky tests.
+````
+
 ### Duplicate detection and independent review
 
 A scored duplicate checker, an LLM judge for borderline scores, merging the judge into a full reviewer, rule coverage checks and the log of what the reviewer caught.
 
-**44. 2026-10-10 09:27 UTC**
+**47. 2026-10-10 09:27 UTC**
 
 ````text
 also need to include a score based duplicate checker which detects each test case's uniqueness and assigns a unique check. Suggest me if this should be a script or an LLM action ?
 ````
 
-**45. 2026-10-10 09:44 UTC**
+**48. 2026-10-10 09:44 UTC**
 
 ````text
 the duplicate check script will only be used by the test cases creater agent once the test case is created and saved, a duplicate score will be saved at the last that can be then assessed by LLM in case the duplicate score is between 50-80 with the list of test cases file in reference that have a  match.
 ````
 
-**46. 2026-10-10 17:35 UTC**
+**49. 2026-10-10 17:35 UTC**
 
 ````text
 Independent judge: the agent judges duplicates among the cases it just wrote, which is a biased check. A subagent can't start another subagent, so for an independent judge, run a second pass with Copilot or a separate agent.- Question: where is the subagent ? I only see one agent -test-case-creator.md
@@ -389,37 +407,37 @@ Technique field: add a Technique field to the seed, so each case shows which des
 Submission copy: the brief expects agent config under agents/, so copy this file there when you submit, or explain its location in the README. - Implement this.
 ````
 
-**47. 2026-10-10 17:41 UTC**
+**50. 2026-10-10 17:41 UTC**
 
 ````text
 for judging the duplicate check, lets implement another agent that acts independently -LLM as judge.
 ````
 
-**48. 2026-10-11 11:50 UTC**
+**51. 2026-10-11 11:50 UTC**
 
 ````text
 review all the test cases recently generated for revisions and check if all the rules mentioned in 'requirements-inventory.md' of revisions are covered in test cases.
 ````
 
-**49. 2026-10-13 17:13 UTC**
+**52. 2026-10-13 17:13 UTC**
 
 ````text
 I was wondering if we add more than just one validation to the duplicate-judge agent, like it should act as on overall reviewer and not just duplicate check. For example it should check that all rules are covered, by cross checking the requirement inventory.
 ````
 
-**50. 2026-10-13 17:21 UTC**
+**53. 2026-10-13 17:21 UTC**
 
 ````text
 Lets merge them anyways and put a condition that duplicacy check verification only run when the score crosses 50 ,, which means for the demo work it will likely not run and will go to the other review process.
 ````
 
-**51. 2026-10-15 03:54 UTC**
+**54. 2026-10-15 03:54 UTC**
 
 ````text
 Lets first investigate why some rules were not covered in any of the test cases from 'UI Part parameters tab parameter templates and category parameters'
 ````
 
-**52. 2026-10-15 06:02 UTC**
+**55. 2026-10-15 06:02 UTC**
 
 ````text
 I want to create a notes list where I want to record the misses made by generator and then were discovered by reviewer along with a very short description why it might have been missed. This will help in improving as well as showing to interviewers about reviewers significance.
@@ -429,55 +447,55 @@ I want to create a notes list where I want to record the misses made by generato
 
 From starting agents by hand to one skill per stage, many cases per run, unattended headless runs, and prompts that name only the functionality.
 
-**53. 2026-10-11 06:04 UTC** · separate session
+**56. 2026-10-11 06:04 UTC** · separate session
 
 ````text
 Use the test-case-creator agent to generate UI test cases for the Part creation flow.
 ````
 
-**54. 2026-10-11 08:19 UTC**
+**57. 2026-10-11 08:19 UTC**
 
 ````text
 I am thinking of having an orchestration for the two agents so that they can be run from 1 trigger
 ````
 
-**55. 2026-10-11 08:24 UTC**
+**58. 2026-10-11 08:24 UTC**
 
 ````text
 ok, lets create the skill now that calls both one by one
 ````
 
-**56. 2026-10-12 07:10 UTC** · separate session
+**59. 2026-10-12 07:10 UTC** · separate session
 
 ````text
 Use the playwright-test-generator agent to automate test cases from PART area.
 ````
 
-**57. 2026-10-12 18:30 UTC**
+**60. 2026-10-12 18:30 UTC**
 
 ````text
 Need ot create skill for automation that runs all agents - generator, healer, reviewer. Create a separate skill don't add to existing generate test cases skill.
 ````
 
-**58. 2026-10-12 18:46 UTC**
+**61. 2026-10-12 18:46 UTC**
 
 ````text
 what if I need to run automation generation for entire Area/multiple Tcs in future
 ````
 
-**59. 2026-10-13 06:43 UTC**
+**62. 2026-10-13 06:43 UTC**
 
 ````text
 lets also create a separate skill for automation of API including automation and review agents
 ````
 
-**60. 2026-10-13 06:47 UTC**
+**63. 2026-10-13 06:47 UTC**
 
 ````text
 generate all alternatives to run skills and individual agents I will document in the submission
 ````
 
-**61. 2026-10-14 18:27 UTC**
+**64. 2026-10-14 18:27 UTC**
 
 ````text
 now I am going to run this in terminal to run over night,, confirm if it looks ok or anything to change. -- 
@@ -511,7 +529,7 @@ foreach ($r in $runs) {
 [end of paste]
 ````
 
-**62. 2026-10-16 09:02 UTC**
+**65. 2026-10-16 09:02 UTC**
 
 ````text
 is it not possible to group them in 2-3 broader prompts becasue as of now it looks like I need to tell the scenarios from promot
@@ -519,27 +537,27 @@ is it not possible to group them in 2-3 broader prompts becasue as of now it loo
 
 ### Automation framework and conventions
 
-The layered Playwright framework, real-form login, one config for UI and API, environments, and schema checks that report without hiding the other checks.
+The layered Playwright framework, real-form login (only as the test's own user, with no all-users login step), one config for UI and API, environments, and schema checks that report without hiding the other checks.
 
-**63. 2026-10-12 03:45 UTC**
+**66. 2026-10-12 03:45 UTC**
 
 ````text
 don't make changes just asking: is the generator and healer agent aware of a good playwright framework conventions such as page object, common utils script, a base page for common inventree patterns?
 ````
 
-**64. 2026-10-12 05:11 UTC**
+**67. 2026-10-12 05:11 UTC**
 
 ````text
 Yes we need to make a conventions.md- create a draft and I will review. Lets implement above standards in these layer- 1. Test Layer -  Contains actual test scripts (*.spec.ts or *.spec.js). These files should contain minimal logic and read like business requirements, focusing primarily on the workflow execution and assertions. 2. Page Object Model Layer (pages/): Encapsulates the UI elements (locators) and behavior (actions like clicking, typing, or navigating) for individual pages. Tests interact with these classes rather than querying raw DOM elements directly, 3. Fixtures Layer (fixtures/): Manages shared setup and teardown logic, browser contexts, and authenticated states (storageState). Custom fixtures inject page objects or API states directly into tests, cutting out repetitive boilerplate code. 4. Utility Layer (utils/): Contains stateless helper functions such as custom date formatters, database clients, custom loggers, or string generators. 5. Data & Configuration Layer (data/ & config/): Decouples environment-specific URLs, timeouts, secret variables, and test input matrices (JSON/CSV files) from the executable code (I think playwright.config.ts is the right file for this purpose). Lets make a plan to implcment these so that I can review before implementing
 ````
 
-**65. 2026-10-12 15:52 UTC**
+**68. 2026-10-12 15:52 UTC**
 
 ````text
 It doens't mimic an actual user so we will need to change that and use real login like a normal user would, before we make that chnage lets pull from everywhere where a change will be needed.
 ````
 
-**66. 2026-10-13 08:23 UTC**
+**69. 2026-10-13 08:23 UTC**
 
 ````text
 I tried running api automation skill again and got this response this time, check if there is a defect which is causing this : 
@@ -547,95 +565,113 @@ I tried running api automation skill again and got this response this time, chec
 [pasted, 2,807 characters; starts: "I've paused at 8 of 26 because one finding keeps blocking the cases, and handling it is your decision as architect. **What's happening:** a part created without a category comes back without `category_name`, which the `Part` schema lists as required. So far 5 specs are marked `fi…"]
 ````
 
-**67. 2026-10-13 09:32 UTC**
+**70. 2026-10-13 09:32 UTC**
 
 ````text
 but that's a defect if API schema says it must be present and it is entirely missing
 ````
 
-**68. 2026-10-13 09:33 UTC**
+**71. 2026-10-13 09:33 UTC**
 
 ````text
 yeha only schema failure should report failure other assertions must stay as it is
 ````
 
-**69. 2026-10-13 11:50 UTC**
+**72. 2026-10-13 11:50 UTC**
 
 ````text
 there is one more issue in general, the UI and API projects are seggregated. How can a global config file be used for both which sets variables such as environment (accordingly test users are initialized), BaseURL for both API and UI tests
 ````
 
-**70. 2026-10-14 14:12 UTC**
+**73. 2026-10-14 14:12 UTC**
 
 ````text
 lets include env files for web version also so that I can show that in demo as well
+````
+
+**74. 2026-10-16 13:38 UTC**
+
+````text
+no I am talkign abot all users login whenever I am running a test,, please verify once
+````
+
+**75. 2026-10-16 13:43 UTC**
+
+````text
+what happens if we only keep the login specific to the test and not run 6 logins before each suite run ?
+````
+
+**76. 2026-10-16 13:46 UTC**
+
+````text
+Lets remove the all users login, logins to happen only test starts and requires a login. Updated all the references needed to update and run a test to ensure nothing breaks
 ````
 
 ### Tokens, cost and speed
 
 Cutting what the agents read and run: a heading index, Area-wise inventories, agent file size, prompt caching, skipping login runs, smaller page snapshots.
 
-**71. 2026-10-10 06:24 UTC**
+**77. 2026-10-10 06:24 UTC**
 
 ````text
 i need to reduce the token usage when querying- can you suggest how token uage can be reduced while querying the reqirements for further use
 ````
 
-**72. 2026-10-10 06:25 UTC**
+**78. 2026-10-10 06:25 UTC**
 
 ````text
 Add a heading index now.
 ````
 
-**73. 2026-10-10 17:53 UTC**
+**79. 2026-10-10 17:53 UTC**
 
 ````text
 Just suggest don't make any changes: I see test case creator agent is 2000+ words, will it take too much tokens ?? what can be done ?
 ````
 
-**74. 2026-10-12 18:01 UTC**
+**80. 2026-10-12 18:01 UTC**
 
 ````text
 New topic - Need to implement the prompt caching
 ````
 
-**75. 2026-10-12 18:13 UTC**
+**81. 2026-10-12 18:13 UTC**
 
 ````text
 one question - you mentioned 'The dry run confirms caching is working as expected, with ~90% of each prompt served from cache after the first call, and the RAG CLI still functions post-refactor. Next, I'll write documentation covering caching for the Claude Code agents and how to run the API pipeline.' how did the dry run work without an APi key ?
 ````
 
-**76. 2026-10-12 18:20 UTC**
+**82. 2026-10-12 18:20 UTC**
 
 ````text
 but the draft_cases_cached.py only contians certain instructions and rule,, not conventions or seed files
 ````
 
-**77. 2026-10-12 18:22 UTC**
+**83. 2026-10-12 18:22 UTC**
 
 ````text
 just asking - what if only choose first cahcing option  (without key and sdk) how much token cost saving would there be ?
 ````
 
-**78. 2026-10-15 12:39 UTC**
+**84. 2026-10-15 12:39 UTC**
 
 ````text
 I see one issue- whenever healer or automation generator runs then to tets the generated test it starts running all logins as well,, I think it is not needed. Also suggest me what other ways we can fast up the automation generation
 ````
 
-**79. 2026-10-15 14:15 UTC** · separate session
+**85. 2026-10-15 14:15 UTC** · separate session
 
 ````text
 so if we call the skill repeatedly then the agent cache would still be hot and every subsequent generation will be served from cached prompts ?
 ````
 
-**80. 2026-10-15 14:19 UTC**
+**86. 2026-10-15 14:19 UTC**
 
 ````text
 test case automation took 140K tokens, any possibility we can reduce the token usage,, let me know if you need the full trace
 ````
 
-**81. 2026-10-15 14:23 UTC**
+**87. 2026-10-15 14:23 UTC**
 
 ````text
 so for 2 - I want to understand why the full page snapshot is needed ? is it because it needs full html dom to find locators
@@ -645,19 +681,19 @@ so for 2 - I want to understand why the full page snapshot is needed ? is it bec
 
 Running cases through Playwright MCP and the API before approving them, automating only Approved cases, and turning a wrong assumption into a finding.
 
-**82. 2026-10-11 06:31 UTC**
+**88. 2026-10-11 06:31 UTC**
 
 ````text
 Just now I generated the test case for part creation flow and it raised some questions , can you review once if they are valid and what is the right explanation for each of them
 ````
 
-**83. 2026-10-11 07:13 UTC**
+**89. 2026-10-11 07:13 UTC**
 
 ````text
 before I mark these test cases as approved, lets add the playwright MCP to the project and run these test cases manually via MCP.
 ````
 
-**84. 2026-10-11 07:15 UTC** · separate session
+**90. 2026-10-11 07:15 UTC** · separate session
 
 ````text
 [pasted]
@@ -677,19 +713,19 @@ against http://localhost/web, exactly as written.
 [end of paste]
 ````
 
-**85. 2026-10-13 05:13 UTC**
+**91. 2026-10-13 05:13 UTC**
 
 ````text
 there are some open questions for CRUD API tests can you perform the API calls and confirm when the scenarios in questions are performed ?
 ````
 
-**86. 2026-10-14 18:24 UTC**
+**92. 2026-10-14 18:24 UTC**
 
 ````text
 for now lets keep the automation check till review field only- if it is approved then automate
 ````
 
-**87. 2026-10-15 16:43 UTC**
+**93. 2026-10-15 16:43 UTC**
 
 ````text
 change the pre-requisite to use all access and record this as a defect in findings. Also tell me the requirement that says an engineer can create stock
@@ -699,55 +735,55 @@ change the pre-requisite to use all access and record this as a defect in findin
 
 CLAUDE.md, folder naming, one automation project, the submission documents, and keeping the case folders tidy.
 
-**88. 2026-10-12 18:53 UTC**
+**94. 2026-10-12 18:53 UTC**
 
 ````text
 Need to include a claude.md file
 ````
 
-**89. 2026-10-13 03:53 UTC**
+**95. 2026-10-13 03:53 UTC**
 
 ````text
 Lets create a prefix 'API_' to the folder names having API test and make the updates in all the references that use it
 ````
 
-**90. 2026-10-14 07:59 UTC**
+**96. 2026-10-14 07:59 UTC**
 
 ````text
 I see we are running two projects - one for UI automation and another for API. Ideally it should be one automation project.
 ````
 
-**91. 2026-10-14 13:24 UTC**
+**97. 2026-10-14 13:24 UTC**
 
 ````text
 test cases folder names are a bit confusing, instead rename them to full names like ATT to Attribute, and also update all the references where they are called.
 ````
 
-**92. 2026-10-16 07:03 UTC**
+**98. 2026-10-16 07:03 UTC**
 
 ````text
 chekc the assignemtn document and suggest what is missing in the documentation
 ````
 
-**93. 2026-10-16 07:25 UTC**
+**99. 2026-10-16 07:25 UTC**
 
 ````text
 now lets create this: README.md at the root: setup, tool choices, approach summary
 ````
 
-**94. 2026-10-16 08:42 UTC**
+**100. 2026-10-16 08:42 UTC**
 
 ````text
 Meanwhile generate this file -	agents/system-instructions.md as per the rquirement of the assignment.
 ````
 
-**95. 2026-10-16 11:00 UTC**
+**101. 2026-10-16 11:00 UTC**
 
 ````text
 Need to fix one thing - there is a lot of clutter under the each area test cases folder lets move all open questions to a common Open questions folder with names like open-question_<AREA>.md, similarly move the review comments under the same folder.
 ````
 
-**96. 2026-10-16 11:06 UTC**
+**102. 2026-10-16 11:06 UTC**
 
 ````text
 are the agents also updated accordingly ?
@@ -794,6 +830,11 @@ Every skill command, in order. Each one ran the agents for one stage: test cases
 | 2026-10-16 10:09 | `/gen-test-cases UI Part creation with only the required fields` |
 | 2026-10-16 10:32 | `/automate-cases UI-Part-074` |
 | 2026-10-16 11:20 | `/gen-test-cases API Part field validation on create and update` |
+| 2026-10-16 11:46 | `/gen-test-cases PI Category field validation on create and update` |
+| 2026-10-16 11:46 | `/gen-test-cases API Category field validation on create and update` |
+| 2026-10-16 12:07 | `/gen-test-cases API Duplicate and uniqueness conflicts for parts, revisions and categories` |
+| 2026-10-16 12:19 | `/gen-test-cases API Part field validation on create and update, except the part name on create (covered by API-VAL-001 to 004)` |
+| 2026-10-16 13:28 | `/gen-test-cases /automate-cases UI-Part-074` |
 
 ## How the agents are briefed
 
@@ -809,7 +850,7 @@ The skills send short, fixed prompts on purpose: each agent reads its instructio
 | `/automate-api-cases <case IDs>` | `api-test-generator` | `Automate test case <case ID>.` |
 | | `api-test-reviewer` | `Review <spec path>.` |
 
-Agent prompts in the transcripts: 116 (`test-case-creator` 37, `test-case-reviewer` 31, `api-test-generator` 15, `api-test-reviewer` 14, `playwright-test-generator` 10, `playwright-test-reviewer` 4, `playwright-test-healer` 3, `duplicate-judge` 1, `claude-code-guide` 1). `duplicate-judge` was later merged into `test-case-reviewer`.
+Agent prompts in the transcripts: 121 (`test-case-creator` 40, `test-case-reviewer` 33, `api-test-generator` 15, `api-test-reviewer` 14, `playwright-test-generator` 10, `playwright-test-reviewer` 4, `playwright-test-healer` 3, `duplicate-judge` 1, `claude-code-guide` 1). `duplicate-judge` was later merged into `test-case-reviewer`.
 
 ### Early briefings, before the skills
 
@@ -853,11 +894,3 @@ Context you should know:
 - Run history: 002/004/005 passed every run; 001 failed once in about 8 runs (cause unknown, error output lost); 006 failed once in 8 (allaccess page still loading when BasePage.goto's 10 s navigation-menu check timed out); 003 passed but its toHaveCount(0) check on the Add Parts button could pass before the toolbar renders.
 - Do not edit any code. In your final report, give per spec: verdict, findings by severity, and the review file path; then a short cross-cutting summary.
 ````
-
-**`test-case-reviewer`, 2026-10-16**
-
-````text
-Review API test cases for Part field validation on create and update: API-VAL-092, API-VAL-093, API-VAL-094, API-VAL-095, API-VAL-096, API-VAL-097, API-VAL-098, API-VAL-099, API-VAL-100, API-VAL-101, API-VAL-102, API-VAL-103, API-VAL-104, API-VAL-105, API-VAL-106, API-VAL-107, API-VAL-108.
-````
-
-Review file: `test-cases/Reviews/VAL_part-field-validation-on-create-and-update-review-2026-10-16.md` · Verdict: Changes required.

@@ -115,7 +115,7 @@ Every agent inherits these:
 | Skill | Steps |
 |---|---|
 | [`/gen-test-cases <UI\|API> <functionality>`](configs/skills/gen-test-cases/SKILL.md) | Check the request → `test-case-creator` → `test-case-reviewer` with the created case IDs only → summary (cases, open questions, review verdict, Blockers and Majors) |
-| [`/automate-cases <UI case IDs>`](configs/skills/automate-cases/SKILL.md) | Per case: pre-check (exists, Approved, no spec yet) → `playwright-test-generator` → lint and type check → first run without the login smoke tests → `playwright-test-healer` only if it fails, then a green-run check → `playwright-test-reviewer` in the background → summary |
+| [`/automate-cases <UI case IDs>`](configs/skills/automate-cases/SKILL.md) | Per case: pre-check (exists, Approved, no spec yet) → `playwright-test-generator` → lint and type check → first run → `playwright-test-healer` only if it fails, then a green-run check → `playwright-test-reviewer` in the background → summary |
 | [`/automate-api-cases <API case IDs>`](configs/skills/automate-api-cases/SKILL.md) | Per case: pre-check → `api-test-generator` → lint and type check → 3 green runs → `api-test-reviewer` → summary, with per-row results for a data-driven case |
 
 The skills only coordinate: they never write or fix specs or cases themselves, never retry an agent on a reviewer's findings, and never pass one agent's report to the next. Every way to trigger them, or an agent on its own, is in [`RUNNING.md`](RUNNING.md); the flows are drawn in [`diagrams/`](diagrams/).
@@ -127,7 +127,7 @@ The skills only coordinate: they never write or fix specs or cases themselves, n
 | [`configs/CLAUDE.md`](configs/CLAUDE.md) | Copy of the project instructions (layer 1) |
 | [`configs/claude-agents/`](configs/claude-agents/) | Copies of `.claude/agents/*.md`: the seven agent system prompts, with frontmatter (name, description, tools, model) |
 | [`configs/skills/`](configs/skills/) | Copies of `.claude/skills/*/SKILL.md` |
-| [`configs/mcp.json`](configs/mcp.json) | Copy of `.mcp.json`: `playwright-test` (Playwright's test MCP server, used by the generator and healer, with `SKIP_LOGIN_SMOKE=1` so its test runs skip the login smoke project) and `playwright` (the browser MCP server, used for manual exploration runs) |
+| [`configs/mcp.json`](configs/mcp.json) | Copy of `.mcp.json`: `playwright-test` (Playwright's test MCP server, used by the generator and healer) and `playwright` (the browser MCP server, used for manual exploration runs) |
 
 The copies are kept identical to the live files; after any edit to an agent or skill, it is copied and compared.
 
@@ -143,7 +143,7 @@ The instructions were refined from what the agents got wrong, not written once. 
 | Separate cases for each invalid name (empty, too long, ...) with the same steps | One data-driven case with a Data sets table; one spec, one test per row; reviewer flags cases to merge |
 | Data-driven API rows described the status in prose ("rejected") | Required `expected status` column with a code, or `Proposed, to confirm in Q-...: <code>` |
 | The generator could not find the seed file and navigated to a URL without the host | Exact `generator_setup_page` arguments; navigation by clicking or from the printed page URL |
-| Every generator and healer run also ran all login smoke tests | `SKIP_LOGIN_SMOKE` for MCP runs; healer only when the first run fails; reviewer in the background |
+| Every test run, even of one spec, first logged in as all 6 demo users (a login smoke project) | Login smoke project removed: a test logs in only as its own user; healer only when the first run fails; reviewer in the background |
 | Tool calls failed on descriptive targets, and repeated full-page snapshots made one automation run cost about 140K tokens | Refs from the latest snapshot as click targets; snapshot only when refs are needed, and filter long tables first |
 
 The reviewers' Blockers and Majors, and how each was resolved, are in [`reviewer-catches.md`](reviewer-catches.md).

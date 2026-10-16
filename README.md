@@ -94,7 +94,7 @@ From `automation/`:
 | HTML report | `npm run report` |
 | Lint and types | `npm run lint`, `npm run typecheck` |
 
-The UI suite first runs a login smoke check (every demo user logs in and out through the real form); if login is broken, the run stops there instead of failing every test. Tests run serially: some change global InvenTree settings, and parallel category deletes deadlock InvenTree's tree rebuild.
+Each UI test logs in as its own user through the real login form when it starts; there is no separate login step for all users. Tests run serially: some change global InvenTree settings, and parallel category deletes deadlock InvenTree's tree rebuild.
 
 ---
 

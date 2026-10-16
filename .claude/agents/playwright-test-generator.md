@@ -26,11 +26,12 @@ Do not read `automation/reviews/`: an earlier review of another version of the s
 
 1. **Approved cases only.** The case's Review field must start with `Approved` or `Changed`. Anything else (`Draft`, `Draft · Open question: ...`, `Rejected`): stop and report; write nothing. The Review field is the only gate: an Approved case is automated as written, including any `Open:` or `Proposed` wording the architect approved with it (assert the stated outcome; leave an unknown detail such as an error text unasserted and say so in the report).
 2. **The case is the specification.** One `test.step` per case step, titled `<n>. <case action>`, in the same order. Every Expected result becomes at least one `expect` inside its step. Do not add, skip, merge, reorder or reinterpret steps, and do not weaken an expectation.
-   - **Verify every field you fill.** In a step that fills or changes form inputs, assert each one before moving on, so a failed entry fails that step, not a later one:
-     - **text and number fields:** `toHaveValue(<entered value>)`; a field the case says to leave empty: `toHaveValue('')`.
+   - **Verify every field you fill, and only those.** In a step that fills or changes form inputs, assert each field the step fills, changes or clears before moving on, so a failed entry fails that step, not a later one. Also assert a field the step's Expected result names (e.g. "IPN stays empty", "Units shows pcs"). Do not assert fields the step only leaves untouched ("leave IPN, Link and Keywords empty") unless the Expected result names them: each extra check is noise the case did not ask for.
+     - **text and number fields:** `toHaveValue(<entered value>)`; a field the step clears, or whose Expected result says it is empty: `toHaveValue('')`.
      - **switches and checkboxes:** `toBeChecked()` or `not.toBeChecked()`.
      - **dropdowns** (related fields, tree fields such as Category, read-only selects): the selected option shows the chosen value, e.g. `toContainText(<chosen name>)` on the field's selected-value locator.
    - If a page object has no locator for a field's value (typically a dropdown's selected value), add it under guardrail 5; never skip the check.
+   - **Absence only when the case asks for it.** Assert that something is hidden or absent (`toBeHidden`, `not.toBeVisible`, `toHaveCount(0)`) only when the step's Expected result states it: "the form closes", "the Suppliers tab is not shown", "the column is hidden". Never add one as a general safety check: an absence check passes before the element would have appeared, so it proves nothing and makes timing failures look random. When the case does state an absence, assert it after the action that would make the element appear or disappear (e.g. "no form error" after *Submit*, not after filling), and prefer the positive outcome that implies it when the case states one (the detail page opens, so the form was accepted).
 3. **If the app does not match the case, stop.** A label, field, menu or outcome that differs from the case is a case defect or an app finding, not something to work around. Do not write the spec; report the step, what the case says and what the app shows.
 4. **Page objects only.** The spec never calls `page.locator`, `page.getBy*`, CSS or XPath, and never imports from `@playwright/test` (lint fails on all of these). Use the page objects' locators and methods; assertions go in the spec, on locators the page objects return.
 5. **Missing page object support = add it, additions only.** If a step needs a locator, action, component or page that the framework lacks, add it before writing the spec; never work around it in the spec.
@@ -87,7 +88,8 @@ test.describe('Part creation flow', () => {
 
       await test.step('2. Fill in the required field and the category only; leave IPN empty', async () => {
         await partForm.fill({ name: partName, category: String(category.name) });
-        await expect(partForm.form.invalidFields).toHaveCount(0);
+        await expect(partForm.textField('name')).toHaveValue(partName);
+        await expect(partForm.categoryField).toHaveValue(String(category.name));
       });
 
       await test.step('3. Press Submit', async () => {

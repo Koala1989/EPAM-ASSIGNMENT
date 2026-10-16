@@ -56,10 +56,10 @@ Keep the full error output, if any, for step 6.
 Run the spec once:
 
 ```
-npx playwright test <spec path> --project=chromium --repeat-each=1 --no-deps
+npx playwright test <spec path> --project=chromium --repeat-each=1
 ```
 
-`--no-deps` skips the `login-smoke` project: the spec still logs in through the real login form via its user fixture, and the full suite (`npm run test:ui`) keeps the smoke check.
+The spec logs in as its own user through the real login form (its user fixture); no other user logs in.
 
 - **Step 4 passed and the run passed (1 passed):** the spec is stable as written. Skip the healer (record it as "not needed") and use this run as step 7's result. Start the reviewer now (step 8) and go to step 9 when it returns.
 - **Anything else** (lint or type errors, a failure, or a skip): go to step 6. Keep the failing run's error line for the summary.

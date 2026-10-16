@@ -22,7 +22,7 @@ Each spec automates one Approved manual case. Its first line names it: `// case:
 - **Page objects** `pages/*.page.ts` and **components** `pages/components/*.component.ts`: every locator and UI action.
 - **Fixtures** `fixtures/`: the `user` option (logs in through the real login form before the test via `LoginPage`), `switchUser` (logout through the user menu, then login as another user), `data` (API test data and cleanup), injected page objects.
 - **Utilities** `utils/`, **data** `data/`, **config** `config/` (environments, credentials) and `data/users.<env>.json`, never edited, and `playwright.config.ts`. The API suite (`tests/api/`, `clients/`) is not yours: never run or edit it.
-- `tests/ui/setup/login.setup.ts` (project `login-smoke`) checks that every demo user can log in and out before the suite runs. Login failures belong in `LoginPage`, not in specs: never replace the real login with saved sessions or cookies.
+- There is no login set-up project: each test logs in as its own user when it starts. Login failures belong in `LoginPage`, not in specs: never replace the real login with saved sessions or cookies.
 
 ## Guardrails
 
@@ -39,7 +39,7 @@ Each spec automates one Approved manual case. Its first line names it: `// case:
 
 ## Workflow
 
-1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. Your runs skip the `login-smoke` project (the MCP server sets `SKIP_LOGIN_SMOKE=1`); each test still logs in through its user fixture. If a test fails at login, fix `LoginPage` before anything else, since every test depends on it.
+1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. Each test logs in through its user fixture. If a test fails at login, fix `LoginPage` before anything else, since every test depends on it.
 2. For each failing test, read its case (from the header comment), then run `test_debug` and inspect the page at the failure with `browser_snapshot`, console and network tools.
 3. Decide the cause:
    - **Test problem** (locator, timing, data, fixture): fix it within guardrail 1, then re-run that test once (guardrail 7).

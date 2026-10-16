@@ -1,10 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 import { env } from './config/env';
 
-// One project for both suites. UI: login-smoke -> chromium (tests/ui). API: api-smoke -> api (tests/api).
-// SKIP_LOGIN_SMOKE=1 drops the login-smoke dependency for single-spec agent runs (set for the playwright-test
-// MCP server in .mcp.json); each test still logs in through the real login form via the user fixture.
-const skipLoginSmoke = process.env.SKIP_LOGIN_SMOKE === '1';
+// One project for both suites. UI: chromium (tests/ui). API: api-smoke -> api (tests/api).
+// UI tests have no login set-up project: each test logs in as its own user, through the real login form, when it
+// starts (the user fixture in fixtures/auth.fixture.ts).
 
 export default defineConfig({
   timeout: env.testTimeout,
@@ -21,13 +20,11 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   projects: [
-    { name: 'login-smoke', testDir: './tests/ui', testMatch: /setup\/login\.setup\.ts/ },
     {
       name: 'chromium',
       testDir: './tests/ui',
       use: { ...devices['Desktop Chrome'] },
       retries: process.env.CI ? 1 : 0,
-      dependencies: skipLoginSmoke ? [] : ['login-smoke'],
     },
     { name: 'api-smoke', testDir: './tests/api', testMatch: /setup\/.*\.setup\.ts/ },
     { name: 'api', testDir: './tests/api', testMatch: /.*\.spec\.ts/, dependencies: ['api-smoke'] },

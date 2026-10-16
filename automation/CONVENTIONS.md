@@ -10,7 +10,7 @@
 
 | Suite | Playwright project | Runs first (dependency) | Tests | Command (from `automation/`) |
 |---|---|---|---|---|
-| UI | `chromium` | `login-smoke`: every demo user logs in and out through the UI | `tests/ui/` | `npm run test:ui` |
+| UI | `chromium` | None: each test logs in as its own user when it starts | `tests/ui/` | `npm run test:ui` |
 | API | `api` | `api-smoke`: every demo user gets a token; the schema validator self-check | `tests/api/` | `npm run test:api` |
 
 - `npm test` runs both; `npm run test:smoke` runs `@smoke` only; `npx playwright test <spec>` runs one spec with its setup project.
@@ -21,7 +21,7 @@
 
 ```
 automation/
-├── playwright.config.ts        projects: login-smoke -> chromium (tests/ui), api-smoke -> api (tests/api); reads config/env.ts
+├── playwright.config.ts        projects: chromium (tests/ui), api-smoke -> api (tests/api); reads config/env.ts
 ├── CONVENTIONS.md
 ├── package.json, tsconfig.json, eslint.config.mjs   quality gates (UI §12, API §12)
 ├── config/
@@ -46,7 +46,7 @@ automation/
 ├── pages/                      UI page objects; components/ for InvenTree widgets (UI §4)
 ├── clients/                    API clients, one per REST resource (API §4)
 ├── tests/
-│   ├── ui/setup/login.setup.ts, ui/seeds/<user>.seed.spec.ts, ui/<Area>/ui-<area>-NNN.spec.ts
+│   ├── ui/seeds/<user>.seed.spec.ts, ui/<Area>/ui-<area>-NNN.spec.ts
 │   └── api/setup/api.setup.ts, api/<Area>/api-<area>-NNN.spec.ts
 └── reviews/ui/, reviews/api/   reviewer reports, one per spec per review
 ```
@@ -108,6 +108,7 @@ Tests read like the manual case: the workflow and the checks, nothing else.
 - **No raw DOM access.** No `page.locator`, `page.getBy*`, CSS or XPath in a test. If a page object lacks what the step needs, add it to the page object.
 - **No setup logic.** Prerequisite records, users and settings come from fixtures.
 - **Data-driven tests** loop over a matrix from `data/` and create one `test` per row, with the row's label in the title.
+- **Assert what the case asks, no more.** In a form step, assert the fields the step fills, changes or clears, and the fields its Expected result names; not the fields it leaves untouched. Assert that something is hidden or absent (`toBeHidden`, `not.toBeVisible`, `toHaveCount(0)`) only when the Expected result states it, and only after the action that would show or remove it: an absence check passes before the element would have appeared, so as a general safety check it proves nothing and makes timing failures look random.
 
 ```ts
 // case: test-cases/Part_Creation_and_Import/part-creation-flow.md (UI-Part-001)
@@ -129,7 +130,8 @@ test.describe('Part creation flow', () => {
 
       await test.step('2. Fill in the required field and the category only', async () => {
         await partForm.fill({ name: partName, category: String(category.name) });
-        await expect(partForm.form.invalidFields).toHaveCount(0);
+        await expect(partForm.textField('name')).toHaveValue(partName);
+        await expect(partForm.categoryField).toHaveValue(String(category.name));
       });
 
       await test.step('3. Submit', async () => {
@@ -159,7 +161,7 @@ Fixtures prepare what a test needs and clean it up afterwards.
 
 - **Import path.** Every spec imports `test` and `expect` from `fixtures/index.ts` (Shared §4). Never import `test` from `@playwright/test` in a spec.
 - **Real login, like a user.** `test.use({ user: 'engineer' })` makes the fixture log in through the login form (`LoginPage.loginAs`) before the test body; no saved sessions or cookies are used. Without it the test's `page` starts logged out. A case that changes user ("log out, log in as allaccess") calls `switchUser('allaccess')`: it logs out through the user menu and logs in as the other user in the same page, so the test continues with the same page objects.
-- **Login smoke check.** The `login-smoke` project (`tests/ui/setup/login.setup.ts`) runs first and checks that every demo user can log in and out; the other tests depend on it, so a broken login stops the run early instead of failing every test. Single-spec agent runs skip it (`--no-deps`, or `SKIP_LOGIN_SMOKE=1`, which `.mcp.json` sets for the playwright-test MCP server); the full suites keep it.
+- **Login per test only.** There is no login set-up project: a UI test logs in only as its own user, through the real login form, when it starts (`user` fixture), so running one spec logs in one user. A broken login shows up as the tests failing at the login step; fix it in `LoginPage`.
 - **`data`** creates prerequisite records through the API as `admin` with unique `QA-<8 hex>` names, and removes them after the test in reverse order, including stock, supplier and manufacturer parts. Records the test creates through the UI are registered with `data.trackPart(name)` (returns the name) so they are removed too. `data` is shared with the API suite (Shared §4). `data.setSetting(key, value)` changes a global setting and restores it after the test.
 - **Page objects** are injected per test by `fixtures/pages.fixture.ts`: `app` (a `BasePage`), `loginPage`, `partsPage`, `partForm`, `partDetail`, built on the test's `page`.
 - **Finding records the UI created:** `data.findParts(name)` returns the parts with that exact name (e.g. to get the ID of a part made through the form).
@@ -242,7 +244,7 @@ Known behaviour, verified in the app (Playwright MCP exploration and runs, 2026-
 ### UI 12. Quality gates
 
 - `npm run typecheck` (TypeScript, no emit) and `npm run lint` (ESLint with `eslint-plugin-playwright`) must pass before a spec is committed. The lint configuration enforces these conventions: raw locators or `@playwright/test` imports in a spec (UI §3, UI §5), `process.env` outside `config/env.ts` and `playwright.config.ts` (Shared §3), and `waitForTimeout`, `networkidle` or `force` (UI §8) are errors.
-- `npm run test:ui` runs the UI suite (`--project=chromium`, after `login-smoke`); `npm test` runs both suites; `npm run test:smoke` runs `@smoke` only.
+- `npm run test:ui` runs the UI suite (`--project=chromium`); `npm test` runs both suites; `npm run test:smoke` runs `@smoke` only.
 - A new or changed spec passes three runs in a row and has a `playwright-test-reviewer` verdict of Approve or Approve with changes before it counts as done.
 
 ## API part
