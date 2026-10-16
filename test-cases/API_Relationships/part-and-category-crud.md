@@ -5,7 +5,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/category/{id}/` on a category that contains a part: with both flags `false`, the category is deleted and the part is kept without a category. |
-| **Requirement** | R-CRUD-10 (index, Not in schema #3). Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Delete behaviour: `open-questions.md Q-CRUD-03` (answered). |
+| **Requirement** | R-CRUD-10 (index, Not in schema #3). Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Delete behaviour: `open-question_REL.md Q-CRUD-03` (answered). |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (category removed while parts are assigned), State transition (category with parts to deleted) |
@@ -36,7 +36,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/category/{id}/` on a parent category: with both flags `false`, the parent is deleted and its child is kept and moved up. |
-| **Requirement** | R-CRUD-10 (index, Not in schema #3). Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)), `components.schemas.Category.parent`. Delete behaviour: `open-questions.md Q-CRUD-03` (answered). |
+| **Requirement** | R-CRUD-10 (index, Not in schema #3). Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)), `components.schemas.Category.parent`. Delete behaviour: `open-question_REL.md Q-CRUD-03` (answered). |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (parent removed while a child exists), State transition (category with children to deleted) |

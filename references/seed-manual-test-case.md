@@ -29,6 +29,8 @@ The reference format for every manual UI test case. API cases use `seed-api-test
 
 Any other cell that needs a detail an open question leaves unknown: `[open: Q-<Area>-NN, <what is unknown>]`.
 
+**Data sets** (data-driven cases only): when several inputs test the same behaviour with the same steps and differ only in the input and the expected outcome (the classes and boundaries of one field), write one case with a **Data sets** table after the Steps, one row per input, and refer to row values in the steps as `<row.column>`. Format and rules: "Data sets" in `seed-api-test-case.md`.
+
 **Postconditions and cleanup:** the state left behind, and how to remove the records the case created (for parts: make inactive, then delete).
 
 **Notes:** any trap, mismatch between the docs and the app, or finding reference (`test-cases/findings.md#...`). `None` otherwise.

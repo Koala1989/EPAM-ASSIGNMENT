@@ -1366,3 +1366,34 @@ Conventions used in every case below. "Token" means the user's token from `GET /
 **Postconditions and cleanup:** None.
 
 **Notes:** None.
+
+### API-SEC-051: View-only user cannot create a part that would duplicate an existing part
+
+| Field | Value |
+|---|---|
+| **Summary** | `reader` sends `POST /api/part/` with the `name` and `IPN` of an existing part: no part is created and the permission check, not the duplicate check, decides the response. |
+| **Requirement** | `R-SEC-04`, R-Part-13 ([part-views.md#L32](../../requirements/docs/part-views.md#L32)). Schema: `requirements/openapi-parts.yaml POST /api/part/` ([#L747](../../requirements/openapi-parts.yaml#L747)). |
+| **Area** | SEC |
+| **Type** | Negative |
+| **Technique** | Negative (forbidden create as `reader`), Error guessing (duplicate and unauthorised together) |
+| **Priority** | P3 |
+| **Tags** | Regression, Permissions |
+| **Prerequisites** | User: `reader`; Settings: None; Data: part `QA-<suffix> Guarded` with IPN `QA-<suffix>-GRD`, created in step 1 by `admin`; Pre-steps: get `reader`'s and `admin`'s tokens with `GET /api/user/me/token/` (basic auth) and send each as `Authorization: Token <token>`. |
+| **Automation** | Partial: status code, error body and precedence unknown until Q-SEC-02 and Q-SEC-06 are answered. |
+| **Review** | Draft · Open question: Q-SEC-02, Q-SEC-06 |
+
+**Steps**
+
+| # | Request | Payload / parameters | Expected result |
+|---|---|---|---|
+| 1 | `POST /api/part/` as `admin` | `{"name": "QA-<suffix> Guarded", "IPN": "QA-<suffix>-GRD"}` | `201 Created`. Body is valid against `Part`. |
+| 2 | `POST /api/part/` as `reader` | `{"name": "QA-<suffix> Guarded", "IPN": "QA-<suffix>-GRD"}` | No part is created (R-SEC-04). Proposed, to confirm in Q-SEC-06: the permission error is returned, not a duplicate error under a field. Open: Q-SEC-02 (status code and error body). |
+| 3 | `GET /api/part/` as `admin` | `search=QA-<suffix> Guarded`, `limit=10` | `200 OK`. `count` is `1`. |
+
+**Postconditions and cleanup:** one part. Cleanup as `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`).
+
+**Notes:** None.
+
+**Duplicate check:** 52 · Review · matches: [API-SEC-019](authentication-and-role-permissions.md) (52)
+
+**Duplicate judgement:** Keep · Differs from API-SEC-019 in starting state and expected outcome: a part with the same name and IPN already exists, and the case checks that the permission error, not a duplicate error, is returned (Q-SEC-06). · test-case-reviewer, 2026-10-16

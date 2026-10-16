@@ -2,7 +2,7 @@
 
 Every Blocker and Major that `test-case-reviewer` (Opus 5.5) found in cases written by `test-case-creator` (Sonnet 5.5), with a short note on why the creator likely missed it. It shows what the independent review adds, and it drives the changes to the creator's instructions.
 
-Source: the review files in `test-cases/<Area folder>/reviews/`, up to 2026-10-15. "Likely why" is the architect's diagnosis, not the creator's own reasoning (the creator does not explain each case).
+Source: the review files in [`test-cases/Reviews/`](../test-cases/Reviews/), up to 2026-10-15. "Likely why" is the architect's diagnosis, not the creator's own reasoning (the creator does not explain each case).
 
 ## Summary
 
@@ -189,7 +189,7 @@ Resolution: **Resolved**, either fixed (the case was edited) or covered (a later
 
 | # | Sev. | Case or rule | What was missed | Likely why | Category | Resolution |
 |---|---|---|---|---|---|---|
-| 1 | Major | UI-Detail_View-115 to 127 | Q-Detail_View-22 and 23 defined twice in `open-questions.md`. | Two generation runs in the same Area at the same time. | Tooling | **Resolved**: fixed (renumbered 40 to 44) |
+| 1 | Major | UI-Detail_View-115 to 127 | Q-Detail_View-22 and 23 defined twice in the Area's open questions file. | Two generation runs in the same Area at the same time. | Tooling | **Resolved**: fixed (renumbered 40 to 44) |
 | 2 | Major | R-Detail_View-30 | Test Results table only checked empty. | Visibility tested, content clause left. | Coverage | Open |
 
 ### Units of Measure (2026-10-14)

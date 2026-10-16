@@ -134,7 +134,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | Sending `duplicate` with the `pk` of an existing part creates a new, separate part and leaves the original unchanged. |
-| **Requirement** | R-CRUD-14. Schema: `requirements/openapi-parts.yaml POST /api/part/`, `components.schemas.Part.duplicate` ([L4343](../../requirements/openapi-parts.yaml#L4343)), `components.schemas.PartDuplicateOptions` ([L4440](../../requirements/openapi-parts.yaml#L4440)). Fields copied: `open-questions.md Q-CRUD-06` (answered). |
+| **Requirement** | R-CRUD-14. Schema: `requirements/openapi-parts.yaml POST /api/part/`, `components.schemas.Part.duplicate` ([L4343](../../requirements/openapi-parts.yaml#L4343)), `components.schemas.PartDuplicateOptions` ([L4440](../../requirements/openapi-parts.yaml#L4440)). Fields copied: `open-question_CRUD.md Q-CRUD-06` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | Equivalence partitioning (valid class: `original` only, copy options at their defaults) |
@@ -160,7 +160,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | The `full_name` of a part is a read-only string returned on create and read, and a value sent for it is not used as the name. |
-| **Requirement** | R-CRUD-16. Schema: `components.schemas.Part.full_name` ([L4152](../../requirements/openapi-parts.yaml#L4152)), `readOnly`. Default format: `open-questions.md Q-CRUD-05` (answered). |
+| **Requirement** | R-CRUD-16. Schema: `components.schemas.Part.full_name` ([L4152](../../requirements/openapi-parts.yaml#L4152)), `readOnly`. Default format: `open-question_CRUD.md Q-CRUD-05` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | Equivalence partitioning (read-only derived field) |
@@ -211,7 +211,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `GET /api/part/{id}/` for a non-existent ID returns `404 Not Found`. |
-| **Requirement** | R-CRUD-02. Schema: `requirements/openapi-parts.yaml GET /api/part/{id}/` ([L2673](../../requirements/openapi-parts.yaml#L2673)); only `200` is documented. Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-02. Schema: `requirements/openapi-parts.yaml GET /api/part/{id}/` ([L2673](../../requirements/openapi-parts.yaml#L2673)); only `200` is documented. Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Negative |
 | **Technique** | Error guessing (unknown ID), Equivalence partitioning (invalid class: not found) |
@@ -314,7 +314,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive part removes it, and it can no longer be read. |
-| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | State transition (Inactive to deleted) |
@@ -341,7 +341,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on a part that is still active. |
-| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Source: [part-index.md#L116](../../requirements/docs/part-index.md#L116) (inactive recommended "rather than deleting"). Refusal: `open-questions.md Q-CRUD-02` (answered). |
+| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Source: [part-index.md#L116](../../requirements/docs/part-index.md#L116) (inactive recommended "rather than deleting"). Refusal: `open-question_CRUD.md Q-CRUD-02` (answered). |
 | **Area** | CRUD |
 | **Type** | Negative |
 | **Technique** | State transition (blocked or allowed: Active to deleted), What-if business scenario (user deletes instead of deactivating) |
@@ -367,7 +367,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `PATCH /api/part/` with an `items` list of part IDs updates exactly those parts and no others. |
-| **Requirement** | R-CRUD-17. Schema: `requirements/openapi-parts.yaml PATCH /api/part/` ([L812](../../requirements/openapi-parts.yaml#L812)), request `components.schemas.PatchedPart`; the 1.5.6 response is `{"success", "items"}`, not `Part` (findings F-10). Selection: `open-questions.md Q-CRUD-04` (answered). |
+| **Requirement** | R-CRUD-17. Schema: `requirements/openapi-parts.yaml PATCH /api/part/` ([L812](../../requirements/openapi-parts.yaml#L812)), request `components.schemas.PatchedPart`; the 1.5.6 response is `{"success", "items"}`, not `Part` (findings F-10). Selection: `open-question_CRUD.md Q-CRUD-04` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | Equivalence partitioning (valid class: bulk update with `items`) |
@@ -450,7 +450,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `GET /api/part/category/{id}/` for a non-existent ID returns `404 Not Found`. |
-| **Requirement** | R-CRUD-07. Schema: `requirements/openapi-parts.yaml GET /api/part/category/{id}/` ([L1303](../../requirements/openapi-parts.yaml#L1303)); only `200` is documented. Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-07. Schema: `requirements/openapi-parts.yaml GET /api/part/category/{id}/` ([L1303](../../requirements/openapi-parts.yaml#L1303)); only `200` is documented. Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Negative |
 | **Technique** | Error guessing (unknown ID), Equivalence partitioning (invalid class: not found) |
@@ -527,7 +527,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/category/{id}/` on a category with no parts and no child categories removes it. |
-| **Requirement** | R-CRUD-10. Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-10. Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | Equivalence partitioning (valid class: empty category) |
@@ -553,7 +553,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `PATCH /api/part/category/` with an `items` list of category IDs updates exactly those categories and no others. |
-| **Requirement** | R-CRUD-17. Schema: `requirements/openapi-parts.yaml PATCH /api/part/category/` ([L1017](../../requirements/openapi-parts.yaml#L1017)), request `components.schemas.PatchedCategory`; the 1.5.6 response is `{"success", "items"}`, not `Category` (findings F-10). Selection: `open-questions.md Q-CRUD-04` (answered). |
+| **Requirement** | R-CRUD-17. Schema: `requirements/openapi-parts.yaml PATCH /api/part/category/` ([L1017](../../requirements/openapi-parts.yaml#L1017)), request `components.schemas.PatchedCategory`; the 1.5.6 response is `{"success", "items"}`, not `Category` (findings F-10). Selection: `open-question_CRUD.md Q-CRUD-04` (answered). |
 | **Area** | CRUD |
 | **Type** | Positive |
 | **Technique** | Equivalence partitioning (valid class: bulk update with `items`) |
@@ -585,7 +585,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` for a non-existent ID returns `404 Not Found` and deletes nothing. |
-| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-05. Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/` ([L2803](../../requirements/openapi-parts.yaml#L2803)). Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Negative |
 | **Technique** | Error guessing (unknown ID), Equivalence partitioning (invalid class: not found) |
@@ -610,7 +610,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/category/{id}/` for a non-existent ID returns `404 Not Found` and deletes nothing. |
-| **Requirement** | R-CRUD-10. Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Not found: `open-questions.md Q-CRUD-01` (answered). |
+| **Requirement** | R-CRUD-10. Schema: `requirements/openapi-parts.yaml DELETE /api/part/category/{id}/` ([L1406](../../requirements/openapi-parts.yaml#L1406)). Not found: `open-question_CRUD.md Q-CRUD-01` (answered). |
 | **Area** | CRUD |
 | **Type** | Negative |
 | **Technique** | Error guessing (unknown ID), Equivalence partitioning (invalid class: not found) |

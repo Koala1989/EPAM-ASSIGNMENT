@@ -40,7 +40,7 @@ Pass the IDs and the functionality only. Never pass the creator's report, its re
 The reviewer gives a duplicate verdict only for cases whose duplicate check scored 50 or more; usually there are none, and it is a coverage and quality review only.
 
 After it returns:
-- Check with Glob that a review file for the functionality exists under `test-cases/` in a `reviews/` folder with today's date. If not, say so.
+- Check with Glob that a review file for the functionality exists in `test-cases/Reviews/` with today's date. If not, say so.
 - Check with Grep that every created case with a `**Duplicate check:**` line now has a `**Duplicate judgement:**` line. List any that do not.
 
 Do not loop back to the creator on the reviewer's findings. The user decides.
@@ -50,7 +50,7 @@ Do not loop back to the creator on the reviewer's findings. The user decides.
 Give the user one summary, in this order:
 
 1. **Created:** case IDs per Area folder, and how many.
-2. **Open questions:** the questions the creator added, with the `open-questions.md` links and the case IDs each one affects (marked `Draft · Open question: ...`). Answering them is the first thing the user must do if there are any.
+2. **Open questions:** the questions the creator added, with links to the Area's `test-cases/Open_Questions/open-question_<Area>.md` and the case IDs each one affects (marked `Draft · Open question: ...`). Answering them is the first thing the user must do if there are any.
 3. **Review:** the reviewer's verdict and the review file link; coverage gaps (rules in scope with no case, missing boundary, negative, permission or 404 cases); each Blocker and Major.
 4. **Duplicates:** the reviewer's verdicts for cases scoring 50 or more, or "none scored 50 or more". Keep needs no action; Merge, Remove and Escalate do.
 5. **Next steps for the user:** answer questions, act on the review (for a gap: rerun `/gen-test-cases` for it or ask for the missing cases), run the cases, then set each case's Review field (all cases are `Draft`).

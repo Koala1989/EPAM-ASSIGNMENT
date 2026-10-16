@@ -269,6 +269,12 @@ API code lives in `tests/api/`, `clients/` and `reviews/api/`; fixtures, utiliti
 
 - **One spec per Approved case:** `tests/api/<Area>/<case id in lower case>.spec.ts`, e.g. `tests/api/CRUD/api-crud-001.spec.ts`. First line: `// case: test-cases/<Area folder>/<file>.md (<case ID>)` (case folders have full names, e.g. `API_Create_Read_Update_Delete`; spec folders use the short Area value, `tests/api/CRUD/`).
 - **Structure:** `import { test, expect } from '../../../fixtures';` · `test.use({ user: '<user>' })` from the case's Prerequisites · `test.describe('<functionality>')` · one `test('<case ID>: <case title>', { tag: [...] }, ...)` · prerequisites through `data.*` first · one `test.step('<n>. <request>', ...)` per case step, in order.
+- **Data-driven case: one spec, one test per data row.** A case with a **Data sets** table (format: `references/seed-api-test-case.md`) is still one spec, run once per row:
+  - **Rows:** `data/api/<Area>/<case id in lower case>.json`, an array with one object per row of the case's table: `label` (the row's label), then the row's inputs and expected values under the case's column names, with `expected status` as the number only (`"expected status": 400`), asserted with `toHaveStatus(row['expected status'])`. Copied from the case: no row without a table row, no table row without a row, no value changed.
+  - **One test per row:** the spec imports the rows and loops over them at module level, creating `test('<case ID> [<label>]: <case title>', ...)` for each, so every row has its own result, trace and retry, and one failing row does not stop the others.
+  - **Same steps for every row:** each test runs the case's steps with the row's values (`row['expected status']`, `row.error`, ...) and asserts every Expected result against them. Never branch on a row inside a test; a row that needs different steps means the case is wrong (report it as a `CASE DEFECT`).
+  - **Cleanup without branching:** a row's request may or may not create a record, so register it before the request by its unique `QA-` name (`data.trackPart(name)`). If the fixture cannot register that resource by name, stop and report it: fixtures are changed by the architect.
+  - Every other rule applies inside each test: one `test.step` per case step, exactly the row's input, status first.
 - **Every Expected result is asserted, as specifically as the case states it:**
   - **Status first:** `await expect(res).toHaveStatus(201)`. Never `toBeOK()` or a range when the case states a code.
   - **Schema:** `await expect.soft(res).toMatchSchema('<component>')` whenever the case says the body is valid against a schema component. Always `expect.soft`: a schema violation is reported and fails the test, but the step's status, value and business-rule checks still run. Everything else stays a hard `expect`.
@@ -276,7 +282,7 @@ API code lives in `tests/api/`, `clients/` and `reviews/api/`; fixtures, utiliti
   - **Values:** each field the case names, with `toBe`/`toEqual` on the parsed body (`const body = await res.json()`). `toMatchObject` only for "contains at least these fields".
   - **Business rule:** a follow-up request that proves it (the record exists, was not created, was changed), when the case states one.
 - **Negative cases send exactly the invalid input** the case gives. Never let a client or helper "correct" it.
-- **No conditional logic, loops over responses, `try/catch` or `test.only`** in specs. `test.fixme()` only with a `// FINDING:` or `// CASE DEFECT:` comment (API §11), and never for a schema violation: that is a soft check and stays in the run.
+- **No conditional logic, loops over responses, `try/catch` or `test.only`** in specs. The module-level loop over a data-driven case's rows is the one allowed loop. `test.fixme()` only with a `// FINDING:` or `// CASE DEFECT:` comment (API §11), and never for a schema violation: that is a soft check and stays in the run.
 - **No raw requests** (`.get(`, `.post(`, ...), no `@playwright/test` imports, no hosts or full URLs (lint).
 
 ### API 4. Client layer (`clients/`)

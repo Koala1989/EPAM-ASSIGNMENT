@@ -49,6 +49,19 @@ Set by the architect. They apply to every API case and are not open questions.
 
 Keep three columns in this order: the duplicate check reads them as action, test data and expected result.
 
+**Data sets** (data-driven cases only; leave the section out otherwise)
+
+Use it when several inputs test the **same behaviour with the same requests and steps**, and differ only in the input and the expected outcome: the classes and boundaries of one field (missing, null, empty, whitespace, on the limit, over the limit), a numeric range, a set of operators. They are one case with one row per input, not one case per input. Inputs that need different steps (an extra request, another user, a different follow-up check) are separate cases.
+
+- The steps refer to row values as `<row.column>`, in Payload and in Expected result: `{"name": <row.name>}`, `<row.expected status>`.
+- One row per input. **Row** is a short, unique text label (never a number), used in the automated test's title. **Class** names the technique class or boundary the row covers.
+- **expected status** is a required column, right after the input columns: the status code the request under test returns for that row, and nothing else (`201 Created`, `400 Bad Request`). It is never prose such as "rejected". When the docs, the schema and the answered questions do not give the code: `Proposed, to confirm in Q-<Area>-NN: 400 Bad Request`; only if no code can be proposed, `Open: Q-<Area>-NN (status code)`. The step's Expected result starts with `<row.expected status>`. A case with more than one request per row has one status column per request: `step 2 status`.
+- Every other expected value the steps use is a column too (error body, returned value, count), filled in on every row. An unknown value is written as in the Expected result rules: `Open: Q-<Area>-NN (...)` or `Proposed, to confirm in Q-<Area>-NN: ...`.
+
+| Row | Class | <input column> | ... | expected status | <other expected column> | ... |
+|---|---|---|---|---|---|---|
+| `<label>` | `<technique (class or boundary)>` | `<value>` | | `<code and reason phrase>` | `<value>` | |
+
 **Postconditions and cleanup**, **Notes**, **Duplicate check**, **Duplicate judgement:** as in the UI seed. Cleanup is done through the API as `admin` (for parts: `PATCH` `active: false`, then `DELETE`).
 
 ---
@@ -81,3 +94,26 @@ Keep three columns in this order: the duplicate check reads them as action, test
 **Postconditions and cleanup:** one new part in `QA-<suffix> Category`. Cleanup as `admin`: `PATCH /api/part/<pk>/` with `{"active": false}`, `DELETE /api/part/<pk>/` (`204`), then `DELETE /api/part/category/<category pk>/`.
 
 **Notes:** which fields are required comes from the `Part` schema's `required` list, not from the UI form.
+
+### Data-driven example (Steps and Data sets only)
+
+`API-VAL-NNN: Part name is validated on create`, Type Boundary, Technique `Equivalence partitioning (invalid classes: absent, null, blank), Boundary value analysis (name maxLength, maxLength + 1)`.
+
+**Steps**
+
+| # | Request | Payload / parameters | Expected result |
+|---|---|---|---|
+| 1 | `POST /api/part/` as `engineer` | `{"name": <row.name>, "description": "QA-<suffix> name check"}` (the `name` key is left out when the row's name is *absent*) | `<row.expected status>`. For a `400`, the body is `{"name": [<row.error>]}`. |
+| 2 | `GET /api/part/` as `engineer` | `search=QA-<suffix> name check` | `200 OK`. `count` is `<row.count>`: the part was created only when step 1 returned `201`. |
+
+**Data sets**
+
+| Row | Class | name | expected status | error | count |
+|---|---|---|---|---|---|
+| `absent` | EP invalid: absent | *(key left out)* | `400 Bad Request` | `"This field is required."` | `0` |
+| `null` | EP invalid: null | `null` | `400 Bad Request` | `"This field may not be null."` | `0` |
+| `empty` | EP invalid: blank | `""` | `400 Bad Request` | `"This field may not be blank."` | `0` |
+| `on limit` | BVA: maxLength | `QA-<suffix>` + padding, 100 characters | `201 Created` | None | `1` |
+| `over limit` | BVA: maxLength + 1 | `QA-<suffix>` + padding, 101 characters | `400 Bad Request` | `"Ensure this field has no more than 100 characters."` | `0` |
+
+The error texts in this example show the format; a real case states what the docs, the schema or an answered question give.

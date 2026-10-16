@@ -1,35 +1,5 @@
 # Part creation flow: Part test cases
 
-### UI-Part-001: Create a part with only the required fields
-
-| Field | Value |
-|---|---|
-| **Summary** | A user with part create permission can create a part from the *Create Part* form with optional fields left empty, and is redirected to the new part's detail page. |
-| **Requirement** | `R-Part-01`, `R-Part-04`, `R-Part-06`, `R-Part-12`. Source: [part-create.md#L15](../../requirements/docs/part-create.md#L15), [part-create.md#L26](../../requirements/docs/part-create.md#L26), [part-create.md#L33](../../requirements/docs/part-create.md#L33), [part-views.md#L30](../../requirements/docs/part-views.md#L30) |
-| **Area** | Part |
-| **Type** | Positive |
-| **Technique** | Equivalence partitioning (valid class: required fields filled, IPN and other optional fields empty) |
-| **Priority** | P1 |
-| **Tags** | Smoke, Regression |
-| **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: non-structural category `QA-<suffix> Category`, created as `admin`; Pre-steps: log in at `http://localhost/web`, open the *Parts* view. |
-| **Automation** | Yes: core create flow. |
-| **Review** | Approved · 2026-10-11 · passed the MCP run; agent draft changed first: removed the `[confirm in app: required fields]` placeholder from step 2 (Name is the only required field, confirmed in the 1.5.6 API). |
-
-**Steps**
-
-| # | Action | Test data | Expected result |
-|---|---|---|---|
-| 1 | Open the *Add Parts* dropdown above the parts table and select *Create Part*. | None | The part creation form opens. |
-| 2 | Fill in the required field and the category only; leave IPN empty. | Name: `QA-<suffix> Resistor 10k`<br>Category: `QA-<suffix> Category` | Fields accept the values, no form errors are shown. |
-| 3 | Press *Submit*. | None | The form closes and the browser is redirected to the new part's detail page. |
-| 4 | Check the part details. | None | Name and category show the values from step 2. IPN is empty. |
-
-**Postconditions and cleanup:** one new part in `QA-<suffix> Category`. Cleanup as `admin`: set the part inactive, delete it, then delete the category.
-
-**Notes:** Name is the only required field (confirmed in the InvenTree 1.5.6 API, 2026-10-11); Category is optional and is filled here only to keep the test data grouped.
-
----
-
 ### UI-Part-002: Add Parts dropdown offers create and import options
 
 | Field | Value |

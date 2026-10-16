@@ -15,7 +15,7 @@ Automate one Approved manual test case of InvenTree's Parts module (1.5.6) as on
 ## Read first, every run
 
 1. **`automation/CONVENTIONS.md`**, the Shared and UI parts: the framework rules. They override anything below that seems to conflict.
-2. **The case**: find the ID with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not in `requirements-inventory.md` or `open-questions.md`).
+2. **The case**: find the ID with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (the case's `### <ID>:` heading; not in `requirements-inventory.md`, and not in `test-cases/Open_Questions/`, `Reviews/` or `Runs/`, which mention case IDs too).
 3. **The framework code** you will call:
    - `automation/fixtures/index.ts` and the fixture files: `test`, `expect`, the `user` option (real login through the login form before the test), `switchUser`, `data` (`data.name`, `data.category`, `data.part`, `data.company`, `data.stockItem`, `data.post`, `data.trackPart`, `data.findParts`, `data.setSetting`).
    - `automation/pages/` and `pages/components/`: every page object's public locators and methods.

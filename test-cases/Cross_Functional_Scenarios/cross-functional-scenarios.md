@@ -1,6 +1,6 @@
 # Cross-functional scenarios: XF test cases
 
-End-to-end flows across Areas on the same records: part creation with parameters and stock (R-XF-01), category default parameters (R-XF-02), templates and variants with stock (R-XF-03), revisions of a stocked part (R-XF-04), BOM lines with units of measure (R-XF-05), locked parts (R-XF-06) and Virtual parts (R-XF-07). Test records are created through the API as `admin` unless a step is under test; each case reuses the open questions of the Areas it composes, plus Q-XF-01 to Q-XF-06 in `open-questions.md`.
+End-to-end flows across Areas on the same records: part creation with parameters and stock (R-XF-01), category default parameters (R-XF-02), templates and variants with stock (R-XF-03), revisions of a stocked part (R-XF-04), BOM lines with units of measure (R-XF-05), locked parts (R-XF-06) and Virtual parts (R-XF-07). Test records are created through the API as `admin` unless a step is under test; each case reuses the open questions of the Areas it composes, plus Q-XF-01 to Q-XF-06 in `open-question_XF.md`.
 
 ---
 
@@ -25,14 +25,14 @@ End-to-end flows across Areas on the same records: part creation with parameters
 |---|---|---|---|
 | 1 | Open the *Add Parts* dropdown above the parts table. | None | The dropdown offers the create and import options (R-Part-02). |
 | 2 | Select *Create Part*. | None | The part creation form opens (R-Part-04). |
-| 3 | Fill in the form. | Name: `QA-<suffix> Resistor`<br>Description: `XF flow part`<br>Category: `QA-<suffix> Category` | The *Add Part* form accepts the values and shows no form errors (R-Part-05); only Name is marked required (open-questions.md Q-REV-05). |
+| 3 | Fill in the form. | Name: `QA-<suffix> Resistor`<br>Description: `XF flow part`<br>Category: `QA-<suffix> Category` | The *Add Part* form accepts the values and shows no form errors (R-Part-05); only Name is marked required (open-question_XF.md Q-REV-05). |
 | 4 | Press *Submit*. | None | The browser is redirected to the new part's detail page (R-Part-06). |
-| 5 | Open the *Parameters* tab, open the *Add Parameters* menu, select *Create Parameter*, choose the template and enter the data, then press *Submit*. | Template: `QA-<suffix> Series`<br>Data: `E96` | The *Add Parameter* form requires Template and Data (open-questions.md Q-Part_Params-10). The *Parameters* tab lists the parameter `QA-<suffix> Series` with Data `E96` (R-Part_Params-02, R-Part_Params-12). |
-| 6 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `25` | A stock item is created for the part (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-questions.md Q-Detail_View-58). |
-| 7 | Open `QA-<suffix> Resistor` again and its *Stock* tab. | None | The *Stock* tab lists the item with quantity 25, location and status `OK` (R-Detail_View-09), and the part header shows *In Stock: 25* (R-Detail_View-13; open-questions.md Q-Detail_View-56). |
-| 8 | Check the breadcrumb at the top of the part page. | None | It reads `Parts > QA-<suffix> Category` (R-Categories-07; open-questions.md Q-Categories-01). |
-| 9 | Click `QA-<suffix> Category` in the breadcrumb, then open the category's *Parts* tab. | None | The table lists `QA-<suffix> Resistor` with Description `XF flow part`, Category `QA-<suffix> Category` and *Total Stock* 25 (R-Categories-04, R-Detail_View-13; open-questions.md Q-Categories-05). |
-| 10 | Switch the table to the parametric view with the *Parametric View* toggle above it. | None | The parametric view replaces the table and lists `QA-<suffix> Resistor` with *Total Stock* 25 and `E96` in the `QA-<suffix> Series` column (R-XF-01, R-Part_Params-21; open-questions.md Q-Part_Params-18, Q-Part_Params-19). |
+| 5 | Open the *Parameters* tab, open the *Add Parameters* menu, select *Create Parameter*, choose the template and enter the data, then press *Submit*. | Template: `QA-<suffix> Series`<br>Data: `E96` | The *Add Parameter* form requires Template and Data (open-question_XF.md Q-Part_Params-10). The *Parameters* tab lists the parameter `QA-<suffix> Series` with Data `E96` (R-Part_Params-02, R-Part_Params-12). |
+| 6 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `25` | A stock item is created for the part (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-question_XF.md Q-Detail_View-58). |
+| 7 | Open `QA-<suffix> Resistor` again and its *Stock* tab. | None | The *Stock* tab lists the item with quantity 25, location and status `OK` (R-Detail_View-09), and the part header shows *In Stock: 25* (R-Detail_View-13; open-question_XF.md Q-Detail_View-56). |
+| 8 | Check the breadcrumb at the top of the part page. | None | It reads `Parts > QA-<suffix> Category` (R-Categories-07; open-question_XF.md Q-Categories-01). |
+| 9 | Click `QA-<suffix> Category` in the breadcrumb, then open the category's *Parts* tab. | None | The table lists `QA-<suffix> Resistor` with Description `XF flow part`, Category `QA-<suffix> Category` and *Total Stock* 25 (R-Categories-04, R-Detail_View-13; open-question_XF.md Q-Categories-05). |
+| 10 | Switch the table to the parametric view with the *Parametric View* toggle above it. | None | The parametric view replaces the table and lists `QA-<suffix> Resistor` with *Total Stock* 25 and `E96` in the `QA-<suffix> Series` column (R-XF-01, R-Part_Params-21; open-question_XF.md Q-Part_Params-18, Q-Part_Params-19). |
 | 11 | Switch back to the table view and click the part name. | None | The Part Detail view of `QA-<suffix> Resistor` opens (R-Categories-06). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part created inactive and delete it, then delete the category (and any parameter template) created for the case. Delete the stock item first if the part cannot be deleted with it.
@@ -60,10 +60,10 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `10` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-questions.md Q-Detail_View-58). |
+| 1 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `10` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-question_XF.md Q-Detail_View-58). |
 | 2 | Open `QA-<suffix> Summed` again, then its *Stock* tab, press the add stock item button again, enter the quantity and press *Submit*; then open the part's *Stock* tab. | Quantity: `15` | A second stock item is created and the *Stock* tab lists both items with quantity, location and status (R-Detail_View-09). |
-| 3 | Check the part's total stock. | None | The part header shows *In Stock: 25*, the sum of both stock items (R-Detail_View-13; open-questions.md Q-Detail_View-56). |
-| 4 | Open `QA-<suffix> Category`, then its *Parts* tab, and find the part. | None | The part's *Total Stock* reads 25 (R-Categories-04, R-Detail_View-13; open-questions.md Q-Categories-05). |
+| 3 | Check the part's total stock. | None | The part header shows *In Stock: 25*, the sum of both stock items (R-Detail_View-13; open-question_XF.md Q-Detail_View-56). |
+| 4 | Open `QA-<suffix> Category`, then its *Parts* tab, and find the part. | None | The part's *Total Stock* reads 25 (R-Categories-04, R-Detail_View-13; open-question_XF.md Q-Categories-05). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part created inactive and delete it, then delete the category (and any parameter template) created for the case.
 
@@ -91,8 +91,8 @@ End-to-end flows across Areas on the same records: part creation with parameters
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open `QA-<suffix> Category` from the *Parts* view, then its *Parts* tab. | None | The category part list shows `QA-<suffix> Late Stock` (R-Categories-02). Open: Q-XF-02 (what the stock level shows for a part with no stock items). |
-| 2 | Open the part, then the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `5` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-questions.md Q-Detail_View-58). |
-| 3 | Open `QA-<suffix> Category` again, then its *Parts* tab. | None | The part's *Total Stock* reads 5 (R-Categories-04, R-Detail_View-13; open-questions.md Q-Categories-05). |
+| 2 | Open the part, then the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `5` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-question_XF.md Q-Detail_View-58). |
+| 3 | Open `QA-<suffix> Category` again, then its *Parts* tab. | None | The part's *Total Stock* reads 5 (R-Categories-04, R-Detail_View-13; open-question_XF.md Q-Categories-05). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part created inactive and delete it, then delete the category (and any parameter template) created for the case.
 
@@ -121,7 +121,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 |---|---|---|---|
 | 1 | Open *Add Parts*, then *Create Part*. | None | The part creation form opens (R-Part-04). |
 | 2 | Select the category and leave Name empty. | Name: empty<br>Category: `QA-<suffix> Category` | Name is not filled. |
-| 3 | Press *Submit*. | None | The form cannot be submitted while it shows form errors (R-Part-05); no redirect to a part detail page happens (R-Part-06 applies only after a successful submit). Name is the only required field (open-questions.md Q-REV-05). Open: Q-Part-13 (whether *Submit* is disabled or an error appears, its text and place). |
+| 3 | Press *Submit*. | None | The form cannot be submitted while it shows form errors (R-Part-05); no redirect to a part detail page happens (R-Part-06 applies only after a successful submit). Name is the only required field (open-question_XF.md Q-REV-05). Open: Q-Part-13 (whether *Submit* is disabled or an error appears, its text and place). |
 | 4 | Close the form without saving and open `QA-<suffix> Category`, then its *Parts* tab. | None | The category part list shows no new part (R-Part-05, R-Categories-02). |
 
 **Postconditions and cleanup:** No records are created. Cleanup as `admin`: delete the category.
@@ -200,7 +200,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 | **Technique** | Equivalence partitioning (invalid class: incompatible units), Error guessing |
 | **Priority** | P1 |
 | **Tags** | Regression, Cross-functional |
-| **Prerequisites** | User: `engineer` (part management; may add parameters, open-questions.md Q-Part_Params-09); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> Length Part` in it and parameter template `QA-<suffix> Length` with Units `m`, created as `admin`; Pre-steps: log in through the login form, open the part's *Parameters* tab. |
+| **Prerequisites** | User: `engineer` (part management; may add parameters, open-question_XF.md Q-Part_Params-09); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> Length Part` in it and parameter template `QA-<suffix> Length` with Units `m`, created as `admin`; Pre-steps: log in through the login form, open the part's *Parameters* tab. |
 | **Automation** | Yes. |
 | **Review** | Draft · Open question: Q-Part_Params-07, Q-XF-03 |
 
@@ -237,7 +237,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Switch to the parametric view with the *Parametric View* toggle above the table. | None | The parametric view replaces the table (R-Part_Params-21; open-questions.md Q-Part_Params-18). It lists the three parts of the category (R-Categories-02). |
+| 1 | Switch to the parametric view with the *Parametric View* toggle above the table. | None | The parametric view replaces the table (R-Part_Params-21; open-question_XF.md Q-Part_Params-18). It lists the three parts of the category (R-Categories-02). |
 | 2 | Add a filter on the parameter `QA-<suffix> Resistance`. | Operator: greater than (`>`)<br>Value: `5k` | The filter is applied; the filter options depend on the parameter type (R-Part_Params-23). Open: Q-Part_Params-19 (dialog fields and labels), Q-Part_Params-22 (operators offered). |
 | 3 | Check the parts shown. | None | Only `QA-<suffix> R10k` is shown, as only parts matching the filter are shown (R-Part_Params-24); a compatible unit prefix such as `k` is accepted in the value (R-Part_Params-27). `QA-<suffix> R1k` and `QA-<suffix> RNone` are not shown (R-Part_Params-24). |
 
@@ -266,11 +266,11 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open *Add Parts*, select *Create Part* and fill in the form. | Name: `QA-<suffix> Knob`<br>Description: `XF default parameter`<br>Category: `QA-<suffix> Child` | The form accepts the values (R-Part-01); only Name is required (open-questions.md Q-REV-05). |
+| 1 | Open *Add Parts*, select *Create Part* and fill in the form. | Name: `QA-<suffix> Knob`<br>Description: `XF default parameter`<br>Category: `QA-<suffix> Child` | The form accepts the values (R-Part-01); only Name is required (open-question_XF.md Q-REV-05). |
 | 2 | Press *Submit*. | None | The browser is redirected to the new part's detail page (R-Part-06). |
 | 3 | Open the *Parameters* tab. | None | The tab lists the parameter `QA-<suffix> Finish` with the default value `Matte`, applied to the new part in a sub-category (R-Part_Params-19, R-Part_Params-02). Open: Q-Part_Params-08 (whether the default shows at creation). |
-| 4 | Open `QA-<suffix> Parent` from the *Parts* view, then its *Parts* tab. | None | The table lists `QA-<suffix> Knob` with Category `QA-<suffix> Child`, because it lists parts of all sub-categories (R-Categories-02; open-questions.md Q-Categories-05). |
-| 5 | Switch to the parametric view with the *Parametric View* toggle. | None | The view lists `QA-<suffix> Knob` with `Matte` in the `QA-<suffix> Finish` column (R-XF-02; open-questions.md Q-Part_Params-19). Open: Q-Part_Params-18 (whether a parent's parametric view includes parts of sub-categories). |
+| 4 | Open `QA-<suffix> Parent` from the *Parts* view, then its *Parts* tab. | None | The table lists `QA-<suffix> Knob` with Category `QA-<suffix> Child`, because it lists parts of all sub-categories (R-Categories-02; open-question_XF.md Q-Categories-05). |
+| 5 | Switch to the parametric view with the *Parametric View* toggle. | None | The view lists `QA-<suffix> Knob` with `Matte` in the `QA-<suffix> Finish` column (R-XF-02; open-question_XF.md Q-Part_Params-19). Open: Q-Part_Params-18 (whether a parent's parametric view includes parts of sub-categories). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part created inactive and delete it, then delete the sub-category, then the parent category (and any parameter template) created for the case.
 
@@ -446,7 +446,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*; then open the variant's *Stock* tab again. | Quantity: `30` | A stock item is created for the variant (R-Detail_View-11; open-questions.md Q-Detail_View-58). The tab lists it with quantity, location and status (R-Detail_View-09) and the variant's header shows *In Stock: 30* (R-Detail_View-13; open-questions.md Q-Detail_View-56). |
+| 1 | Open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*; then open the variant's *Stock* tab again. | Quantity: `30` | A stock item is created for the variant (R-Detail_View-11; open-question_XF.md Q-Detail_View-58). The tab lists it with quantity, location and status (R-Detail_View-09) and the variant's header shows *In Stock: 30* (R-Detail_View-13; open-question_XF.md Q-Detail_View-56). |
 | 2 | Open the detail page of the template `QA-<suffix> Base` and check its stock. | None | The template's stock includes the variant's 30 units (R-Part_Template-07). Open: Q-Part_Template-06 (where the combined stock is shown). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: delete the stock item, set the variant and then the template inactive, delete the variant first, then the template, then the category.
@@ -474,7 +474,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | On `QA-<suffix> Base Red`, open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `30` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-questions.md Q-Detail_View-58). |
+| 1 | On `QA-<suffix> Base Red`, open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `30` | A stock item is created (R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-question_XF.md Q-Detail_View-58). |
 | 2 | On `QA-<suffix> Base Blue`, open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `12` | A stock item is created (R-Detail_View-11). |
 | 3 | Open `QA-<suffix> Base` and check its stock. | None | The template's stock is 42, the sum of both variants (R-Part_Template-07, R-Detail_View-13). Open: Q-Part_Template-06 (where it is shown). |
 | 4 | Open `QA-<suffix> Base Red` and check its stock. | None | Proposed, to confirm in Q-Part_Template-06: the variant shows only its own 30 units. |
@@ -563,7 +563,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 | 1 | Open the part actions menu and select *Duplicate Part*. | None | The `Duplicate Part` form opens (R-REV-12). |
 | 2 | Set the revision fields. | Revision Of: `QA-<suffix> Widget`<br>Revision: `B`<br>Name: [open: Q-REV-02, whether the Name must change] | The form accepts the values (R-REV-12). Open: Q-REV-02 (Name uniqueness). |
 | 3 | Press *Submit*. | None | The user is redirected to the new revision, which shows its link to the original part (R-REV-13, R-REV-01). Open: Q-REV-07 (where and with what label the link is shown). |
-| 4 | Open the original `QA-<suffix> Widget`, then its *Stock* tab. | None | The stock item of quantity 20 is still listed and unchanged, and the part header shows *In Stock: 20* (R-REV-02, R-Detail_View-09, R-Detail_View-13; open-questions.md Q-Detail_View-56). |
+| 4 | Open the original `QA-<suffix> Widget`, then its *Stock* tab. | None | The stock item of quantity 20 is still listed and unchanged, and the part header shows *In Stock: 20* (R-REV-02, R-Detail_View-09, R-Detail_View-13; open-question_XF.md Q-Detail_View-56). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: delete the stock item, set the revision and the original inactive, delete the revision first, then the original, then the category.
 
@@ -678,8 +678,8 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | On revision `B`, open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `7` | A stock item is created for the revision, which has its own stock (R-REV-01, R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-questions.md Q-Detail_View-58). |
-| 2 | Open revision `B` again and check its stock. | None | The part header shows *In Stock: 7* (R-Detail_View-13; open-questions.md Q-Detail_View-56). |
+| 1 | On revision `B`, open the *Stock* tab, press the add stock item button, enter the quantity and press *Submit*. | Quantity: `7` | A stock item is created for the revision, which has its own stock (R-REV-01, R-Detail_View-11). The *Add Stock Item* dialog opens with the part pre-filled; after *Submit* an alert reads *Stock item created* and the browser shows the new stock item's page (open-question_XF.md Q-Detail_View-58). |
+| 2 | Open revision `B` again and check its stock. | None | The part header shows *In Stock: 7* (R-Detail_View-13; open-question_XF.md Q-Detail_View-56). |
 | 3 | Open `QA-<suffix> Widget` and check its stock. | None | The part header still shows *In Stock: 20* and the original's stock item is unchanged (R-REV-02, R-Detail_View-13). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: delete the stock items, set the revision and the original inactive, delete the revision first, then the original, then the category.
@@ -1228,7 +1228,7 @@ End-to-end flows across Areas on the same records: part creation with parameters
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open `QA-<suffix> Category`, then its *Parts* tab. | None | The table lists both parts: it lists every part in the category (R-Categories-02, R-ATT-04; open-questions.md Q-Categories-05). |
+| 1 | Open `QA-<suffix> Category`, then its *Parts* tab. | None | The table lists both parts: it lists every part in the category (R-Categories-02, R-ATT-04; open-question_XF.md Q-Categories-05). |
 | 2 | Check the stock level of `QA-<suffix> Service` in the list. | None | Not known: depends on open question Q-XF-02 (what the stock level shows for a Virtual part). The Virtual part has no stock items (R-ATT-02). |
 | 3 | Click the name of `QA-<suffix> Service`. | None | The Part Detail view of the part opens (R-Categories-06). |
 

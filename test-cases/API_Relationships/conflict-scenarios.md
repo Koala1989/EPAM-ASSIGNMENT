@@ -5,7 +5,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive part that has stock (created with `initial_stock`): whether the delete is refused is checked. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. `initial_stock`: R-CRUD-13, `components.schemas.InitialStock`. |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. `initial_stock`: R-CRUD-13, `components.schemas.InitialStock`. |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (part with stock removed), Decision table (inactive x in use by stock) |
@@ -36,7 +36,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive template part that still has a variant: whether the delete is refused is checked. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Variants: R-REL-10 (`variant_of`, [openapi-parts.yaml#L4242](../../requirements/openapi-parts.yaml#L4242)). |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Variants: R-REL-10 (`variant_of`, [openapi-parts.yaml#L4242](../../requirements/openapi-parts.yaml#L4242)). |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (template removed while variants exist), State transition (template with variants to deleted) |
@@ -66,7 +66,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive original part that still has a revision: whether the delete is refused is checked. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Revisions: R-REL-10 (`revision_of`, [openapi-parts.yaml#L4212](../../requirements/openapi-parts.yaml#L4212)), R-REV-07. |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Revisions: R-REL-10 (`revision_of`, [openapi-parts.yaml#L4212](../../requirements/openapi-parts.yaml#L4212)), R-REV-07. |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (original removed while a revision exists), State transition (part with revision to deleted) |
@@ -96,7 +96,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive component part that is a line of an assembly's bill of materials: whether the delete is refused is checked. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. BOM use: [manufacturing-bom.md#L219](../../requirements/docs/manufacturing-bom.md#L219) (Used In). |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. BOM use: [manufacturing-bom.md#L219](../../requirements/docs/manufacturing-bom.md#L219) (Used In). |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (component removed while used in a BOM), Decision table (inactive x used in BOM) |
@@ -123,7 +123,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive part that is linked to a supplier by a supplier part: whether the delete is refused is checked. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Supplier part: R-REL-08 (`POST /api/company/part/`, [L185](../../requirements/openapi-parts.yaml#L185)). |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Supplier part: R-REL-08 (`POST /api/company/part/`, [L185](../../requirements/openapi-parts.yaml#L185)). |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | What-if business scenario (part removed while supplied), Decision table (inactive x has supplier part) |
@@ -149,7 +149,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an inactive template part succeeds with `204` once its only variant has been deleted. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Variants: R-REL-10. |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Variants: R-REL-10. |
 | **Area** | REL |
 | **Type** | Positive |
 | **Technique** | State transition (template with a variant, variant deleted, template deleted) |
@@ -178,7 +178,7 @@
 | Field | Value |
 |---|---|
 | **Summary** | `DELETE /api/part/{id}/` on an active part that has stock: whether the active-part refusal applies, and the part and stock remain. |
-| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-questions.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Active part: R-CRUD-05, `open-questions.md Q-CRUD-02`. |
+| **Requirement** | R-CRUD-05 ([openapi-parts.yaml#L2803](../../requirements/openapi-parts.yaml#L2803)); inactive-first rule `open-question_REL.md Q-CRUD-02` (answered). Schema: `requirements/openapi-parts.yaml DELETE /api/part/{id}/`. Index Not in schema #1. Active part: R-CRUD-05, `open-question_REL.md Q-CRUD-02`. |
 | **Area** | REL |
 | **Type** | Negative |
 | **Technique** | Decision table (active x in use by stock), What-if business scenario (delete tried without deactivating) |

@@ -18,7 +18,8 @@ AI-assisted QA of InvenTree's **Parts module only**: manual UI and API test case
 | `requirements/.rag-index/` | Local vector index over the docs (gitignored, rebuildable). |
 | `test-cases/requirements-inventory.md`, `test-cases/<Area folder>/requirements-inventory.md` | Reviewed, rule-ID'd requirements (`R-<Area>-NN`). Built by a full read of the docs, not by RAG. |
 | `test-cases/<Area folder>/*.md` | Manual cases (`UI-<Area>-NNN`, `API-<Area>-NNN`), one folder per Area. Folders have full names (`Attributes`, `API_Create_Read_Update_Delete`); the Area value and IDs stay short (`ATT`, `CRUD`). Mapping: "Area folders" in `references/seed-manual-test-case.md`. |
-| `test-cases/<Area folder>/open-questions.md`, `test-cases/findings.md` | Questions for the architect; app/doc mismatches found. |
+| `test-cases/Open_Questions/open-question_<Area>.md`, `test-cases/findings.md` | Questions for the architect, one file per Area; app/doc mismatches found. |
+| `test-cases/Reviews/<Area>_<functionality>-review-<date>.md`, `test-cases/Runs/<Area>/` | test-case-reviewer's reviews; records and screenshots of manual MCP runs. |
 | `references/seed-manual-test-case.md`, `references/seed-api-test-case.md` | The manual case formats: UI, and the API variant with the API Areas (`CRUD`, `LST`, `VAL`, `REL`, `SEC`). |
 | `automation/` | One Playwright + TypeScript project for both suites. UI: `tests/ui/`, `pages/`; API: `tests/api/`, `clients/` (Ajv schema checks against `requirements/openapi-parts.yaml`); shared: `fixtures/`, `utils/`, `config/` (env, environments), `data/` (users); reviews in `reviews/ui/`, `reviews/api/`. Rules: `automation/CONVENTIONS.md` (Shared, UI and API parts). |
 | `tools/` | `dedupe_cases.py` (duplicate check), `coverage_check.py` (rule coverage), `slice_schema.py` (schema slice), `rag/` (index build and query), `llm/` (prompt-caching demo). |

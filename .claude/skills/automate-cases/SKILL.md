@@ -19,7 +19,7 @@ Handle the cases **one at a time, in the order given**: complete steps 2-8 for a
 
 ## 2. Pre-check the case
 
-Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md` or `open-questions.md`):
+Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md`; questions, reviews and runs are in `test-cases/Open_Questions/`, `Reviews/` and `Runs/`):
 
 - **The case exists.** If not: skip it, reason "not found".
 - **Review starts with `Approved` or `Changed`.** This is the only check on the case's content. If not: skip it, reason "not Approved".
@@ -83,13 +83,13 @@ Pass only the spec path and the tool output. Never pass the generator's report o
 
 After it returns, run step 4's commands again (adding any files the healer changed). If they still fail, record it and skip step 7; still run step 8.
 
-The healer has finished changing the spec, so start the reviewer now (step 8). It does not run tests, so step 7 runs while it works.
+The healer has finished changing the spec, so start the reviewer now (step 8). It does not run tests, so step 7 is recorded while it works.
 
 ## 7. Stability check: one green run
 
-Only after the healer ran. Run the step-5 command again and record the outcome:
+Only after the healer ran. Do not run the spec again: the healer's one re-run (its guardrail 7) is the green-run check, so record the outcome from its report:
 
-- **1 passed:** stable. (Reduced from three runs to keep demo recordings short; CONVENTIONS.md UI §12 still asks for three before a spec counts as done.)
+- **1 passed:** stable. (Reduced to one re-run to keep demo recordings short; CONVENTIONS.md UI §12 still asks for three before a spec counts as done.)
 - **Any failure:** not stable. Record the failing run's error line. Do not call the healer again; it has already used its bounded attempts.
 - **Skipped (`test.fixme`):** the healer found an app finding or case defect. Not stable; record its `FINDING:` or `CASE DEFECT:` comment.
 
