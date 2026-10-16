@@ -16,6 +16,8 @@ export class FormComponent {
   readonly formError: Locator;
   /** All fields currently marked invalid. */
   readonly invalidFields: Locator;
+  /** The asterisks InvenTree (Mantine) appends to the label of every required field, whatever its kind. */
+  readonly requiredMarks: Locator;
 
   constructor(private readonly page: Page) {
     this.root = page.getByRole('dialog');
@@ -23,6 +25,8 @@ export class FormComponent {
     this.cancelButton = this.root.getByRole('button', { name: 'Cancel' });
     this.formError = this.root.getByRole('alert').filter({ hasText: 'Form Error' });
     this.invalidFields = this.root.locator('[aria-invalid="true"]');
+    // A required field's label ends with " *" (Mantine renders it as a span inside the label).
+    this.requiredMarks = this.root.locator('label span').getByText('*', { exact: true });
   }
 
   field(kind: FieldKind, name: string): Locator {

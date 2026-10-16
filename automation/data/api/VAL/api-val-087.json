@@ -1,0 +1,9 @@
+[
+  { "label": "absent", "name": "(key left out)", "name padding": 0, "tag": "chk01", "expected status": 400, "count": 0 },
+  { "label": "null", "name": null, "name padding": 0, "tag": "chk02", "expected status": 400, "count": 0 },
+  { "label": "empty", "name": "", "name padding": 0, "tag": "chk03", "expected status": 400, "count": 0 },
+  { "label": "whitespace only", "name": "   ", "name padding": 0, "tag": "chk04", "expected status": 400, "count": 0 },
+  { "label": "below limit", "name": "QA-<suffix>", "name padding": 88, "tag": "chk05", "expected status": 201, "count": 1 },
+  { "label": "on limit", "name": "QA-<suffix>", "name padding": 89, "tag": "chk06", "expected status": 201, "count": 1 },
+  { "label": "over limit", "name": "QA-<suffix>", "name padding": 90, "tag": "chk07", "expected status": 400, "count": 0 }
+]

@@ -16,7 +16,8 @@ Each rule sits in one primary Area; other Areas point to it under "Cross-referen
 | REV | Revision fields, restrictions, settings, creation, navigation | 15 | [Revisions/requirements-inventory.md](Revisions/requirements-inventory.md) |
 | Part_Params | Parameters, templates, uniqueness, category defaults, parametric tables, units | 36 | [Parameters/requirements-inventory.md](Parameters/requirements-inventory.md) |
 | Part_Template | Template flag, variants, serial and stock rules, cascading tests, inherited BOM | 11 | [Templates_and_Variants/requirements-inventory.md](Templates_and_Variants/requirements-inventory.md) |
-| **Total** | | **227** | |
+| XF | Cross-functional flows composed of the rules above (no new rules) | 7 | [Cross_Functional_Scenarios/requirements-inventory.md](Cross_Functional_Scenarios/requirements-inventory.md) |
+| **Total** | | **227** (+7 XF flows) | |
 
 ## API Areas
 

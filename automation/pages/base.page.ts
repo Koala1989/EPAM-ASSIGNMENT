@@ -44,6 +44,19 @@ export class BasePage {
     return this.page.getByRole('tab', { name, exact: true }).filter({ has: this.page.getByRole('link', { name }) });
   }
 
+  /** The breadcrumb links at the top of a page, in order (e.g. Parts, <category>). */
+  get breadcrumbs(): Locator {
+    return this.page.getByRole('link', { name: /^breadcrumb-\d+-/ });
+  }
+
+  /** Clicks the breadcrumb link with this text and waits until the browser has left the current page. */
+  async openBreadcrumb(text: string) {
+    const before = this.page.url();
+    await this.breadcrumbs.filter({ hasText: text }).click();
+    await expect(this.page).not.toHaveURL(before);
+    await expect(this.navigationMenu).toBeVisible();
+  }
+
   /** The open modal form. */
   form(): FormComponent {
     return new FormComponent(this.page);

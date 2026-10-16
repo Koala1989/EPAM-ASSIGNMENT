@@ -36,6 +36,22 @@ export class PartsPage extends BasePage {
     await this.addPartsMenu.choose(option);
   }
 
+  /** The Table / Parametric View toggle above the parts table. */
+  viewToggle(view: 'table' | 'parametric'): Locator {
+    return this.page.getByRole('radio', { name: `segmented-icon-control-${view}` });
+  }
+
+  /** Switches the Parts panel to the parametric view or back to the table. */
+  async switchView(view: 'table' | 'parametric') {
+    await this.page.getByRole('button', { name: `segmented-icon-control-${view}` }).click();
+    await expect(this.viewToggle(view)).toBeChecked();
+  }
+
+  /** Clicks a part's name in the parts table to open its detail page. */
+  async openPart(name: string) {
+    await this.partsTable.row(name).getByText(name, { exact: true }).click();
+  }
+
   async searchParts(text: string) {
     await this.partsTable.search(text);
   }

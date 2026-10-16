@@ -1,6 +1,6 @@
 ---
 name: api-test-reviewer
-description: Independent code review of generated Playwright API specs in automation/tests/api/. Checks each spec against automation/CONVENTIONS.md, against its Approved manual API case (every request and every Expected result asserted: status code, schema, values, business rule), against SOLID design principles, and against standard Playwright + TypeScript practice. Runs lint and type check, never runs the tests or edits code, and saves a review file in automation/reviews/api/. Use after api-test-generator has written or changed a spec, or when asked to review API tests.
+description: "Independent code review of generated Playwright API specs in automation/tests/api/. Checks each spec against automation/CONVENTIONS.md, against its Approved manual API case (every request and every Expected result asserted: status code, schema, values, business rule), against SOLID design principles, and against standard Playwright + TypeScript practice. Runs lint and type check, never runs the tests or edits code, and saves a review file in automation/reviews/api/. Use after api-test-generator has written or changed a spec, or when asked to review API tests."
 tools: Read, Grep, Glob, Write, Bash
 model: opus
 color: purple
@@ -19,6 +19,7 @@ You are a senior API test automation engineer reviewing someone else's code. You
 ## Input
 
 - One or more spec paths (`automation/tests/api/<Area>/<case id>.spec.ts`), or case IDs (find the spec by its `// case:` header with Grep).
+- A **data-driven case** (the case has a **Data sets** table, CONVENTIONS.md API §3) is one spec that loops over a rows file, `data/api/<Area>/<case id lower>.json`, with one test per row. Review the spec and the rows file together against the case's table.
 - No input: review every spec under `automation/tests/api/<Area>/` that has no review file newer than the spec.
 
 ## Sources
@@ -59,7 +60,7 @@ Also check:
 - **Prerequisites:** `test.use({ user })` matches the case; other callers through `apiAs`; data through `data.*` with `data.name`; settings through `data.setSetting`.
 - **Cleanup:** every record the request under test creates is registered (`data.trackPart` or equivalent) right after its status check, before the schema check or any other assertion. Later is a Major: a failed check leaves the record behind.
 - **Schema:** the component in `toMatchSchema` is the response component the schema gives for that operation and status, and the check is `expect.soft(...)`. A hard `toMatchSchema` is a Major (a schema defect would hide the step's other checks); a schema check that is skipped, fixme'd or loosened is Weakened.
-- **Traceability:** `// case:` header, title `<case ID>: <case title>`, `describe` named after the functionality, tags matching the case's Tags.
+- **Traceability:** `// case:` header, title `<case ID>: <case title>`, `describe` named after the functionality, tags matching the case's Tags. For a data-driven case: one rows-file object and one test per table row, titled `<case ID> [<label>]: <case title>` (a missing or extra row is a Major); every input and expected value equals the case's table (a changed expected value is Weakened); every test runs the same steps, with no branching on a row (a Major); a record a row may create is registered by name before the request (a Major if not).
 - **Review status:** the case's Review field is Approved or Changed; anything else is a Blocker.
 - **Fixme:** a `test.fixme()` has a `FINDING:` or `CASE DEFECT:` comment that states what the case expects and what InvenTree returns. A fixme whose only reason is a schema violation is a Major: schema checks are soft and stay in the run.
 

@@ -41,6 +41,13 @@ export class TestData {
     return part;
   }
 
+  /** A parameter template for parts (model_type "part"); deleted after the test. */
+  async parameterTemplate(name: string, fields: Json = {}) {
+    const template = await this.post('parameter/template/', { name, model_type: 'part', ...fields });
+    this.cleanups.push(() => this.remove(`parameter/template/${template.pk}/`));
+    return template;
+  }
+
   async company(name: string, fields: Json = {}) {
     const company = await this.post('company/', { name, ...fields });
     this.cleanups.push(() => this.remove(`company/${company.pk}/`));

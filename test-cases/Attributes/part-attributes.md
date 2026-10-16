@@ -135,7 +135,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Start creating a new stock item and choose the part. | Part: `QA-<suffix> Virtual Stock` | Not known: depends on open question Q-ATT-08 (whether the Virtual part is not offered in the part selector, or the form is rejected, and the error text). |
+| 1 | Start creating a new stock item and choose the part. | Part: `QA-<suffix> Virtual Stock` | No stock item is created for `QA-<suffix> Virtual Stock` (R-ATT-02: a Virtual part cannot have stock items). Open: Q-ATT-08 (whether the part is left out of the part selector or the form is rejected, and the error text). |
 | 2 | Submit the form if it can be submitted. | Quantity: `1` | No stock item is created. Error text not known: depends on open question Q-ATT-08 (rejection message). |
 | 3 | Open the part's detail page and check its stock. | None | The part has no stock items. |
 
@@ -163,8 +163,8 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the part's edit form and tick *Virtual*. | None | The *Virtual* checkbox can be ticked. |
-| 2 | Submit the form. | None | Not known: depends on open question Q-ATT-08 (whether the change is accepted or rejected because stock exists, and the error text). |
-| 3 | Check the stock of the part. | None | Not known: depends on open question Q-ATT-08 (what happens to the existing stock item). |
+| 2 | Submit the form. | None | Proposed, to confirm in Q-ATT-08: the change is rejected, because the part has stock and a Virtual part cannot have stock items (R-ATT-02). Open: Q-ATT-08 (the error text). |
+| 3 | Check the stock of the part. | None | Proposed, to confirm in Q-ATT-08: the stock item still exists and the part is not Virtual. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock item first.
 
@@ -189,7 +189,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Look at the tabs and panels of the part detail page. | None | The *Transfer Orders* tab is not visible. Not known: depends on open question Q-ATT-08 (which other stock-related UI elements are hidden; the docs do not list them). |
+| 1 | Look at the tabs and panels of the part detail page. | None | The *Transfer Orders* tab is not visible. Open: Q-ATT-08 (which other stock-related UI elements are hidden; the docs do not list them). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created.
 
@@ -291,7 +291,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Find the total cost of the build. | None | Not known: depends on open question Q-ATT-12 (where the build total cost is shown; the pricing page is not in the docs snapshot). |
+| 1 | Find the total cost of the build. | None | The build total cost includes the cost of the Virtual part (R-ATT-06). Open: Q-ATT-12 (where the build total cost is shown). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Build Order first.
 
@@ -318,7 +318,7 @@
 |---|---|---|---|
 | 1 | Add a line item for the Virtual part. | Part: `QA-<suffix> Virtual Service`<br>Quantity: `1` | The line item is added and listed in the order. |
 | 2 | Check the allocation of the line item. | None | No stock is allocated for the line item (the Virtual part has no stock). |
-| 3 | Check the order total cost. | None | Not known: depends on open question Q-ATT-12 (where the order total cost is shown and how a price is set). |
+| 3 | Check the order total cost. | None | The order total cost includes the Virtual part's line (R-ATT-07). Open: Q-ATT-12 (where the total is shown and how a price is set). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Sales Order and the customer company first.
 
@@ -395,8 +395,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Start a new BOM line and look for the part in the sub-component selector. | Sub-component: `QA-<suffix> Not Component` | Not known: depends on open question Q-ATT-05 (whether a non-Component part is offered or blocked, and the error text). |
-| 2 | Submit the line if possible. | Quantity: `1` | Not known: depends on open question Q-ATT-05 (whether the line is saved). |
+| 1 | Start a new BOM line and look for the part in the sub-component selector. | Sub-component: `QA-<suffix> Not Component` | Proposed, to confirm in Q-ATT-05: `QA-<suffix> Not Component` is not offered in the sub-component selector; only Component parts are sub-components (R-ATT-10). Open: Q-ATT-05 (the error text if it is blocked on submit instead). |
+| 2 | Submit the line if possible. | Quantity: `1` | Proposed, to confirm in Q-ATT-05: no BOM line is saved for `QA-<suffix> Not Component`. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created.
 
@@ -421,8 +421,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the edit form, untick *Component* and submit. | None | Not known: depends on open question Q-ATT-05 (whether the change is accepted while the part is used in a BOM). |
-| 2 | Open the assembly's *BOM* tab. | None | Not known: depends on open question Q-ATT-05 (whether the line stays in the BOM). |
+| 1 | Open the edit form, untick *Component* and submit. | None | Proposed, to confirm in Q-ATT-05: the change is rejected while the part is used in a BOM, as a sub-component must be a Component (R-ATT-10). Open: Q-ATT-05 (the error text). |
+| 2 | Open the assembly's *BOM* tab. | None | Proposed, to confirm in Q-ATT-05: the BOM line for the part is still there. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the BOM line first.
 
@@ -447,7 +447,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Find the action that breaks the stock item down into its components [open: Q-ATT-10, action name and location]. | None | Not known: depends on open question Q-ATT-10 (the disassembly procedure and its result). |
+| 1 | Find the action that breaks the stock item down into its components [open: Q-ATT-10, action name and location]. | None | The stock item is broken down into stock items of its components (R-ATT-09). Open: Q-ATT-10 (the procedure, and the quantities and locations of the resulting items). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created.
 
@@ -497,8 +497,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Add a test result for the template [open: Q-ATT-11, where and how a result is added]. | Result: pass | Not known: depends on open question Q-ATT-11 (the form and the result shown). |
-| 2 | Open the part's *Test Results* tab. | None | The *Test Results* tab is visible. Not known: depends on open question Q-ATT-11 (how the recorded result is shown in the table). |
+| 1 | Add a test result for the template [open: Q-ATT-11, where and how a result is added]. | Result: pass | A `pass` result is recorded against the stock item and shown for it (R-ATT-11). Open: Q-ATT-11 (the form and where the result is shown). |
+| 2 | Open the part's *Test Results* tab. | None | The *Test Results* tab is visible. Open: Q-ATT-11 (how the recorded result is shown in the table). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock item first.
 
@@ -769,7 +769,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `2`<br>Serial numbers: `2+1` | The fields accept the input. |
-| 3 | Submit. | None | Per the rule, `<length>` serial numbers are added to `<start>`: `2` and `3` are expected. Not known: depends on open question Q-ATT-09 (the docs show only the example `2+2`, so length 1 follows from the rule wording, not from an example). |
+| 3 | Submit. | None | Per the rule, `<length>` serial numbers are added to `<start>`: `2` and `3` are expected. Open: Q-ATT-09 (the docs show only the example `2+2`, so length 1 follows from the rule wording, not from an example). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -801,7 +801,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `1`<br>Serial numbers: `2+0` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (the result and any error text for length 0). |
+| 3 | Submit. | None | Proposed, to confirm in Q-ATT-09: one stock item with serial number `2` is created, following the rule's pattern (`2+2` gives 2, 3, 4, so `2+0` gives 2) (R-ATT-14). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -957,7 +957,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `2`<br>Serial numbers: `1,1` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (whether the input is rejected and the error text). |
+| 3 | Submit. | None | Proposed, to confirm in Q-ATT-09: the input is rejected and no stock item is created; a serial number cannot appear twice. Open: Q-ATT-09 (the error text). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -989,7 +989,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `1`<br>Serial numbers: `1` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (the rejection and its error text; the docs only say serial numbers uniquely identify a stock item). |
+| 3 | Submit. | None | No second stock item with the same serial number is created; serial numbers uniquely identify a stock item (R-ATT-12, R-ATT-14). Open: Q-ATT-09 (the rejection and its error text). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -1021,7 +1021,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `5`<br>Serial numbers: `5-1` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (whether the input is rejected and the error text). |
+| 3 | Submit. | None | Proposed, to confirm in Q-ATT-09: the input is rejected and no stock item is created; `5-1` is not a valid range (R-ATT-14). Open: Q-ATT-09 (the error text). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -1053,7 +1053,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `1`<br>Serial numbers: `abc` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (whether the input is rejected and the error text). |
+| 3 | Submit. | None | The input is rejected and no stock item is created: `abc` is none of the accepted serial number formats (R-ATT-14). Open: Q-ATT-09 (the error text). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -1085,7 +1085,7 @@
 |---|---|---|---|
 | 1 | Open the form that creates stock items for the part [open: Q-ATT-09, which form and its field labels]. | Part: `QA-<suffix> Trackable Serial` | The form opens. |
 | 2 | Enter the quantity and the serial numbers. | Quantity: `3`<br>Serial numbers: `1,3` | The fields accept the input. |
-| 3 | Submit. | None | Not known: depends on open question Q-ATT-09 (whether the input is rejected and the error text). |
+| 3 | Submit. | None | Proposed, to confirm in Q-ATT-09: the input is rejected and no stock item is created; 2 serial numbers do not match quantity 3. Open: Q-ATT-09 (the error text). |
 | 4 | Open the part's *Stock* tab. | None | The stock list matches the result of step 3. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock items first.
@@ -1116,7 +1116,7 @@
 | # | Action | Test data | Expected result |
 |---|---|---|---|
 | 1 | Open the form that creates a stock item for the part [open: Q-ATT-04, form and labels]. | Part: `QA-<suffix> Trackable Plain` | The form opens. |
-| 2 | Enter a quantity only; leave batch code and serial numbers empty, and submit. | Quantity: `5` | Not known: depends on open question Q-ATT-04 (whether the stock item is created or rejected; the docs say it 'should' have a batch or serial number and that this is 'not strictly enforced' for build outputs). |
+| 2 | Enter a quantity only; leave batch code and serial numbers empty, and submit. | Quantity: `5` | Proposed, to confirm in Q-ATT-04: the stock item is created; the docs say a Trackable part's stock should generally have a batch or serial number, not that it must (R-ATT-13). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the stock item first.
 
@@ -1167,7 +1167,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Create a build output and leave the serial numbers empty. | Quantity: `1`<br>Serial numbers: empty | The output is not created without serial numbers. Not known: depends on open question Q-ATT-13 (the error text and how the form shows it). |
+| 1 | Create a build output and leave the serial numbers empty. | Quantity: `1`<br>Serial numbers: empty | The output is not created without serial numbers. Open: Q-ATT-13 (the error text and how the form shows it). |
 | 2 | Create a build output with serial numbers. | Quantity: `1`<br>Serial numbers: `1` | The output is created with serial number `1`. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Build Order first.
@@ -1269,7 +1269,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Try to add a line item for the part. | Part: `QA-<suffix> Not Purchaseable PO` | Not known: depends on open question Q-ATT-06 (whether the part is offered or blocked, and the error text). |
+| 1 | Try to add a line item for the part. | Part: `QA-<suffix> Not Purchaseable PO` | Proposed, to confirm in Q-ATT-06: `QA-<suffix> Not Purchaseable PO` is not offered for the line item; only Purchaseable parts are ordered on purchase orders (R-ATT-18). Open: Q-ATT-06 (the error text if it is blocked on submit instead). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Purchase Order and supplier first.
 
@@ -1324,7 +1324,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Try to add a line item for the part. | Part: `QA-<suffix> Not Salable` | Not known: depends on open question Q-ATT-07 (whether the part is offered or blocked, and the error text). |
+| 1 | Try to add a line item for the part. | Part: `QA-<suffix> Not Salable` | Proposed, to confirm in Q-ATT-07: `QA-<suffix> Not Salable` is not offered for the line item; only Salable parts are added to sales orders (R-ATT-19). Open: Q-ATT-07 (the error text if it is blocked on submit instead). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Sales Order and the customer first.
 
@@ -1405,7 +1405,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the allocation view of the Build Order and look for the Consumable part. | None | The Consumable part is not allocated to the Build Order. Not known: depends on open question Q-ATT-15 (whether it is listed as not requiring allocation or not listed; the docs only say it is not allocated). |
+| 1 | Open the allocation view of the Build Order and look for the Consumable part. | None | The Consumable part is not allocated to the Build Order. Open: Q-ATT-15 (whether it is listed as not requiring allocation or not listed; the docs only say it is not allocated). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Build Order first.
 
@@ -1542,8 +1542,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The part is now locked. |
-| 2 | Try to delete the part. | None | The part is not deleted. Not known: depends on open question Q-ATT-14 (whether the delete action is hidden, disabled, or rejected with a message). |
+| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | The part is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to delete the part. | None | The part is not deleted. Open: Q-ATT-14 (whether the delete action is hidden, disabled, or rejected with a message). |
 | 3 | Reload the part's detail page. | None | The part still exists. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the part, then delete it.
@@ -1569,8 +1569,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The assembly is now locked. |
-| 2 | Try to create a BOM line. | Quantity: `3` | The BOM is not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | The assembly is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to create a BOM line. | Quantity: `3` | The BOM is not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *BOM* tab. | None | The BOM is as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the assembly, delete BOM lines, make parts inactive and delete them.
@@ -1600,8 +1600,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The assembly is now locked. |
-| 2 | Try to edit the quantity of an existing BOM line. | Quantity: `3` | The BOM is not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | The assembly is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to edit the quantity of an existing BOM line. | Quantity: `3` | The BOM is not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *BOM* tab. | None | The BOM is as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the assembly, delete BOM lines, make parts inactive and delete them.
@@ -1631,8 +1631,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The assembly is now locked. |
-| 2 | Try to delete an existing BOM line. | None | The BOM is not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the assembly [open: Q-ATT-01, how a part is locked and its label]. | None | The assembly is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to delete an existing BOM line. | None | The BOM is not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *BOM* tab. | None | The BOM is as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the assembly, delete BOM lines, make parts inactive and delete them.
@@ -1662,8 +1662,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The part is now locked. |
-| 2 | Try to create a parameter. | Value: `7` | The parameters are not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | The part is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to create a parameter. | Value: `7` | The parameters are not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *Parameters* tab. | None | The parameters are as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the part, delete parameters and the template, make the part inactive and delete it.
@@ -1693,8 +1693,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The part is now locked. |
-| 2 | Try to edit the value of an existing parameter. | Value: `7` | The parameters are not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | The part is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to edit the value of an existing parameter. | Value: `7` | The parameters are not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *Parameters* tab. | None | The parameters are as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the part, delete parameters and the template, make the part inactive and delete it.
@@ -1724,8 +1724,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | Not known: depends on open question Q-ATT-01 (the lock control and its label). The part is now locked. |
-| 2 | Try to delete an existing parameter. | None | The parameters are not changed. Not known: depends on open question Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
+| 1 | Lock the part [open: Q-ATT-01, how a part is locked and its label]. | None | The part is now locked. Open: Q-ATT-01 (the lock control and its label). |
+| 2 | Try to delete an existing parameter. | None | The parameters are not changed. Open: Q-ATT-14 (whether the control is hidden, disabled, or rejected with a message). |
 | 3 | Reload the *Parameters* tab. | None | The parameters are as before the attempt. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: unlock the part, delete parameters and the template, make the part inactive and delete it.
@@ -1841,7 +1841,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Unlock the assembly [open: Q-ATT-01, how a part is unlocked and its label]. | None | Not known: depends on open question Q-ATT-01 (the unlock control and its label). |
+| 1 | Unlock the assembly [open: Q-ATT-01, how a part is unlocked and its label]. | None | The assembly is now unlocked. Open: Q-ATT-01 (the unlock control and its label). |
 | 2 | Add a BOM line. | Sub-component: `QA-<suffix> Component Unlock`<br>Quantity: `1` | The BOM line is saved without error. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: delete the BOM line, make parts inactive and delete them.
@@ -1920,8 +1920,8 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Start a new BOM line and look for the inactive part. | Sub-component: `QA-<suffix> Inactive Component` | Not known: depends on open question Q-ATT-03 (whether an inactive part is offered, blocked, and the error text). |
-| 2 | Submit the line if possible. | Quantity: `1` | Not known: depends on open question Q-ATT-03 (whether the line is saved). |
+| 1 | Start a new BOM line and look for the inactive part. | Sub-component: `QA-<suffix> Inactive Component` | Proposed, to confirm in Q-ATT-03: `QA-<suffix> Inactive Component` is not offered in the sub-component selector; an inactive part is not available for many actions (R-ATT-29). Open: Q-ATT-03 (the error text if it is blocked on submit instead). |
+| 2 | Submit the line if possible. | Quantity: `1` | Proposed, to confirm in Q-ATT-03: no BOM line is saved for the inactive part. |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created.
 
@@ -1946,7 +1946,7 @@
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Try to add a line item for the inactive part. | Supplier part: `QA-<suffix>-SKU` | Not known: depends on open question Q-ATT-03 (whether the line is offered, blocked, and the error text). |
+| 1 | Try to add a line item for the inactive part. | Supplier part: `QA-<suffix>-SKU` | Proposed, to confirm in Q-ATT-03: the inactive part's supplier part is not offered for the line item (R-ATT-29). Open: Q-ATT-03 (the error text if it is blocked on submit instead). |
 
 **Postconditions and cleanup:** Cleanup as `admin`: set each part the case created inactive, then delete it; delete any other record the case created. Delete the Purchase Order, supplier part and supplier first.
 

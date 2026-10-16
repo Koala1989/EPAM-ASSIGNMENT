@@ -4,8 +4,12 @@ import { LoginPage } from '../pages/login.page';
 import { PartsPage } from '../pages/parts.page';
 import { PartFormPage } from '../pages/part-form.page';
 import { PartDetailPage } from '../pages/part-detail.page';
+import { ParameterFormPage } from '../pages/parameter-form.page';
+import { StockItemFormPage } from '../pages/stock-item-form.page';
 
 export type Pages = {
+  parameterForm: ParameterFormPage;
+  stockItemForm: StockItemFormPage;
   app: BasePage;
   loginPage: LoginPage;
   partsPage: PartsPage;
@@ -14,6 +18,8 @@ export type Pages = {
 };
 
 export const test = base.extend<Pages>({
+  parameterForm: async ({ page }, use) => use(new ParameterFormPage(page)),
+  stockItemForm: async ({ page }, use) => use(new StockItemFormPage(page)),
   app: async ({ page }, use) => use(new BasePage(page)),
   loginPage: async ({ page }, use) => use(new LoginPage(page)),
   partsPage: async ({ page }, use) => use(new PartsPage(page)),

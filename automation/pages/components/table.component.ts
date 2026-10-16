@@ -19,4 +19,14 @@ export class TableComponent {
   row(text: string): Locator {
     return this.rows.filter({ hasText: text });
   }
+
+  /** The cell with exactly this text in the row containing `rowText`. */
+  cell(rowText: string, cellText: string): Locator {
+    return this.row(rowText).getByRole('cell', { name: cellText, exact: true });
+  }
+
+  /** A column header by its name (sortable headers have the role button, the others columnheader). */
+  columnHeader(name: string): Locator {
+    return this.root.getByRole('columnheader', { name }).or(this.root.getByRole('button', { name }));
+  }
 }

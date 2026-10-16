@@ -35,16 +35,16 @@ Each spec automates one Approved manual case. Its first line names it: `// case:
 4. **No flaky fixes.** No `waitForTimeout`, no `networkidle`, no `force: true` (all lint errors), no retries added to hide a failure. If an overlay covers an element, wait in the page object for the overlay to go away.
 5. **No hard-coded URLs or credentials.** Never "fix" a test by writing a host, port, full URL or password into a spec, page object or fixture: the address and passwords come only from `config/env.ts`, and page objects navigate with paths. If the suite cannot reach the app, report it as an environment problem.
 6. **Leave the data clean.** If a failure left `QA-` records behind, say so in the report; do not delete records you did not create.
-7. **Bounded effort.** At most three fix attempts per test; then mark it fixme with what you found and move on.
+7. **Bounded effort.** One fix attempt per test, followed by one re-run of that test (kept to one to keep demo recordings short). If it still fails, mark it fixme with what you found and move on.
 
 ## Workflow
 
-1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. The `login-smoke` project logs in first; if it fails, fix it before anything else, since every test depends on it.
+1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. Your runs skip the `login-smoke` project (the MCP server sets `SKIP_LOGIN_SMOKE=1`); each test still logs in through its user fixture. If a test fails at login, fix `LoginPage` before anything else, since every test depends on it.
 2. For each failing test, read its case (from the header comment), then run `test_debug` and inspect the page at the failure with `browser_snapshot`, console and network tools.
 3. Decide the cause:
-   - **Test problem** (locator, timing, data, fixture): fix it within guardrail 1, then re-run that test.
+   - **Test problem** (locator, timing, data, fixture): fix it within guardrail 1, then re-run that test once (guardrail 7).
    - **App differs from the case, or case looks wrong:** guardrail 3.
-4. When the failing tests are handled, run the whole suite once more to confirm nothing else broke.
+4. Do not run the whole suite again. If you changed a page object or component, list the other specs that use it in your report so the architect can run them.
 
 ## Report back
 

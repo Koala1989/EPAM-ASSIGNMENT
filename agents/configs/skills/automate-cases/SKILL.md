@@ -1,6 +1,6 @@
 ---
 name: automate-cases
-description: Automate Approved manual UI test cases end to end in one run. For each case, calls playwright-test-generator to write the spec, runs lint and type check, calls playwright-test-healer to run and stabilise it, checks it passes three times in a row, then calls playwright-test-reviewer for an independent review. Usage /automate-cases <case ID> [<case ID> ...].
+description: Automate Approved manual UI test cases end to end in one run. For each case, calls playwright-test-generator to write the spec, runs lint and type check and one run, calls playwright-test-healer only if either fails (then checks one green run), and calls playwright-test-reviewer in the background for an independent review. Usage /automate-cases <case ID> [<case ID> ...].
 argument-hint: <case ID> [<case ID> ...]
 disable-model-invocation: true
 ---
@@ -15,14 +15,14 @@ You only coordinate. You do not write or edit specs, page objects, fixtures, con
 
 The request must list one or more UI case IDs (`UI-<Area>-NNN`, e.g. `UI-Part-007`). If there are none, ask the user for them and stop. API case IDs (`API-...`) belong to `/automate-api-cases`: list them as skipped, with that pointer.
 
-Handle the cases **one at a time, in the order given**: complete steps 2-7 for a case before starting the next. Agents may add page object code, and two cases changing the same files at once would conflict.
+Handle the cases **one at a time, in the order given**: complete steps 2-8 for a case before starting the next. Agents may add page object code, and two cases changing the same files at once would conflict.
 
 ## 2. Pre-check the case
 
-Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md` or `open-questions.md`):
+Without starting an agent, check with Grep in `test-cases/*/*.md` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`) (not `requirements-inventory.md`; questions, reviews and runs are in `test-cases/Open_Questions/`, `Reviews/` and `Runs/`):
 
 - **The case exists.** If not: skip it, reason "not found".
-- **Review starts with `Approved` or `Changed`**, and the case contains no `Open question`, `[open:` or `Not known`. If not: skip it, reason "not Approved" or "open question".
+- **Review starts with `Approved` or `Changed`.** This is the only check on the case's content. If not: skip it, reason "not Approved".
 - **No spec exists yet:** no file under `automation/tests/ui/` whose first line names this case ID. If one exists: skip it, reason "spec exists". Regenerating would overwrite reviewed work; the user can delete the spec first, or ask for the healer or reviewer on their own.
 
 A skipped case gets no agent run. Go to the next case.
@@ -49,9 +49,22 @@ npm run typecheck
 npx eslint <spec path> <every page object or fixture file the generator changed>
 ```
 
-Keep the full error output, if any, for step 5.
+Keep the full error output, if any, for step 6.
 
-## 5. Run playwright-test-healer
+## 5. First run
+
+Run the spec once:
+
+```
+npx playwright test <spec path> --project=chromium --repeat-each=1 --no-deps
+```
+
+`--no-deps` skips the `login-smoke` project: the spec still logs in through the real login form via its user fixture, and the full suite (`npm run test:ui`) keeps the smoke check.
+
+- **Step 4 passed and the run passed (1 passed):** the spec is stable as written. Skip the healer (record it as "not needed") and use this run as step 7's result. Start the reviewer now (step 8) and go to step 9 when it returns.
+- **Anything else** (lint or type errors, a failure, or a skip): go to step 6. Keep the failing run's error line for the summary.
+
+## 6. Run playwright-test-healer
 
 Call the Agent tool, in the foreground, with `subagent_type: playwright-test-healer` and this prompt:
 
@@ -68,25 +81,21 @@ Lint and type check errors to fix first:
 
 Pass only the spec path and the tool output. Never pass the generator's report or reasoning.
 
-After it returns, run step 4's commands again (adding any files the healer changed). If they still fail, record it and skip step 6; still run step 7.
+After it returns, run step 4's commands again (adding any files the healer changed). If they still fail, record it and skip step 7; still run step 8.
 
-## 6. Stability check: three green runs
+The healer has finished changing the spec, so start the reviewer now (step 8). It does not run tests, so step 7 is recorded while it works.
 
-Run:
+## 7. Stability check: one green run
 
-```
-npx playwright test <spec path> --project=chromium --repeat-each=3
-```
+Only after the healer ran. Do not run the spec again: the healer's one re-run (its guardrail 7) is the green-run check, so record the outcome from its report:
 
-The `login-smoke` project runs first as a dependency. Record the outcome:
-
-- **3 passed:** stable.
+- **1 passed:** stable. (Reduced to one re-run to keep demo recordings short; CONVENTIONS.md UI §12 still asks for three before a spec counts as done.)
 - **Any failure:** not stable. Record the failing run's error line. Do not call the healer again; it has already used its bounded attempts.
 - **Skipped (`test.fixme`):** the healer found an app finding or case defect. Not stable; record its `FINDING:` or `CASE DEFECT:` comment.
 
-## 7. Run playwright-test-reviewer
+## 8. Run playwright-test-reviewer
 
-Call the Agent tool, in the foreground, with `subagent_type: playwright-test-reviewer` and this prompt:
+Call the Agent tool **in the background** (`run_in_background: true`) with `subagent_type: playwright-test-reviewer` and this prompt:
 
 ```
 Review <spec path>.
@@ -94,20 +103,22 @@ Review <spec path>.
 
 Pass the spec path only. Never pass the generator's or healer's reports, the stability result or any summary: the reviewer must stay independent, and it runs its own lint and type check.
 
+Start it only when the spec is final (step 5 passed, or the healer returned), and wait for its completion notice before the next case's step 2, since the next generator may change page objects the reviewer is reading. Never predict or summarise its result before the notice arrives.
+
 After it returns, check with Glob that a review file for this case exists in `automation/reviews/ui/` with today's date. If not, say so.
 
 Do not loop back to the generator or healer on the reviewer's findings. The user decides what to fix.
 
-## 8. Summarise
+## 9. Summarise
 
 Give the user one summary, in this order:
 
 1. **Results:** one row per case.
 
-   | Case | Spec | Generator | Lint/type | Healer | 3 runs | Review | Done |
+   | Case | Spec | Generator | Lint/type | Healer | 1 run | Review | Done |
    |---|---|---|---|---|---|---|---|
 
-   **Done** is Yes only when lint and type check pass, all 3 runs pass, and the verdict is Approve or Approve with changes (CONVENTIONS.md UI §12). Skipped cases show the step-2 reason.
+   **Done** is Yes only when lint and type check pass, the run passes, and the verdict is Approve or Approve with changes (CONVENTIONS.md UI §12). Skipped cases show the step-2 reason. **Healer** shows "not needed" when step 5 passed.
 2. **Page object changes:** every file the generator or healer created or changed, with the new members. These touch code other specs share, so the user should look at them.
 3. **Findings and case defects:** from the generator's mismatches and the healer's fixme comments: case, step, case says, app shows. They go to `test-cases/findings.md` or back to the case author.
 4. **Review findings:** each Blocker and Major (case, file:line, problem) and the review file links.

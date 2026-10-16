@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1910 620" width="1910" height="620" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 z" fill="#5B4D3A"/></marker></defs>
+<rect width="1910" height="620" fill="#F6F1E7"/>
+<text x="30" y="46" font-size="26" font-weight="700" fill="#3B3226">AI-assisted QA workflow, end to end</text>
+<text x="30" y="74" font-size="15" fill="#6B5D47">InvenTree 1.5.6 Parts module · requirements to reviewed manual cases to Playwright + TypeScript specs · UI and API · the architect approves at each handover</text>
+<rect x="20" y="95" width="330" height="405" rx="14" fill="#EDE5D3"/>
+<text x="40" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">1 · REQUIREMENTS &amp; RAG</text>
+<rect x="390" y="95" width="360" height="405" rx="14" fill="#EDE5D3"/>
+<text x="410" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">2 · TEST CASES (/gen-test-cases)</text>
+<rect x="790" y="95" width="330" height="405" rx="14" fill="#E4E8D9"/>
+<text x="810" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">3 · HUMAN APPROVAL</text>
+<rect x="1160" y="95" width="360" height="405" rx="14" fill="#EDE5D3"/>
+<text x="1180" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">4 · AUTOMATION (/automate-*)</text>
+<rect x="1560" y="95" width="330" height="405" rx="14" fill="#E4E8D9"/>
+<text x="1580" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">5 · HUMAN APPROVAL</text>
+<rect x="40" y="145" width="290" height="150" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text x="55" y="177" font-size="17" font-weight="700" fill="#3B3226">Requirements</text>
+<text x="55" y="203" font-size="14" fill="#3B3226">1.5.6 docs + OpenAPI schema slice</text>
+<text x="55" y="225" font-size="14" fill="#3B3226">inventory: rule-ID'd requirements</text>
+<text x="55" y="247" font-size="14" fill="#3B3226">answered open questions count too</text>
+<rect x="40" y="325" width="290" height="150" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
+<text x="55" y="357" font-size="17" font-weight="700" fill="#3B3226">RAG</text>
+<text x="55" y="383" font-size="14" fill="#3B3226">ChromaDB + MiniLM over the docs</text>
+<text x="55" y="405" font-size="14" fill="#3B3226">confirms each rule's exact wording</text>
+<text x="55" y="427" font-size="14" fill="#3B3226">API rules: schema read directly</text>
+<rect x="410" y="145" width="320" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="425" y="177" font-size="17" font-weight="700" fill="#3B3226">test-case-creator · Sonnet 5.5</text>
+<text x="425" y="203" font-size="14" fill="#3B3226">writes UI or API cases, as Draft</text>
+<text x="425" y="225" font-size="14" fill="#3B3226">raises open questions, never assumes</text>
+<text x="425" y="247" font-size="14" fill="#3B3226">runs the duplicate check</text>
+<rect x="410" y="325" width="320" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="425" y="357" font-size="17" font-weight="700" fill="#3B3226">test-case-reviewer · Opus 5.5</text>
+<text x="425" y="383" font-size="14" fill="#3B3226">independent: rule coverage</text>
+<text x="425" y="405" font-size="14" fill="#3B3226">case quality, open-question marking</text>
+<text x="425" y="427" font-size="14" fill="#3B3226">duplicate verdicts at score 50+</text>
+<line x1="570" y1="297" x2="570" y2="321" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<rect x="810" y="145" width="290" height="330" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text x="825" y="177" font-size="17" font-weight="700" fill="#3B3226">Approve the cases</text>
+<text x="825" y="203" font-size="14" fill="#3B3226">answer open questions</text>
+<text x="825" y="225" font-size="14" fill="#3B3226">act on the review: gaps, Blockers,</text>
+<text x="825" y="247" font-size="14" fill="#3B3226">Majors, duplicate verdicts</text>
+<text x="825" y="269" font-size="14" fill="#3B3226">run the cases (UI or API)</text>
+<text x="825" y="291" font-size="14" fill="#3B3226">set Review: Draft to Approved</text>
+<text x="825" y="335" font-size="14" fill="#3B3226">only Approved or Changed</text>
+<text x="825" y="357" font-size="14" fill="#3B3226">cases go on to automation</text>
+<rect x="1180" y="140" width="320" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="1195" y="170" font-size="17" font-weight="700" fill="#3B3226">Generator · Sonnet 5.5</text>
+<text x="1195" y="195" font-size="14" fill="#3B3226">UI: runs the case live, writes the spec</text>
+<text x="1195" y="216" font-size="14" fill="#3B3226">API: writes, runs and stabilises it</text>
+<rect x="1180" y="262" width="320" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="1195" y="292" font-size="17" font-weight="700" fill="#3B3226">Healer (UI) + checks</text>
+<text x="1195" y="317" font-size="14" fill="#3B3226">fixes how a test runs, not what it checks</text>
+<text x="1195" y="338" font-size="14" fill="#3B3226">then lint, types, stability runs</text>
+<rect x="1180" y="384" width="320" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="1195" y="414" font-size="17" font-weight="700" fill="#3B3226">Reviewer · Opus 5.5</text>
+<text x="1195" y="439" font-size="14" fill="#3B3226">independent: gets the spec path only</text>
+<text x="1195" y="460" font-size="14" fill="#3B3226">every step asserted, verdict</text>
+<line x1="1340" y1="242" x2="1340" y2="258" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="1340" y1="364" x2="1340" y2="380" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<rect x="1580" y="145" width="290" height="330" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text x="1595" y="177" font-size="17" font-weight="700" fill="#3B3226">Approve the specs</text>
+<text x="1595" y="203" font-size="14" fill="#3B3226">review new page objects</text>
+<text x="1595" y="225" font-size="14" fill="#3B3226">and client methods</text>
+<text x="1595" y="247" font-size="14" fill="#3B3226">decide on findings:</text>
+<text x="1595" y="269" font-size="14" fill="#3B3226">test.fixme + // FINDING:</text>
+<text x="1595" y="291" font-size="14" fill="#3B3226">act on the review</text>
+<text x="1595" y="335" font-size="14" fill="#3B3226">Done specs join the regression</text>
+<text x="1595" y="357" font-size="14" fill="#3B3226">suite: npm test · @smoke</text>
+<line x1="350" y1="310" x2="385" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="750" y1="310" x2="785" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="1120" y1="310" x2="1155" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="1520" y1="310" x2="1555" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<path d="M 955 502 L 955 535 L 570 535 L 570 506" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+<text x="590" y="527" font-size="14" fill="#6B5D47">answers and gaps: rerun /gen-test-cases</text>
+<path d="M 1725 502 L 1725 535 L 1340 535 L 1340 506" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+<text x="1360" y="527" font-size="14" fill="#6B5D47">fixes and decisions: rerun the skill</text>
+<rect x="40" y="575" width="20" height="20" rx="4" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="68" y="591" font-size="14" fill="#3B3226">AI agent</text>
+<rect x="190" y="575" width="20" height="20" rx="4" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
+<text x="218" y="591" font-size="14" fill="#3B3226">Script or tool</text>
+<rect x="340" y="575" width="20" height="20" rx="4" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text x="368" y="591" font-size="14" fill="#3B3226">Human step</text>
+<rect x="490" y="575" width="20" height="20" rx="4" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text x="518" y="591" font-size="14" fill="#3B3226">Files and data</text>
+</svg>

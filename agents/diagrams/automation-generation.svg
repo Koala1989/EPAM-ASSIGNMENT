@@ -1,122 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 870" width="1500" height="870" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 600" width="1500" height="600" font-family="Segoe UI, Helvetica, Arial, sans-serif">
 <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1 L9 5 L1 9 z" fill="#5B4D3A"/></marker></defs>
-<rect width="1500" height="870" fill="#F6F1E7"/>
+<rect width="1500" height="600" fill="#F6F1E7"/>
 <text x="30" y="46" font-size="26" font-weight="700" fill="#3B3226">AI-assisted automation workflow</text>
-<text x="30" y="74" font-size="15" fill="#6B5D47">Approved manual cases to Playwright + TypeScript specs · UI and API lanes · writers on Sonnet, independent reviewers on Opus</text>
-<rect x="20" y="95" width="1460" height="385" rx="14" fill="#EDE5D3"/>
-<text x="40" y="120" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">AI AND TOOLS</text>
-<rect x="20" y="500" width="1460" height="190" rx="14" fill="#E4E8D9"/>
-<text x="40" y="525" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">ARCHITECT (HUMAN)</text>
-<rect x="20" y="710" width="1460" height="140" rx="14" fill="#EFE9DA"/>
-<text x="40" y="735" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">RESULT</text>
-<rect data-box="b1" x="40" y="140" width="210" height="140" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
-<text data-in="b1" x="55" y="172" font-size="17" font-weight="700" fill="#3B3226">Approved UI case</text>
-<text data-in="b1" x="55" y="198" font-size="14" fill="#3B3226">UI-&lt;Area&gt;-NNN</text>
-<text data-in="b1" x="55" y="220" font-size="14" fill="#3B3226">Review: Approved</text>
-<text data-in="b1" x="55" y="242" font-size="14" fill="#3B3226">or Changed</text>
-<rect data-box="b2" x="282" y="140" width="210" height="140" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text data-in="b2" x="297" y="172" font-size="17" font-weight="700" fill="#3B3226">/automate-cases</text>
-<text data-in="b2" x="297" y="198" font-size="14" fill="#3B3226">skill: one trigger</text>
-<text data-in="b2" x="297" y="220" font-size="14" fill="#3B3226">pre-check, lint, 3 runs</text>
-<text data-in="b2" x="297" y="242" font-size="14" fill="#3B3226">one case at a time</text>
-<rect data-box="b3" x="524" y="140" width="210" height="140" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text data-in="b3" x="539" y="172" font-size="17" font-weight="700" fill="#3B3226">Generator</text>
-<text data-in="b3" x="539" y="198" font-size="14" fill="#3B3226">playwright-test-generator</text>
-<text data-in="b3" x="539" y="220" font-size="14" fill="#3B3226">Sonnet 5.5 · live browser</text>
-<text data-in="b3" x="539" y="242" font-size="14" fill="#3B3226">page objects + fixtures</text>
-<rect data-box="b4" x="766" y="140" width="210" height="140" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text data-in="b4" x="781" y="172" font-size="17" font-weight="700" fill="#3B3226">Healer</text>
-<text data-in="b4" x="781" y="198" font-size="14" fill="#3B3226">playwright-test-healer</text>
-<text data-in="b4" x="781" y="220" font-size="14" fill="#3B3226">Sonnet 5.5</text>
-<text data-in="b4" x="781" y="242" font-size="14" fill="#3B3226">fixes how a test runs,</text>
-<text data-in="b4" x="781" y="264" font-size="14" fill="#3B3226">never what it checks</text>
-<rect data-box="b5" x="1008" y="140" width="210" height="140" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text data-in="b5" x="1023" y="172" font-size="17" font-weight="700" fill="#3B3226">Stability check</text>
-<text data-in="b5" x="1023" y="198" font-size="14" fill="#3B3226">3 green runs in a row</text>
-<text data-in="b5" x="1023" y="220" font-size="14" fill="#3B3226">--repeat-each=3</text>
-<text data-in="b5" x="1023" y="242" font-size="14" fill="#3B3226">run by the skill</text>
-<rect data-box="b6" x="1250" y="140" width="210" height="140" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text data-in="b6" x="1265" y="172" font-size="17" font-weight="700" fill="#3B3226">Reviewer</text>
-<text data-in="b6" x="1265" y="198" font-size="14" fill="#3B3226">playwright-test-reviewer</text>
-<text data-in="b6" x="1265" y="220" font-size="14" fill="#3B3226">Opus 5.5 · independent</text>
-<text data-in="b6" x="1265" y="242" font-size="14" fill="#3B3226">gets the spec path only</text>
-<rect data-box="b7" x="40" y="310" width="210" height="150" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
-<text data-in="b7" x="55" y="342" font-size="17" font-weight="700" fill="#3B3226">Approved API case</text>
-<text data-in="b7" x="55" y="368" font-size="14" fill="#3B3226">API-&lt;Area&gt;-NNN</text>
-<text data-in="b7" x="55" y="390" font-size="14" fill="#3B3226">Review: Approved</text>
-<text data-in="b7" x="55" y="412" font-size="14" fill="#3B3226">or Changed</text>
-<rect data-box="b8" x="282" y="310" width="210" height="150" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text data-in="b8" x="297" y="342" font-size="17" font-weight="700" fill="#3B3226">/automate-api-cases</text>
-<text data-in="b8" x="297" y="368" font-size="14" fill="#3B3226">skill: one trigger</text>
-<text data-in="b8" x="297" y="390" font-size="14" fill="#3B3226">pre-check, lint, 3 runs</text>
-<text data-in="b8" x="297" y="412" font-size="14" fill="#3B3226">one case at a time</text>
-<rect data-box="b9" x="524" y="310" width="210" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text data-in="b9" x="539" y="342" font-size="17" font-weight="700" fill="#3B3226">Generator</text>
-<text data-in="b9" x="539" y="368" font-size="14" fill="#3B3226">api-test-generator</text>
-<text data-in="b9" x="539" y="390" font-size="14" fill="#3B3226">Sonnet 5.5 · clients</text>
-<text data-in="b9" x="539" y="412" font-size="14" fill="#3B3226">writes, runs, stabilises</text>
-<text data-in="b9" x="539" y="434" font-size="14" fill="#3B3226">status hard, schema soft</text>
-<rect data-box="b10" x="766" y="310" width="210" height="150" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text data-in="b10" x="781" y="342" font-size="17" font-weight="700" fill="#3B3226">Lint + type check</text>
-<text data-in="b10" x="781" y="368" font-size="14" fill="#3B3226">independent re-check</text>
-<text data-in="b10" x="781" y="390" font-size="14" fill="#3B3226">no healer: the generator</text>
-<text data-in="b10" x="781" y="412" font-size="14" fill="#3B3226">stabilised it already</text>
-<rect data-box="b11" x="1008" y="310" width="210" height="150" rx="10" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text data-in="b11" x="1023" y="342" font-size="17" font-weight="700" fill="#3B3226">Stability check</text>
-<text data-in="b11" x="1023" y="368" font-size="14" fill="#3B3226">3 green runs, or failing</text>
-<text data-in="b11" x="1023" y="390" font-size="14" fill="#3B3226">only on known defects</text>
-<text data-in="b11" x="1023" y="412" font-size="14" fill="#3B3226">(soft schema check, F-11)</text>
-<rect data-box="b12" x="1250" y="310" width="210" height="150" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text data-in="b12" x="1265" y="342" font-size="17" font-weight="700" fill="#3B3226">Reviewer</text>
-<text data-in="b12" x="1265" y="368" font-size="14" fill="#3B3226">api-test-reviewer</text>
-<text data-in="b12" x="1265" y="390" font-size="14" fill="#3B3226">Opus 5.5 · independent</text>
-<text data-in="b12" x="1265" y="412" font-size="14" fill="#3B3226">gets the spec path only</text>
-<line x1="252" y1="210" x2="278" y2="210" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="494" y1="210" x2="520" y2="210" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="736" y1="210" x2="762" y2="210" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="978" y1="210" x2="1004" y2="210" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="1220" y1="210" x2="1246" y2="210" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="252" y1="385" x2="278" y2="385" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="494" y1="385" x2="520" y2="385" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="736" y1="385" x2="762" y2="385" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="978" y1="385" x2="1004" y2="385" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="1220" y1="385" x2="1246" y2="385" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<rect data-box="b13" x="40" y="550" width="210" height="110" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text data-in="b13" x="55" y="582" font-size="17" font-weight="700" fill="#3B3226">Approve cases</text>
-<text data-in="b13" x="55" y="608" font-size="14" fill="#3B3226">only Approved or Changed</text>
-<text data-in="b13" x="55" y="630" font-size="14" fill="#3B3226">cases are automated</text>
-<rect data-box="b14" x="524" y="550" width="210" height="110" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text data-in="b14" x="539" y="582" font-size="17" font-weight="700" fill="#3B3226">Review shared code</text>
-<text data-in="b14" x="539" y="608" font-size="14" fill="#3B3226">new page-object members</text>
-<text data-in="b14" x="539" y="630" font-size="14" fill="#3B3226">and client methods</text>
-<rect data-box="b15" x="1008" y="550" width="210" height="110" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text data-in="b15" x="1023" y="582" font-size="17" font-weight="700" fill="#3B3226">Decide on findings</text>
-<text data-in="b15" x="1023" y="608" font-size="14" fill="#3B3226">fixme + // FINDING:</text>
-<text data-in="b15" x="1023" y="630" font-size="14" fill="#3B3226">known defects (F-xx)</text>
-<rect data-box="b16" x="1250" y="550" width="210" height="110" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text data-in="b16" x="1265" y="582" font-size="17" font-weight="700" fill="#3B3226">Act on the review</text>
-<text data-in="b16" x="1265" y="608" font-size="14" fill="#3B3226">Blockers and Majors</text>
-<text data-in="b16" x="1265" y="630" font-size="14" fill="#3B3226">decide what to fix</text>
-<line x1="230" y1="462" x2="230" y2="548" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-start="url(#arr)" marker-end="url(#arr)"/>
-<line x1="629" y1="462" x2="629" y2="548" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-start="url(#arr)" marker-end="url(#arr)"/>
-<line x1="1113" y1="462" x2="1113" y2="548" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-start="url(#arr)" marker-end="url(#arr)"/>
-<line x1="1355" y1="462" x2="1355" y2="548" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-start="url(#arr)" marker-end="url(#arr)"/>
-<rect data-box="b17" x="1008" y="740" width="210" height="80" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text data-in="b17" x="1023" y="772" font-size="17" font-weight="700" fill="#3B3226">Done</text>
-<text data-in="b17" x="1023" y="798" font-size="14" fill="#3B3226">lint, types, 3 runs, verdict</text>
-<rect data-box="b18" x="1250" y="740" width="210" height="80" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
-<text data-in="b18" x="1265" y="772" font-size="17" font-weight="700" fill="#3B3226">Regression suite</text>
-<text data-in="b18" x="1265" y="798" font-size="14" fill="#3B3226">npm test · @smoke</text>
-<line x1="1113" y1="662" x2="1113" y2="736" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<line x1="1220" y1="780" x2="1246" y2="780" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
-<rect x="40" y="752" width="20" height="20" rx="4" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
-<text x="68" y="768" font-size="14" fill="#3B3226">AI agent</text>
-<rect x="190" y="752" width="20" height="20" rx="4" fill="#B9C48F" stroke="#6F7D3E" stroke-width="2"/>
-<text x="218" y="768" font-size="14" fill="#3B3226">Script or skill</text>
-<rect x="340" y="752" width="20" height="20" rx="4" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
-<text x="368" y="768" font-size="14" fill="#3B3226">Human step</text>
-<rect x="490" y="752" width="20" height="20" rx="4" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
-<text x="518" y="768" font-size="14" fill="#3B3226">Files and data</text>
-<text x="40" y="800" font-size="14" fill="#6B5D47">Dashed arrows: output goes to the architect, decisions come back.</text>
-<text x="40" y="822" font-size="14" fill="#6B5D47">Each gate applies to both lanes. One project: automation/tests/ui|api/, reviews/ui|api/.</text>
+<text x="30" y="74" font-size="15" fill="#6B5D47">Approved manual cases to Playwright + TypeScript specs · UI and API · writers on Sonnet, independent reviewers on Opus</text>
+<rect x="20" y="95" width="440" height="405" rx="14" fill="#EDE5D3"/>
+<text x="40" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">1 · APPROVED CASES</text>
+<rect x="500" y="95" width="500" height="405" rx="14" fill="#EDE5D3"/>
+<text x="520" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#7A6A4F">2 · AI FLOW (/automate-cases, /automate-api-cases)</text>
+<rect x="1040" y="95" width="440" height="405" rx="14" fill="#E4E8D9"/>
+<text x="1060" y="122" font-size="13" font-weight="700" letter-spacing="1.5" fill="#6C7A4A">3 · HUMAN APPROVAL</text>
+<rect data-box="b1" x="45" y="145" width="390" height="150" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text data-in="b1" x="60" y="177" font-size="17" font-weight="700" fill="#3B3226">Approved UI case</text>
+<text data-in="b1" x="60" y="203" font-size="14" fill="#3B3226">UI-&lt;Area&gt;-NNN</text>
+<text data-in="b1" x="60" y="225" font-size="14" fill="#3B3226">Review: Approved or Changed</text>
+<text data-in="b1" x="60" y="247" font-size="14" fill="#3B3226">anything else is skipped</text>
+<rect data-box="b2" x="45" y="325" width="390" height="150" rx="10" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text data-in="b2" x="60" y="357" font-size="17" font-weight="700" fill="#3B3226">Approved API case</text>
+<text data-in="b2" x="60" y="383" font-size="14" fill="#3B3226">API-&lt;Area&gt;-NNN</text>
+<text data-in="b2" x="60" y="405" font-size="14" fill="#3B3226">Review: Approved or Changed</text>
+<text data-in="b2" x="60" y="427" font-size="14" fill="#3B3226">checked against the OpenAPI schema slice</text>
+<rect data-box="b3" x="525" y="140" width="450" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text data-in="b3" x="540" y="170" font-size="17" font-weight="700" fill="#3B3226">Generator · Sonnet 5.5</text>
+<text data-in="b3" x="540" y="195" font-size="14" fill="#3B3226">UI: runs the case live in the browser, writes the spec</text>
+<text data-in="b3" x="540" y="216" font-size="14" fill="#3B3226">API: writes, runs and stabilises the spec</text>
+<rect data-box="b4" x="525" y="262" width="450" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text data-in="b4" x="540" y="292" font-size="17" font-weight="700" fill="#3B3226">Healer (UI) + checks</text>
+<text data-in="b4" x="540" y="317" font-size="14" fill="#3B3226">fixes how a test runs, never what it checks</text>
+<text data-in="b4" x="540" y="338" font-size="14" fill="#3B3226">then lint, type check and stability runs</text>
+<rect data-box="b5" x="525" y="384" width="450" height="100" rx="10" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text data-in="b5" x="540" y="414" font-size="17" font-weight="700" fill="#3B3226">Reviewer · Opus 5.5</text>
+<text data-in="b5" x="540" y="439" font-size="14" fill="#3B3226">independent: gets the spec path only</text>
+<text data-in="b5" x="540" y="460" font-size="14" fill="#3B3226">conventions, every step asserted, verdict</text>
+<line x1="750" y1="242" x2="750" y2="258" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="750" y1="364" x2="750" y2="380" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<rect data-box="b6" x="1065" y="145" width="390" height="330" rx="10" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text data-in="b6" x="1080" y="177" font-size="17" font-weight="700" fill="#3B3226">Human approval</text>
+<text data-in="b6" x="1080" y="203" font-size="14" fill="#3B3226">review new page objects and client methods</text>
+<text data-in="b6" x="1080" y="225" font-size="14" fill="#3B3226">decide on findings: test.fixme + // FINDING:</text>
+<text data-in="b6" x="1080" y="247" font-size="14" fill="#3B3226">act on the review: Blockers and Majors</text>
+<text data-in="b6" x="1080" y="269" font-size="14" fill="#3B3226"></text>
+<text data-in="b6" x="1080" y="291" font-size="14" fill="#3B3226">Done: lint, types, green runs, verdict</text>
+<text data-in="b6" x="1080" y="313" font-size="14" fill="#3B3226"></text>
+<text data-in="b6" x="1080" y="335" font-size="14" fill="#3B3226">Done specs join the regression suite</text>
+<text data-in="b6" x="1080" y="357" font-size="14" fill="#3B3226">npm test · @smoke</text>
+<line x1="440" y1="310" x2="495" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<line x1="1000" y1="310" x2="1035" y2="310" stroke="#5B4D3A" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+<path d="M 1260 502 L 1260 535 L 750 535 L 750 506" stroke="#5B4D3A" stroke-width="2.5" fill="none" stroke-dasharray="7 5" marker-end="url(#arr)"/>
+<text x="840" y="527" font-size="14" fill="#6B5D47">fixes and decisions go back: rerun the skill</text>
+<rect x="40" y="560" width="20" height="20" rx="4" fill="#E2B08F" stroke="#B5663C" stroke-width="2"/>
+<text x="68" y="576" font-size="14" fill="#3B3226">AI agent</text>
+<rect x="190" y="560" width="20" height="20" rx="4" fill="#F1DDB0" stroke="#A9822F" stroke-width="2"/>
+<text x="218" y="576" font-size="14" fill="#3B3226">Human step</text>
+<rect x="340" y="560" width="20" height="20" rx="4" fill="#FBF8F0" stroke="#8A7A5E" stroke-width="2"/>
+<text x="368" y="576" font-size="14" fill="#3B3226">Files and data</text>
 </svg>

@@ -222,7 +222,8 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
 
     paths = sorted({Path(p) for pattern in args.files for p in glob.glob(pattern, recursive=True)
-                    if Path(p).name not in ("open-questions.md", "requirements-inventory.md")})
+                    if Path(p).name != "requirements-inventory.md"
+                    and not {"Open_Questions", "Reviews", "Runs"} & set(Path(p).parts)})
     if not paths:
         sys.exit(f"No files match: {' '.join(args.files)}")
     cases = [c for p in paths for c in parse_file(p)]

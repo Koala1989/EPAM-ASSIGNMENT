@@ -1,6 +1,6 @@
 ---
 name: automate-api-cases
-description: Automate Approved manual API test cases end to end in one run. For each case, calls api-test-generator to write, run and stabilise the Playwright API spec, re-runs lint and type check, checks the spec passes three times in a row, then calls api-test-reviewer for an independent review. Usage /automate-api-cases <case ID> [<case ID> ...].
+description: Automate Approved manual API test cases end to end in one run. For each case, calls api-test-generator to write, run and stabilise the Playwright API spec, re-runs lint and type check, checks the spec passes three times in a row, then calls api-test-reviewer for an independent review. A case with a Data sets table becomes one spec with one test per data row. Usage /automate-api-cases <case ID> [<case ID> ...].
 argument-hint: <case ID> [<case ID> ...]
 disable-model-invocation: true
 ---
@@ -19,10 +19,10 @@ Handle the cases **one at a time, in the order given**: complete steps 2-6 for a
 
 ## 2. Pre-check the case
 
-Without starting an agent, check with Grep in `test-cases/API_*/*.md` (e.g. `API-CRUD-001` is in `test-cases/API_Create_Read_Update_Delete/`; not `requirements-inventory.md` or `open-questions.md`):
+Without starting an agent, check with Grep in `test-cases/API_*/*.md` (e.g. `API-CRUD-001` is in `test-cases/API_Create_Read_Update_Delete/`; not `requirements-inventory.md`, `Open_Questions/`, `Reviews/` or `Runs/`):
 
 - **The case exists.** If not: skip it, reason "not found".
-- **Review starts with `Approved` or `Changed`**, and the case contains no `Open question`, `[open:` or `Not known`. If not: skip it, reason "not Approved" or "open question".
+- **Review starts with `Approved` or `Changed`.** This is the only check on the case's content. If not: skip it, reason "not Approved".
 - **No spec exists yet:** no file under `automation/tests/api/` whose first line names this case ID. If one exists: skip it, reason "spec exists". Regenerating would overwrite reviewed work; the user can delete the spec first, or ask for the reviewer on its own.
 
 A skipped case gets no agent run. Go to the next case.
@@ -92,6 +92,8 @@ Give the user one summary, in this order:
 
    | Case | Spec | Generator | Lint/type | 3 runs | Review | Done |
    |---|---|---|---|---|---|---|
+
+   For a data-driven case (one test per Data sets row), add the per-row result under its row: `<label>`: passed / failed / fixme.
 
    **Done** is Yes only when lint and type check pass, all 3 runs pass or fail on known product defects only (show it as `Yes (F-11)`), and the verdict is Approve or Approve with changes (`automation/CONVENTIONS.md` API §12). Skipped cases show the step-2 reason.
 2. **Client changes:** every client file the generator created or changed, with the new methods. These are shared by other specs, so the user should look at them.

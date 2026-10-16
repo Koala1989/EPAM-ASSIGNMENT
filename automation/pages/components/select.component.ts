@@ -11,6 +11,12 @@ export class SelectComponent {
     readonly input: Locator,
   ) {}
 
+  /** The control around the input; its text is the selected option (the input itself has no value). */
+  get selectedValue(): Locator {
+    // No role or label identifies the selected-value text; it lives two levels above the combobox input.
+    return this.input.locator('xpath=../..');
+  }
+
   /** Options currently offered in the open dropdown. */
   get options(): Locator {
     return this.page.getByRole('option');

@@ -20,7 +20,7 @@ from pathlib import Path
 from areas import area_folder
 
 ROOT = Path(__file__).resolve().parents[1] / "test-cases"
-SKIP = {"requirements-inventory.md", "open-questions.md"}
+SKIP = {"requirements-inventory.md"}
 RULE_ROW = re.compile(r"^\|\s*(?P<id>R-[A-Za-z_]+-\d+)\s*\|\s*(?P<text>[^|]*)\|")
 CASE_HEADING = re.compile(r"^###\s+(?P<id>(?:UI|API)-[A-Za-z_]+-\d+):")
 REQUIREMENT = re.compile(r"^\|\s*\*\*Requirement\*\*\s*\|(?P<value>.*)\|\s*$")

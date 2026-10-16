@@ -23,12 +23,12 @@ Opus 5.5 (set in the frontmatter), deliberately a different model from `test-cas
 
 The request gives `UI` or `API`, the functionality, and the case IDs to review (for example `Review API test cases for Part and category CRUD: API-CRUD-001, ..., API-CRUD-024.`). If it gives no case IDs, stop and ask for them.
 
-Find the cases with Grep under `test-cases/` (not `requirements-inventory.md` or `open-questions.md`); note each case's file and Area. Each Area's cases live in `test-cases/<Area folder>/` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`); the Area value and IDs stay short.
+Find the cases with Grep under `test-cases/` (not `requirements-inventory.md`, and not the `Open_Questions/`, `Reviews/` or `Runs/` folders); note each case's file and Area. Each Area's cases live in `test-cases/<Area folder>/` (the Area's folder: "Area folders" in `references/seed-manual-test-case.md`); the Area value and IDs stay short.
 
 ## Guardrails
 
 1. **Read in full.** Read every case under review completely: every field, every step and every Expected result. Never judge from titles or scores.
-2. **The inventory and its sources are the requirements.** A case is checked against the rule IDs it cites in `test-cases/<Area folder>/requirements-inventory.md`, and, where needed, the doc lines or schema operation the rule cites (`requirements/docs/<file>`, `requirements/openapi-parts.yaml`, read with line ranges). Answered rows in the Area's `open-questions.md` count as requirements. Never use another InvenTree version, the internet or the running app.
+2. **The inventory and its sources are the requirements.** A case is checked against the rule IDs it cites in `test-cases/<Area folder>/requirements-inventory.md`, and, where needed, the doc lines or schema operation the rule cites (`requirements/docs/<file>`, `requirements/openapi-parts.yaml`, read with line ranges). Answered rows in the Area's `test-cases/Open_Questions/open-question_<Area>.md` count as requirements. Never use another InvenTree version, the internet or the running app.
 3. **Do not assume.** If you cannot tell whether a case is right (the rule is ambiguous, the docs do not say), report it as a question for the architect, not a defect and not a guess.
 4. **Touch one line per case, nothing else.** The only edit you may make to a case file is adding (or, when asked to re-judge, replacing) a case's `**Duplicate judgement:**` line (step 4). Never change any other line of any case, inventory or question file. Everything else goes in your review file.
 5. **Independent of the writer.** Never read `agents/prompts.md` entries or any report of `test-case-creator`.
@@ -38,7 +38,7 @@ Find the cases with Grep under `test-cases/` (not `requirements-inventory.md` or
 
 ### 1. Read
 
-The Area's `requirements-inventory.md` (and the index `test-cases/requirements-inventory.md` for its "Not in docs", "Doc issues", "Not in schema" and "Schema issues" tables), the Area's `open-questions.md`, the seed (`references/seed-manual-test-case.md`, or `references/seed-api-test-case.md` for API, including its standing rules), and every case under review.
+The Area's `requirements-inventory.md` (and the index `test-cases/requirements-inventory.md` for its "Not in docs", "Doc issues", "Not in schema" and "Schema issues" tables), the Area's open questions (`test-cases/Open_Questions/open-question_<Area>.md`), the seed (`references/seed-manual-test-case.md`, or `references/seed-api-test-case.md` for API, including its standing rules), and every case under review.
 
 ### 2. Coverage
 
@@ -53,7 +53,7 @@ It lists every rule of those Areas with the cases citing it. Exit code 1 means a
 - **Gap:** the rule belongs to this functionality (its text is about the behaviour the functionality names) and no case tests it. A Major.
 - **Out of scope:** the rule belongs to another functionality of the same Area (for example import rules when reviewing Part creation). Say which.
 
-Then check depth for every covered rule: a rule that states a limit needs its boundary cases (below, on, above); a "must", "cannot" or "only" needs a negative case; a permission rule needs the blocked user's case. API: every `{id}` operation with `GET` or `DELETE` in scope needs its `404 Not Found` case (seed standing rule). A missing one is a Major.
+Then check depth for every covered rule: a rule that states a limit needs its boundary cases or rows (below, on, above; in a data-driven case each is a row of its Data sets table); a "must", "cannot" or "only" needs a negative case; a permission rule needs the blocked user's case; a "visible only if" rule needs the hidden case. A functionality with no Negative case at all is a Major, unless no rule in scope restricts anything. API: every `{id}` operation with `GET` or `DELETE` in scope needs its `404 Not Found` case (seed standing rule). A missing one is a Major.
 
 ### 3. Each case
 
@@ -63,8 +63,10 @@ Then check depth for every covered rule: a rule that states a limit needs its bo
 | Specific Expected results | Vague ("works", "succeeds", "error shown") where the rule or schema gives the value, status code or message. |
 | No assumptions | An Expected result states behaviour the cited sources do not, and no Answered question settles it. It must be an open question instead. |
 | Open-question marking | A case affected by an Open question is not `Draft · Open question: Q-<Area>-NN`, or the unknown part is not marked; or a case is marked with a question that does not affect it. |
+| Rule outcome stated | An Expected result is only `Not known: ...` (or a `Proposed` outcome) although a rule the case cites states the outcome; the rule's outcome must come first, as fact, then `Open: Q-...`. Also a `Proposed` outcome written as fact without its label. |
 | Seed format | A field is missing, out of order, or the Steps table has the wrong columns; Requirement lacks the rule ID or its source link. |
 | One behaviour | The case checks two rules that should be separate cases. |
+| Data-driven | Separate cases that test the same rule with the same steps and differ only in input and expected outcome: they should be one case with a Data sets table (Major; list the cases to merge). A Data sets table whose rows need different steps, users or follow-up checks (Major). A class or boundary of the input with no row, a row with a number for a label, or a row missing an expected value the steps use (Major). A step that names a row value no column provides (Major). An API Data sets table with no `expected status` column, or a row whose status is prose ("rejected") instead of a code or a `Proposed, to confirm in Q-...: <code>` (Major). |
 | Technique | The Technique field does not match what the case does (class, boundary, transition, column). |
 | User | Not the least-privileged demo user that can do the action, or a permission case uses a user who is not blocked. |
 | API standing rules | Unknown-ID `GET`/`DELETE` not expecting `404`; a non-existent ID guessed instead of created and deleted; a category delete without both flags in the body. |
@@ -105,7 +107,7 @@ A case that already has a judgement keeps it unless the request asks for a re-ju
 
 ### 5. Save the review
 
-Write `test-cases/<Area folder>/reviews/<functionality>-review-<YYYY-MM-DD>.md` (the folder of the first Area; create `reviews/` if missing; never overwrite: add `-2`, `-3`):
+Write `test-cases/Reviews/<Area>_<functionality>-review-<YYYY-MM-DD>.md` (`<Area>` is the short Area value of the first Area, e.g. `ATT`, `VAL`; links in it are relative to `test-cases/Reviews/`, e.g. `../<Area folder>/<case file>.md`; never overwrite: add `-2`, `-3`):
 
 ```
 # Review: <functionality> (<UI|API>), <date>
@@ -126,8 +128,6 @@ Write `test-cases/<Area folder>/reviews/<functionality>-review-<YYYY-MM-DD>.md` 
 ```
 
 **Verdict:** **Approve** (no Blocker or Major), **Approve with changes** (Majors that do not affect what an existing case expects, e.g. a missing case), **Changes required** (any Blocker). Suggested actions are for the architect: rerun the creator for a gap, edit a case, answer a question, act on a duplicate verdict.
-
-If `agents/prompts.md` exists, append an entry: date, the request verbatim, the review file path and the verdict. Never edit earlier entries.
 
 ## Report back
 

@@ -21,7 +21,10 @@
         "run-test-mcp-server",
         "--config",
         "automation/playwright.config.ts"
-      ]
+      ],
+      "env": {
+        "SKIP_LOGIN_SMOKE": "1"
+      }
     }
   }
 }

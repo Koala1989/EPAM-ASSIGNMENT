@@ -1,0 +1,171 @@
+{
+  "about": "Prompts kept in agents/prompts.md, chosen by the architect's criteria: how the agents were directed (instructions, formats, conventions, duplicate rules, structure, tokens). Keys are <session>@<timestamp> from the Claude Code transcripts. Architect prompts after reviewed_until are not classified yet; export_prompts.py lists them.",
+  "reviewed_until": "2026-10-16T11:19:08.359Z",
+  "themes": [
+    {
+      "id": "requirements",
+      "title": "Requirements and knowledge base",
+      "summary": "Pinning the docs to 1.5.6, a rule inventory per Area, and a local RAG index, with questions on how retrieval is scoped and kept current.",
+      "prompts": [
+        "71e523c9@2026-10-10T05:30:43.060Z",
+        "71e523c9@2026-10-10T17:14:37.772Z",
+        "71e523c9@2026-10-11T10:49:52.392Z",
+        "71e523c9@2026-10-12T16:28:57.884Z",
+        "71e523c9@2026-10-12T17:51:59.413Z",
+        "71e523c9@2026-10-12T17:56:33.350Z",
+        "71e523c9@2026-10-12T18:00:36.550Z",
+        "71e523c9@2026-10-12T18:28:15.693Z",
+        "96c387e6@2026-10-14T17:38:21.754Z"
+      ]
+    },
+    {
+      "id": "format",
+      "title": "Test case format and design rules",
+      "summary": "The seed formats, Areas, the Review field, how open questions are written into cases, where each technique applies, cross-functional scope and data-driven cases.",
+      "prompts": [
+        "71e523c9@2026-10-10T07:24:43.388Z",
+        "71e523c9@2026-10-10T07:37:05.374Z",
+        "71e523c9@2026-10-10T07:54:02.600Z",
+        "71e523c9@2026-10-10T16:55:43.877Z",
+        "71e523c9@2026-10-11T05:53:44.486Z",
+        "71e523c9@2026-10-11T11:57:23.575Z",
+        "71e523c9@2026-10-11T11:59:42.058Z",
+        "71e523c9@2026-10-13T05:30:55.148Z",
+        "71e523c9@2026-10-14T18:11:02.548Z",
+        "71e523c9@2026-10-14T18:38:58.204Z",
+        "71e523c9@2026-10-14T18:41:33.192Z",
+        "71e523c9@2026-10-15T15:29:11.370Z",
+        "71e523c9@2026-10-15T15:34:21.569Z",
+        "71e523c9@2026-10-16T07:28:21.087Z",
+        "71e523c9@2026-10-16T07:43:16.255Z",
+        "71e523c9@2026-10-16T07:49:10.857Z",
+        "71e523c9@2026-10-16T08:32:58.586Z"
+      ]
+    },
+    {
+      "id": "agents",
+      "title": "Agent instructions: writing and refining them",
+      "summary": "Creating each agent, then tightening its instructions from what went wrong: guardrails, an assertion for every filled field, never inferring the opposite of a rule, missed negative cases, generator traces.",
+      "prompts": [
+        "71e523c9@2026-10-10T10:27:41.610Z",
+        "71e523c9@2026-10-11T04:58:15.577Z",
+        "71e523c9@2026-10-11T17:21:04.201Z",
+        "71e523c9@2026-10-12T06:10:33.939Z",
+        "71e523c9@2026-10-12T06:34:01.398Z",
+        "71e523c9@2026-10-12T08:26:03.948Z",
+        "71e523c9@2026-10-12T08:29:01.434Z",
+        "71e523c9@2026-10-12T15:08:45.503Z",
+        "71e523c9@2026-10-12T19:16:44.502Z",
+        "71e523c9@2026-10-12T19:30:51.049Z",
+        "71e523c9@2026-10-14T16:20:26.296Z",
+        "71e523c9@2026-10-15T06:49:36.900Z",
+        "71e523c9@2026-10-15T07:25:30.347Z",
+        "71e523c9@2026-10-15T11:02:24.993Z",
+        "71e523c9@2026-10-15T11:09:58.289Z",
+        "71e523c9@2026-10-15T13:35:00.475Z",
+        "71e523c9@2026-10-16T09:56:47.922Z"
+      ]
+    },
+    {
+      "id": "review",
+      "title": "Duplicate detection and independent review",
+      "summary": "A scored duplicate checker, an LLM judge for borderline scores, merging the judge into a full reviewer, rule coverage checks and the log of what the reviewer caught.",
+      "prompts": [
+        "71e523c9@2026-10-10T09:27:01.280Z",
+        "71e523c9@2026-10-10T09:44:12.128Z",
+        "71e523c9@2026-10-10T17:35:42.003Z",
+        "71e523c9@2026-10-10T17:41:45.976Z",
+        "71e523c9@2026-10-11T11:50:20.108Z",
+        "71e523c9@2026-10-13T17:13:57.641Z",
+        "71e523c9@2026-10-13T17:21:43.048Z",
+        "71e523c9@2026-10-15T03:54:39.947Z",
+        "71e523c9@2026-10-15T06:02:43.303Z"
+      ]
+    },
+    {
+      "id": "orchestration",
+      "title": "Orchestration and running the agents",
+      "summary": "From starting agents by hand to one skill per stage, many cases per run, unattended headless runs, and prompts that name only the functionality.",
+      "prompts": [
+        "cd35e68e@2026-10-11T06:04:51.437Z",
+        "71e523c9@2026-10-11T08:19:32.249Z",
+        "71e523c9@2026-10-11T08:24:35.353Z",
+        "a3e19736@2026-10-12T07:10:34.204Z",
+        "71e523c9@2026-10-12T18:30:52.045Z",
+        "71e523c9@2026-10-12T18:46:16.500Z",
+        "71e523c9@2026-10-13T06:43:18.574Z",
+        "71e523c9@2026-10-13T06:47:11.390Z",
+        "71e523c9@2026-10-14T18:27:00.646Z",
+        "71e523c9@2026-10-16T09:02:30.036Z"
+      ]
+    },
+    {
+      "id": "framework",
+      "title": "Automation framework and conventions",
+      "summary": "The layered Playwright framework, real-form login, one config for UI and API, environments, and schema checks that report without hiding the other checks.",
+      "prompts": [
+        "71e523c9@2026-10-12T03:45:56.151Z",
+        "71e523c9@2026-10-12T05:11:44.648Z",
+        "71e523c9@2026-10-12T15:52:01.591Z",
+        "71e523c9@2026-10-13T08:23:06.988Z",
+        "71e523c9@2026-10-13T09:32:37.669Z",
+        "71e523c9@2026-10-13T09:33:33.848Z",
+        "71e523c9@2026-10-13T11:50:14.893Z",
+        "71e523c9@2026-10-14T14:12:56.589Z"
+      ]
+    },
+    {
+      "id": "tokens",
+      "title": "Tokens, cost and speed",
+      "summary": "Cutting what the agents read and run: a heading index, Area-wise inventories, agent file size, prompt caching, skipping login runs, smaller page snapshots.",
+      "prompts": [
+        "71e523c9@2026-10-10T06:24:37.154Z",
+        "71e523c9@2026-10-10T06:25:56.066Z",
+        "71e523c9@2026-10-10T17:53:19.314Z",
+        "71e523c9@2026-10-12T18:01:45.508Z",
+        "71e523c9@2026-10-12T18:13:48.909Z",
+        "71e523c9@2026-10-12T18:20:15.685Z",
+        "71e523c9@2026-10-12T18:22:53.667Z",
+        "71e523c9@2026-10-15T12:39:15.422Z",
+        "70f3fdc6@2026-10-15T14:15:58.406Z",
+        "71e523c9@2026-10-15T14:19:03.593Z",
+        "71e523c9@2026-10-15T14:23:15.475Z"
+      ]
+    },
+    {
+      "id": "verification",
+      "title": "Verification against the app and approval",
+      "summary": "Running cases through Playwright MCP and the API before approving them, automating only Approved cases, and turning a wrong assumption into a finding.",
+      "prompts": [
+        "71e523c9@2026-10-11T06:31:00.615Z",
+        "71e523c9@2026-10-11T07:13:24.711Z",
+        "4280c8b5@2026-10-11T07:15:29.258Z",
+        "71e523c9@2026-10-13T05:13:04.972Z",
+        "71e523c9@2026-10-14T18:24:47.135Z",
+        "71e523c9@2026-10-15T16:43:24.190Z"
+      ]
+    },
+    {
+      "id": "structure",
+      "title": "Project structure and deliverables",
+      "summary": "CLAUDE.md, folder naming, one automation project, the submission documents, and keeping the case folders tidy.",
+      "prompts": [
+        "71e523c9@2026-10-12T18:53:51.356Z",
+        "71e523c9@2026-10-13T03:53:45.534Z",
+        "71e523c9@2026-10-14T07:59:45.504Z",
+        "71e523c9@2026-10-14T13:24:16.954Z",
+        "71e523c9@2026-10-16T07:03:56.114Z",
+        "71e523c9@2026-10-16T07:25:12.453Z",
+        "71e523c9@2026-10-16T08:42:47.073Z",
+        "71e523c9@2026-10-16T11:00:31.636Z",
+        "71e523c9@2026-10-16T11:06:05.911Z"
+      ]
+    }
+  ],
+  "agent_examples": [
+    "cd35e68e@2026-10-11T06:04:57.515Z",
+    "a3e19736@2026-10-12T07:10:55.038Z",
+    "a3e19736@2026-10-12T08:27:02.094Z",
+    "a3e19736@2026-10-12T09:56:05.872Z"
+  ]
+}

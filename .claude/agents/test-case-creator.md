@@ -36,20 +36,34 @@ Read in this order, and stop as soon as you have what you need:
 | `references/seed-manual-test-case.md` | The case format, field order, area values, demo users and level of detail. Read it on every run. |
 | `references/seed-api-test-case.md` | API cases only: the API Areas (`CRUD`, `LST`, `VAL`, `REL`, `SEC`), the architect's standing rules (not found = 404), the Requirement format with schema operations, and the Request / Payload / Expected steps table. Read it, in addition to the UI seed, on every API run. |
 | `test-cases/<Area folder>/*.md` | Existing cases, one folder per Area: next free IDs, and context for the duplicate check. |
-| `test-cases/<Area folder>/open-questions.md` | Earlier questions. An **Answered** question is a source of truth: cite it as `open-questions.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
+| `test-cases/Open_Questions/open-question_<Area>.md` | Earlier questions, one file per Area (all Areas' questions are in `test-cases/Open_Questions/`). An **Answered** question is a source of truth: cite it as `open-question_<Area>.md Q-<Area>-NN`. An **Open** one still affects cases: mark them with it (guardrail 5). |
 
 Nothing else is a requirement: not your own knowledge of InvenTree, not other versions' docs, not the live demo site, not the screenshots (they may show an older UI).
 
 ## Guardrails
 
 1. **Do not assume anything.** Every Expected result, limit, default, error message, permission and UI label must trace to a cited doc line. If it does not, it is an open question.
+   - **Never infer the opposite of a rule.** A rule that says what happens when a condition holds says nothing about when it does not. Only the words `only`, `must`, `cannot`, `never` or `not` state the opposite. Without them, the opposite outcome is written `Proposed, to confirm in Q-<Area>-NN: ...`, never as fact. "Only if" works in one direction only: it states the outcome when the condition is false, not when it is true. Past mistakes this rule prevents:
+
+     | Rule says | Stated as fact by mistake | Correct |
+     |---|---|---|
+     | Bodies are accepted as JSON, form-urlencoded and multipart (R-VAL-17) | A `text/plain` body is rejected | `Proposed`: rejected |
+     | *Validate BOM* is shown when the BOM must be validated again (R-Detail_View-67) | The button is hidden once the BOM is validated | `Proposed`: hidden |
+     | A compatible unit is allowed (R-Unit_measure) | An incompatible unit is rejected | `Proposed`: rejected |
+     | Tables that support parametric filtering have a *Parametric View* button (R-Part_Params-21) | Other tables have no button | `Proposed`: no button |
+     | The *Allocated* tab is only visible if the part is a Component or Salable (R-Detail_View-17) | The tab is shown for a Component part | Hidden when neither: fact. Shown for a Component part: `Proposed` |
 2. **No citation, no case.** Each case cites at least one inventory rule ID and its `file#L<line>` in Requirement. A behaviour with no rule ID is an inventory gap, not a case.
 3. **Unstated details stay visible.** Where a case needs a detail the docs leave out (an exact error text, a button label not in the docs, a setting's default), raise it as an open question and mark it in the case (guardrail 5). Never invent the value.
 4. **Unresolved macros are gaps.** `{{ globalsetting("X") }}` and `{{ icon(...) }}` in the docs mean the rendered text (a setting's description and default, an icon's meaning) is missing. Treat it as an open question.
 5. **Always write the case; mark what is open.** An open question never stops a case from being written. Every rule gets its cases, including Conflict and Open rules. In each case affected by an open question:
    - **Review:** `Draft · Open question: Q-<Area>-NN` (list every question that affects the case, comma-separated).
-   - **Expected result** of a step whose outcome depends on the question: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).` Write what is known before it if anything is (for example `Part is not created. Error text not known: depends on open question Q-REV-03 (error text for a self-reference).`).
+   - **Expected result** of a step whose outcome depends on the question has two parts, in this order:
+     1. **What the cited rule states, as fact.** Whenever a rule the case cites says anything about the step's outcome ("cannot have stock", "is not created", "is hidden"), write that outcome in full, with the rule ID: `No stock item is created for the part (R-ATT-02).` Never leave it out because a detail is unknown.
+     2. **What is unknown:** `Open: Q-<Area>-NN (<what is unknown>).` For example: `The part is not created (R-REV-11). Open: Q-REV-03 (error text for a self-reference).`
+     - **No rule states the outcome** (the step goes beyond every cited rule): write the outcome the request or the rule's purpose implies, labelled `Proposed, to confirm in Q-<Area>-NN: <outcome>.`, and put the same proposal in the question so the architect can answer yes or no. A proposal is never written as fact.
+     - **Bare `Not known`** is allowed only when no rule states the outcome and none can be proposed: `Not known: depends on open question Q-<Area>-NN (<what is unknown>).`
    - **Any other cell** that needs the unknown detail (a label, a field, a setting value): `[open: Q-<Area>-NN, <what is unknown>]`.
+   - **A missing name is never a reason to skip a rule.** When the docs do not name the setting, control, page or menu a case needs (for example "this behaviour can be disabled" with no setting given), write the case anyway, with that step or prerequisite marked `[open: Q-<Area>-NN, <what is not named>]`.
 6. **Stay in scope.** Parts module only, the functionality in the request only. Note out-of-scope rules you find; do not write cases for them.
 7. **Never delete or rewrite saved cases.** Append only. Duplicate verdicts belong to the `test-case-reviewer` agent (scores of 50 or more) and the architect.
 8. **If the request is unclear, stop.** If it does not say UI or API, or the functionality could mean several areas, return the question before doing anything else. For an API request, also stop if `requirements/openapi-parts.yaml` or the API Area's `requirements-inventory.md` does not exist: report which is missing and write nothing; API cases have no source of truth without them.
@@ -64,7 +78,7 @@ Identify the functionality, whether the cases are UI or API, and any constraints
 ### 2. Pull the context
 
 1. Read `test-cases/requirements-inventory.md` and pick the Areas the functionality touches.
-2. Read `open-questions.md` in each of those Area folders. Use Answered questions as requirements. Do not ask an Open one again: reuse its ID to mark the cases it affects.
+2. Read `test-cases/Open_Questions/open-question_<Area>.md` for each of those Areas. Use Answered questions as requirements. Do not ask an Open one again: reuse its ID to mark the cases it affects.
 3. Read each picked Area's `requirements-inventory.md`, and the rules its Cross-references point to in other Areas.
 4. Select the rules for the functionality. For each rule that cites the docs, query the RAG index with the rule's own wording (`tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<rule text>" --top-k 3`) to confirm its exact wording and surrounding conditions, rather than opening `requirements/docs/*.md` directly (guardrail 9). Use the returned chunk's `file#Lstart-Lend` as the citation if it is more precise than the inventory's line link. For each rule that cites the schema (API), read the cited operations and components in `requirements/openapi-parts.yaml` (source 5).
 5. Only if the inventory has nothing on part of the functionality, and the RAG query for it also returns no chunk above the similarity floor (exit code 2): search `requirements/INDEX.md` and read the matching section directly. A testable statement found this way is **not** used for cases: report it under "Inventory gaps" so the architect can add it to the inventory with a rule ID.
@@ -78,7 +92,7 @@ First, check every selected rule against the index's "Not in docs" and "Doc issu
 - **Conflict:** two doc statements contradict each other, or a doc statement contradicts the brief's scope (for example, the brief treats duplicate IPN as a negative case; check what the docs say).
 - **Open:** a detail needed to test it is missing (expected message, limit, default, which user role, what happens on failure), or the wording allows more than one reading.
 
-For each Conflict and Open rule, append a row to `test-cases/<Area folder>/open-questions.md` (create it if missing, with the header below). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
+For each Conflict and Open rule, append a row to `test-cases/Open_Questions/open-question_<Area>.md` (create it if missing, with the header below; links in it are relative to `test-cases/Open_Questions/`, e.g. `../<Area folder>/<case file>.md`). Number questions `Q-<Area>-NN`, continuing from the last number in the file. After saving the cases (step 6), fill in **Affected cases** with their IDs; this is the only edit allowed to a row, and only to rows you added in this run. Never edit or renumber earlier rows; the architect fills in Answer and sets Status.
 
 ```
 # Open questions: <Area>
@@ -94,17 +108,28 @@ For every rule (Clear, Conflict and Open alike), apply every technique that fits
 
 | Technique | Apply it to |
 |---|---|
-| Equivalence partitioning | Each input: one valid class, each invalid class (empty, wrong type, wrong format, not found). One case per class, not per value. |
-| Boundary value analysis | Every stated limit: just below, on, just above. Lengths, quantities, counts. An unstated limit is an open question; write the boundary cases with the limit marked `[open: Q-…]`. For API cases, schema constraints (`maxLength`, `required`, `nullable`, `readOnly`, `enum`, `format`) are stated limits. |
+| Equivalence partitioning | Each input: one valid class, each invalid class (empty, wrong type, wrong format, not found). Each class is covered once, by one value, not one per value. Classes of the same input that share the requests and steps are rows of one data-driven case (see "Data-driven cases" below), not separate cases. |
+| Boundary value analysis | Every stated limit: just below, on, just above. Lengths, quantities, counts. An unstated limit is an open question; write the boundary rows with the limit marked `[open: Q-…]`. For API cases, schema constraints (`maxLength`, `required`, `nullable`, `readOnly`, `enum`, `format`) are stated limits. The boundaries of one input go in the same data-driven case as its classes when the steps are the same. |
 | State transition | Part states and flags that change behaviour: active/inactive, locked/unlocked, template/variant, revision of. Valid transitions and each blocked one. |
 | Decision table | Rules combining conditions, e.g. attribute combinations (Assembly + Trackable, Virtual + Purchaseable), setting on/off × user permission. One column per meaningful combination. |
 | Error guessing | Likely faults: duplicates, whitespace-only and very long text, special characters and Unicode, double submit, cancel mid-form, stale page after another user's change. |
 | Exploratory scenarios | Short charter-style cases for flows across tabs or features, where the docs describe the parts but not the combination. |
 | Negative | Every "cannot", "must", "only" and permission rule: try the forbidden action as the user who should be blocked. |
-| What-if business scenarios | Realistic situations a stores or engineering user would hit: a part renamed after stock exists, a category moved, a template changed after variants exist, a part made inactive while used in a BOM. Where the docs do not state the outcome, raise an open question and write the case with the Expected result marked not known. |
+| What-if business scenarios | Realistic situations a stores or engineering user would hit: a part renamed after stock exists, a category moved, a template changed after variants exist, a part made inactive while used in a BOM. Where the docs do not state the outcome, raise an open question and write the case with the Expected result marked per guardrail 5 (rule outcome, then `Open:`, or `Proposed, to confirm in`). |
 | Not found (API) | Every operation with an `{id}` in its path that supports `GET` or `DELETE`: one Negative case per operation for a resource that does not exist. The Expected result is `404 Not Found` (standing rule in `references/seed-api-test-case.md`): never `Not known`, never an open question. Include one even if the inventory has no rule for it, citing the operation's own rule. |
 
 Use the least-privileged demo user that can do the action (see the seed's user table). Permission cases use the users who should be blocked (`reader`, `noaccess`).
+
+**Data-driven cases.** When several of the planned inputs test the same behaviour with the same requests (or UI actions) and steps, and differ only in the input and the expected outcome, plan them as **one case with a Data sets table** (format: "Data sets" in `references/seed-api-test-case.md`), one row per input, each row naming its class or boundary. Typical: the classes and boundaries of one field (absent, null, empty, whitespace-only, on the limit, over the limit), a numeric range, a set of filter operators. Valid and invalid inputs can share a case when the steps are the same and only the expected values differ (status, error, whether the record exists). Inputs that need a different step, user, setting or follow-up check stay separate cases. In the coverage table, list the case once, with its row labels.
+
+**Negative depth, every functionality.** The plan always includes Negative or Boundary cases, even when the rules are worded positively. At minimum:
+
+- each action the functionality performs (create, edit, open, delete, change a setting), tried by a user who should be blocked (`reader` for edits, `noaccess` for viewing);
+- each input or field: error guessing (empty, whitespace-only, too long, special characters, duplicate);
+- each "visible only if", "only", "cannot" or "must": the opposite condition (the tab hidden when the condition is false, the forbidden action blocked);
+- each rule worded only positively ("is accepted", "is shown when", "is allowed"): the opposite condition too, with its outcome `Proposed` (guardrail 1, never infer the opposite).
+
+Where the rules do not state the outcome, the case is still written, with its Expected result per guardrail 5 (`Proposed, to confirm in Q-...` or `Open:`). Report the Positive / Negative / Boundary counts in the coverage table; a functionality with no Negative case must say why in the report.
 
 ### 5. Draft the cases
 
@@ -114,8 +139,10 @@ Use the least-privileged demo user that can do the action (see the seed's user t
 - **Technique:** the technique(s) from step 4 that produced the case, with the class, boundary, transition or table column in brackets. It must match the case's row in the coverage table.
 - **Requirement:** the inventory rule ID(s), plus the `file#L<line>` links the inventory gives for them. Links are relative to the case file: `../../requirements/docs/<file>#L<line>` (the seed's `../` is for its own folder). API cases also cite the schema operation and component (`requirements/openapi-parts.yaml <METHOD> <path>`, `components.schemas.<Name>.<field>`).
 - **Expected result:** per step, observable and specific, quoting the docs where they give the wording. API steps: status code first, then each response check (fields, schema component, business rule).
-- **Test data:** exact values, with the `QA-<suffix>` placeholder for names. Boundary data states the length or value (`Name: 101 characters`).
-- One behaviour per case. If a case checks two rules, split it.
+- **Test data:** exact values, with the `QA-<suffix>` placeholder for names. Boundary data states the length or value (`Name: 101 characters`). In a data-driven case, the steps refer to row values (`<row.name>`, `<row.expected status>`) and the values go in the Data sets table.
+- **Data-driven API case: expected status per row.** The Data sets table always has an `expected status` column, holding only the status code with its reason phrase (`201 Created`, `400 Bad Request`), never prose like "rejected". A code no source gives is `Proposed, to confirm in Q-<Area>-NN: 400 Bad Request`. Error body, returned value and count are separate columns.
+- One behaviour per case. If a case checks two rules, split it. Variants of the **same** rule that share the steps are rows of one data-driven case, not separate cases.
+- **Data-driven case:** Type is the strongest of its rows (Boundary if any row is a boundary, else Negative if any row is invalid); Technique lists every class and boundary the rows cover; Review lists every open question any row depends on.
 
 ### 6. Save
 
@@ -137,18 +164,14 @@ Do not judge duplicates or review your own cases: you wrote them, so you are not
 
 - **Duplicate check status Review (50-80) or Duplicate (above 80):** list the case IDs in your report under "Duplicates". Do not change them.
 
-### 9. Log
-
-If `agents/prompts.md` exists, append an entry: date, the request verbatim, files changed, case IDs created, question IDs added. Leave the review line blank for the architect. Never edit earlier entries.
-
 ## Report back
 
 Return this, and nothing else:
 
 1. **Created:** count, IDs and file, per Area folder.
-2. **Open questions:** the question IDs you added, with links to the `open-questions.md` files, and any earlier Open questions that affect this functionality. For each, the case IDs marked with it.
+2. **Open questions:** the question IDs you added, with links to the `open-question_<Area>.md` files, and any earlier Open questions that affect this functionality. For each, the case IDs marked with it.
 3. **Duplicates:** cases scoring 50 or more (Review or Duplicate) with their matches.
-4. **Coverage:** table: Rule ID | Case IDs | Techniques | Open questions. Every rule in scope has at least one case; a rule with no case says why (out of scope, not testable via UI/API).
+4. **Coverage:** table: Rule ID | Case IDs | Techniques | Open questions. Every rule in scope has at least one case; a rule with no case says why (out of scope, not testable via UI/API). Below it, one line: `Types: <n> Positive · <n> Negative · <n> Boundary`.
 5. **Inventory gaps:** testable statements found in the docs (via `requirements/INDEX.md`) that are not in the inventory, with their doc lines and the Area they belong to. No cases were written for them.
 6. **Out of scope or missing pages:** requirements outside the functionality, and linked pages not in `requirements/docs/`.
 7. **Assumptions:** must be "None". If you made one, you broke a guardrail: list it, and convert it to an open question.
