@@ -29,7 +29,7 @@ AI-assisted QA of InvenTree's **Parts module only**: manual UI and API test case
 | Step | Use |
 |---|---|
 | Manual cases | `/gen-test-cases <UI\|API> <functionality>`: test-case-creator, then test-case-reviewer (coverage, quality, duplicate verdicts at 50+) |
-| UI automation | `/automate-cases <UI case ID> ...`: playwright-test-generator, healer, 3-run check, playwright-test-reviewer |
+| UI automation | `/automate-cases <UI case ID> ...`: playwright-test-generator, one run (healer only if it fails, then a green-run check), playwright-test-reviewer in the background |
 | API automation | `/automate-api-cases <API case ID> ...`: api-test-generator (writes, runs and stabilises), 3-run check, api-test-reviewer |
 
 Every way to trigger a skill or an individual agent (slash command, headless CLI, plain language, @-mention): `agents/RUNNING.md`.

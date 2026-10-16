@@ -60,6 +60,11 @@ export class PartFormPage {
     return this.form.select('related', 'variant_of');
   }
 
+  /** The Category tree field; its input value is the selected category's name. */
+  get categoryField(): Locator {
+    return this.form.field('tree', 'category');
+  }
+
   async waitUntilOpen() {
     await expect(this.form.submitButton).toBeVisible();
   }

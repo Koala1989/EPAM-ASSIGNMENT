@@ -194,9 +194,9 @@ Template option, creating variants from the *Variants* tab, serial number and st
 
 | # | Action | Test data | Expected result |
 |---|---|---|---|
-| 1 | Open the part detail page of `QA-<suffix> Template` and switch the Template option off. | None | Not known: depends on open question Q-Part_Template-04 (blocked with an error, or allowed). Open: Q-Part_Template-01 (control location). |
-| 2 | Reload the page and open the detail page of `QA-<suffix> Variant A`. | None | The variant still exists and still references the template part (R-Part_Template-05). Open: Q-Part_Template-04 (what the variant shows if the template flag is off). |
-| 3 | Look at the tab list of `QA-<suffix> Template`. | None | The *Variants* tab is hidden when the option is off (R-Detail_View-08). Open: Q-Part_Template-04 (whether the option could be switched off at all). |
+| 1 | Open the part detail page of `QA-<suffix> Template` and switch the Template option off. | None | Proposed, to confirm in Q-Part_Template-04: the change is blocked with an error while a variant exists, and the Template option stays on. Open: Q-Part_Template-04 (the error text), Q-Part_Template-01 (control location). |
+| 2 | Reload the page and open the detail page of `QA-<suffix> Variant A`. | None | Proposed, to confirm in Q-Part_Template-04: `QA-<suffix> Variant A` still exists and still references `QA-<suffix> Template` as its template. No rule states what happens to a variant when its template's option is switched off; Q-Part_Template-04 lists keeping or deleting the variants as possible outcomes. |
+| 3 | Look at the tab list of `QA-<suffix> Template`. | None | Proposed, to confirm in Q-Part_Template-04: the *Variants* tab is still shown, because the option stayed on. If the option was switched off, the tab is hidden (R-Detail_View-08: visible only if the part is a Template). |
 
 **Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: set each variant and then the template inactive, delete the variants first, then the template, then the category.
 
@@ -1022,3 +1022,255 @@ Template option, creating variants from the *Variants* tab, serial number and st
 **Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: set each variant and then the template inactive, delete the variants first, then the template, then the category.
 
 **Notes:** The docs state that inherited lines are included in variants; the effect of turning the flag off is proposed.
+
+---
+
+### UI-Part_Template-036: A test template of the template part is listed on two variants.
+
+| Field | Value |
+|---|---|
+| **Summary** | A test template defined on the template part is assigned to every one of its variants, here two direct variants. |
+| **Requirement** | `R-Part_Template-08`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19) |
+| **Area** | Part_Template |
+| **Type** | Boundary |
+| **Technique** | Boundary value analysis (count of variants = 2) |
+| **Priority** | P1 |
+| **Tags** | Smoke, Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variants `QA-<suffix> Variant A` and `QA-<suffix> Variant B` (`variant_of` = the template), test template `QA-<suffix> Visual` on the template, created via `POST /api/part/category/`, `POST /api/part/` and `POST /api/part/test-template/` as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Variant A`. |
+| **Automation** | Partial: tab labels unconfirmed. |
+| **Review** | Draft · Open question: Q-Detail_View-45, Q-Detail_View-49 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Open the *Test Templates* tab of `QA-<suffix> Variant A`. | None | `QA-<suffix> Visual` is listed: any test template defined for the master part is assigned to its variants (R-Part_Template-08). Open: Q-Detail_View-45 (tab and column labels), Q-Detail_View-49 (how an inherited template is marked). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Variant B`. | None | `QA-<suffix> Visual` is listed (R-Part_Template-08). Open: Q-Detail_View-49 (marker). |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** Detail_View covers a single variant (UI-Detail_View-330); this case checks that every variant receives the template.
+
+---
+
+### UI-Part_Template-037: A test template of the template part is listed on a sub-variant.
+
+| Field | Value |
+|---|---|
+| **Summary** | A test template defined on the template part also reaches a variant of a variant (sub-variant). |
+| **Requirement** | `R-Part_Template-08`, `R-Part_Template-09`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19); [manufacturing-bom.md#Inherited BOM Line Items](../../requirements/docs/manufacturing-bom.md#L80) |
+| **Area** | Part_Template |
+| **Type** | Positive |
+| **Technique** | Equivalence partitioning (class: variant of a variant) |
+| **Priority** | P2 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A` (`variant_of` = the template, Template on), Testable sub-variant `QA-<suffix> Sub Variant` (`variant_of` = Variant A), test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Sub Variant`. |
+| **Automation** | Partial: tab labels unconfirmed. |
+| **Review** | Draft · Open question: Q-Part_Template-11, Q-Detail_View-49 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Open the *Test Templates* tab of `QA-<suffix> Sub Variant`. | None | Proposed, to confirm in Q-Part_Template-11: `QA-<suffix> Visual` is listed. The test docs state the cascade for the variants of a master part (R-Part_Template-08) and mention sub-variants only for the BOM (R-Part_Template-09). Open: Q-Detail_View-49 (marker). |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set the sub-variant, the variant and the template inactive, delete them in that order, then the category.
+
+**Notes:** None
+
+---
+
+### UI-Part_Template-038: A test template defined on one variant is not listed on a sibling variant.
+
+| Field | Value |
+|---|---|
+| **Summary** | A test template defined on `Variant A` does not reach the sibling `Variant B` or the master, because the cascade runs from the master part down. |
+| **Requirement** | `R-Part_Template-08`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19) |
+| **Area** | Part_Template |
+| **Type** | Negative |
+| **Technique** | Negative (cascade is downwards only), Decision table (columns: master / own variant / sibling) |
+| **Priority** | P2 |
+| **Tags** | Regression |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variants `QA-<suffix> Variant A` and `QA-<suffix> Variant B` (`variant_of` = the template), test template `QA-<suffix> A Only` on `Variant A`, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Variant B`. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Detail_View-49, Q-Part_Template-11 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Open the *Test Templates* tab of `QA-<suffix> Variant B`. | None | Proposed, to confirm in Q-Part_Template-11: `QA-<suffix> A Only` is not listed. No rule states the sibling case; the docs state only that templates of the master part cascade to its variants (R-Part_Template-08). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Template`. | None | Proposed, to confirm in Q-Part_Template-11: `QA-<suffix> A Only` is not listed on the master. Open: Q-Detail_View-49. |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** Whether a variant can define its own test template is Q-Detail_View-49; the data is created through the API.
+
+---
+
+### UI-Part_Template-039: A variant created with New Variant receives the template part's test templates.
+
+| Field | Value |
+|---|---|
+| **Summary** | A variant created from the *Variants* tab after the template part already has a test template lists that test template. |
+| **Requirement** | `R-Part_Template-08`, `R-Part_Template-04`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19); [part-template.md#Create Variant](../../requirements/docs/part-template.md#L43-L44) |
+| **Area** | Part_Template |
+| **Type** | Positive |
+| **Technique** | State transition (variant created after the test template exists), Exploratory |
+| **Priority** | P1 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Template`, select the *Variants* tab. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Part_Template-02, Q-Part_Template-07, Q-Detail_View-49 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Select *New Variant*, fill in the *Duplicate Part* form and press *Submit*. | Name: `QA-<suffix> Variant A`<br>Description: `Variant test part` | The variant is created (R-Part_Template-04). Open: Q-Part_Template-02 (prefilled fields and navigation after Submit; whether the new variant is Testable depends on the form). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Variant A`. | None | `QA-<suffix> Visual` is listed (R-Part_Template-08: templates of the master part are assigned to its variants). Open: Q-Part_Template-02 (whether the new variant is Testable, so that the tab is shown), Q-Detail_View-49 (marker). |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set the variant and then the template inactive, delete the variant first, then the template, then the category.
+
+**Notes:** None
+
+---
+
+### UI-Part_Template-040: A result recorded on a variant stock item against an inherited test template.
+
+| Field | Value |
+|---|---|
+| **Summary** | A test result can be recorded on a stock item of a variant against a test template defined on the template part. |
+| **Requirement** | `R-Part_Template-08`, `R-Detail_View-30`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19); [part-views.md#Test Results](../../requirements/docs/part-views.md#L134) |
+| **Area** | Part_Template |
+| **Type** | Positive |
+| **Technique** | Exploratory (flow across part, stock and test results) |
+| **Priority** | P1 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `allaccess` (view, create and edit everything; step 2 adds a stock test result, which `engineer`, with view-only stock access, cannot do); Settings: None; Data: category `QA-<suffix> Category`, location `QA-<suffix> Location`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A`, test template `QA-<suffix> Visual` on the template, stock item of quantity 1 on `Variant A`, created via the API as `admin`; Pre-steps: log in through the login form, open the variant's stock item. |
+| **Automation** | Partial: the stock pages are not in `requirements/docs/`. |
+| **Review** | Draft · Open question: Q-Part_Template-10, Q-Detail_View-47 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Open the test results of the stock item. | None | Any stock item of a variant part has the same test templates associated with it (R-Part_Template-08): `QA-<suffix> Visual` is listed. Open: Q-Part_Template-10 (tab and table labels on the stock item). |
+| 2 | Add a test result for `QA-<suffix> Visual` and save. | Result: pass | Proposed, to confirm in Q-Part_Template-10: the result is saved and listed against `QA-<suffix> Visual`. Open: Q-Part_Template-10 (form labels), Q-Detail_View-47 (value and attachment requirements). |
+| 3 | Open the *Test Results* tab of `QA-<suffix> Variant A`. | None | Proposed, to confirm in Q-Part_Template-10: the new result is listed. The tab shows results from all the part's stock items in one table (R-Detail_View-30). |
+
+**Postconditions and cleanup:** the stock item, its result, the variant and the template remain. Cleanup as `admin`: delete the stock item and the test template, then follow the usual order for variants, template and category.
+
+**Notes:** Goes beyond UI-Detail_View-333, which only checks that the template is listed.
+
+---
+
+### UI-Part_Template-041: Deleting the template part's test template removes it from the variant.
+
+| Field | Value |
+|---|---|
+| **Summary** | After a test template is deleted from the template part, it is no longer listed on the variant. |
+| **Requirement** | `R-Part_Template-08`, `R-Detail_View-39`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19); [part-test.md#Enabled](../../requirements/docs/part-test.md#L64) |
+| **Area** | Part_Template |
+| **Type** | Negative |
+| **Technique** | What-if business scenario (master's test template deleted while variants exist), State transition (listed to removed) |
+| **Priority** | P2 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A`, test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Template`, *Test Templates* tab. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Detail_View-45, Q-Detail_View-48, Q-Part_Template-11 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Delete the test template `QA-<suffix> Visual` from the template part. | None | The template and its test results are deleted (R-Detail_View-39). Open: Q-Detail_View-45 (delete control), Q-Detail_View-48 (confirmation). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Variant A`. | None | Proposed, to confirm in Q-Part_Template-11: `QA-<suffix> Visual` is no longer listed, because the variant only receives the master's templates (R-Part_Template-08). |
+
+**Postconditions and cleanup:** no test template is left. Cleanup as `admin`: set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** None
+
+---
+
+### UI-Part_Template-042: Renaming the template part's test template changes its name on the variant.
+
+| Field | Value |
+|---|---|
+| **Summary** | After a test template of the template part is renamed, the variant lists it under the new name. |
+| **Requirement** | `R-Part_Template-08`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19) |
+| **Area** | Part_Template |
+| **Type** | Positive |
+| **Technique** | State transition (template renamed), What-if business scenario |
+| **Priority** | P3 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A`, test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Template`, *Test Templates* tab. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Detail_View-45, Q-Detail_View-48, Q-Part_Template-11 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Edit the test template and change its name. | Name: `QA-<suffix> Visual Renamed` | The template is saved. Open: Q-Detail_View-45 (edit control), Q-Detail_View-48 (key regeneration after a rename). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Variant A`. | None | Proposed, to confirm in Q-Part_Template-11: `QA-<suffix> Visual Renamed` is listed and `QA-<suffix> Visual` is not, because the variant is assigned the master's template itself (R-Part_Template-08). |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** None
+
+---
+
+### UI-Part_Template-043: A view-only user cannot edit an inherited test template on the variant.
+
+| Field | Value |
+|---|---|
+| **Summary** | A user with view-only access sees the inherited test template on the variant but has no add, edit or delete control. |
+| **Requirement** | `R-Part_Template-08`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19) |
+| **Area** | Part_Template |
+| **Type** | Negative |
+| **Technique** | Negative (blocked user) |
+| **Priority** | P2 |
+| **Tags** | Regression, Permissions |
+| **Prerequisites** | User: `reader` (view only); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A`, test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Variant A`, *Test Templates* tab. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Detail_View-45, Q-Detail_View-49 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Look at the *Test Templates* tab. | None | `QA-<suffix> Visual` is listed (R-Part_Template-08). Open: Q-Detail_View-49 (marker). |
+| 2 | Look for controls to add, edit or delete a test template. | None | Proposed, to confirm in Q-Detail_View-45: no add, edit or delete control is available to `reader`. |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** None
+
+---
+
+### UI-Part_Template-044: Test templates on a variant after the template part is made not Testable.
+
+| Field | Value |
+|---|---|
+| **Summary** | After the template part is made not Testable, check which test templates its still Testable variant shows. |
+| **Requirement** | `R-Part_Template-08`, `R-Detail_View-29`. Source: [part-test.md#Part Test Templates](../../requirements/docs/part-test.md#L19); [part-views.md#Test Templates](../../requirements/docs/part-views.md#L130) |
+| **Area** | Part_Template |
+| **Type** | Negative |
+| **Technique** | What-if business scenario (master no longer Testable), State transition (Testable to not Testable) |
+| **Priority** | P3 |
+| **Tags** | Regression, Cross-functional |
+| **Prerequisites** | User: `engineer` (part management); Settings: None; Data: category `QA-<suffix> Category`, Testable template part `QA-<suffix> Template` (Template on, Testable on), Testable variant `QA-<suffix> Variant A`, test template `QA-<suffix> Visual` on the template, created via the API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Template`. |
+| **Automation** | Partial. |
+| **Review** | Draft · Open question: Q-Detail_View-48, Q-Part_Template-11 |
+
+**Steps**
+
+| # | Action | Test data | Expected result |
+|---|---|---|---|
+| 1 | Switch the Testable attribute of `QA-<suffix> Template` off. | None | Not known: depends on open question Q-Detail_View-48 (how Testable is switched off in 1.5.6, and whether the templates are kept). |
+| 2 | Open the *Test Templates* tab of `QA-<suffix> Variant A`, which is still Testable. | None | Not known: depends on open question Q-Part_Template-11 (whether `QA-<suffix> Visual` is still listed on the variant when its master is not Testable). |
+
+**Postconditions and cleanup:** records created by the case remain. Cleanup as `admin`: delete the test template, set each variant and then the template inactive, delete the variants first, then the template, then the category.
+
+**Notes:** None

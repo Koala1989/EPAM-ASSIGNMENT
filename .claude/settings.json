@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sed -n '/##### Duplicate Part/,$p' /c/Users/btech/AppData/Local/Temp/claude/c--EPAM-Assignment/71e523c9-5afd-4612-b136-1e58914b9b3f/scratchpad/rag2.txt | cut -c1-400)",
+      "Bash(python tools/coverage_check.py --area XF --file test-cases/Cross_Functional_Scenarios/cross-functional-scenarios.md)",
+      "mcp__playwright__browser_find",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_press_key"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\btech\\AppData\\Local\\Temp\\claude\\c--EPAM-Assignment\\71e523c9-5afd-4612-b136-1e58914b9b3f\\scratchpad"
+    ]
+  }
+}

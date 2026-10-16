@@ -18,8 +18,24 @@ export class PartDetailPage extends BasePage {
   /** Manufacturer parts table in the Suppliers tab (accordion section "Manufacturers"). */
   readonly manufacturerPartsTable: TableComponent;
 
+  /** Header stock summary, e.g. "In Stock: 25". */
+  readonly stockSummary: Locator;
+  /** Parameters tab: the parameters table. */
+  readonly parametersTable: TableComponent;
+  /** Parameters tab: the Add Parameters menu. */
+  readonly addParametersMenu: ActionsMenuComponent;
+  /** Stock tab: the stock items table. */
+  readonly stockTable: TableComponent;
+  /** Stock tab: the add stock item button. */
+  readonly addStockItemButton: Locator;
+
   constructor(page: Page) {
     super(page);
+    this.stockSummary = page.getByText(/^In Stock: /);
+    this.parametersTable = new TableComponent(this.panel('Parameters'));
+    this.addParametersMenu = this.actionsMenu('add-parameters');
+    this.stockTable = new TableComponent(this.panel('Stock'));
+    this.addStockItemButton = page.getByRole('button', { name: 'action-button-add-stock-item' });
     this.title = page.getByText(/^Part: /);
     this.detailsPanel = this.panel('Part Details');
     this.partActions = this.actionsMenu('part-actions');
@@ -36,7 +52,14 @@ export class PartDetailPage extends BasePage {
   /** Waits until the browser is on a part detail page and returns that part's ID. */
   async currentPartId(): Promise<number> {
     await expect(this.page).toHaveURL(/\/web\/part\/\d+\//);
-    return Number(/\/web\/part\/(\d+)\//.exec(this.page.url())![1]);
+    const match = /\/web\/part\/(\d+)\//.exec(this.page.url());
+    if (!match) throw new Error(`Not on a part detail page: ${this.page.url()}`);
+    return Number(match[1]);
+  }
+
+  /** Waits until the browser is on this part's detail page. */
+  async expectOpen(partId: number) {
+    await expect(this.page).toHaveURL(new RegExp(`/web/part/${partId}/`));
   }
 
   /** The content region of an accordion item inside the Suppliers tab, found by its header button's name. */
@@ -60,6 +83,18 @@ export class PartDetailPage extends BasePage {
       .filter({ has: this.page.getByRole('cell', { name: label, exact: true }) })
       .getByRole('cell')
       .nth(1);
+  }
+
+  /** Parameters tab: opens the Add Parameters menu and selects an option, e.g. addParameter('Create Parameter'). */
+  async addParameter(option: 'Create Parameter' | 'Import from File') {
+    await this.addParametersMenu.choose(option);
+    await expect(this.form().submitButton).toBeVisible();
+  }
+
+  /** Stock tab: presses the add stock item button and waits for the Add Stock Item form. */
+  async addStockItem() {
+    await this.addStockItemButton.click();
+    await expect(this.form().submitButton).toBeVisible();
   }
 
   /** Switches to another revision of this part with the revision selector, e.g. selectRevision('B'). */

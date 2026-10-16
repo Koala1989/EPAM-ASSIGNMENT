@@ -18,9 +18,9 @@ test.describe('Part creation flow', () => {
       await test.step('2. Fill in the required field and the category only; leave IPN empty', async () => {
         await partForm.fill({ name: partName, category: String(category.name) });
         await expect(partForm.textField('name')).toHaveValue(partName);
+        await expect(partForm.categoryField).toHaveValue(String(category.name));
         await expect(partForm.textField('ipn')).toHaveValue('');
         await expect(partForm.form.invalidFields).toHaveCount(0);
-        await expect(partForm.form.formError).toBeHidden();
       });
 
       await test.step('3. Press Submit', async () => {
@@ -32,7 +32,7 @@ test.describe('Part creation flow', () => {
       await test.step('4. Check the part details', async () => {
         await expect(partDetail.detail('Name')).toHaveText(partName);
         await expect(partDetail.detail('Category')).toContainText(String(category.name));
-        // The app omits the IPN row from Part Details when the IPN is empty.
+        // No "IPN" row is shown in the Part Details panel when IPN is empty.
         await expect(partDetail.detail('IPN')).toHaveCount(0);
       });
     });

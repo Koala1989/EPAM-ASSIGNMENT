@@ -39,7 +39,7 @@ Each spec automates one Approved manual case. Its first line names it: `// case:
 
 ## Workflow
 
-1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. The `login-smoke` project logs in first; if it fails, fix it before anything else, since every test depends on it.
+1. Run the UI tests with `test_run`: the files you were given, or the `chromium` project (`tests/ui/`) when given none; never the `api` project. Your runs skip the `login-smoke` project (the MCP server sets `SKIP_LOGIN_SMOKE=1`); each test still logs in through its user fixture. If a test fails at login, fix `LoginPage` before anything else, since every test depends on it.
 2. For each failing test, read its case (from the header comment), then run `test_debug` and inspect the page at the failure with `browser_snapshot`, console and network tools.
 3. Decide the cause:
    - **Test problem** (locator, timing, data, fixture): fix it within guardrail 1, then re-run that test.

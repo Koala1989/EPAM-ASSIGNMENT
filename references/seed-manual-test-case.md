@@ -12,7 +12,7 @@ The reference format for every manual UI test case. API cases use `seed-api-test
 |---|---|
 | **Summary** | One sentence: what is verified, and under which condition. |
 | **Requirement** | `R-<Area>-NN` from `test-cases/<Area folder>/requirements-inventory.md`, plus the source link: `[file#heading](../requirements/docs/<file>#L<line>)`. API cases: see `seed-api-test-case.md`. |
-| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants). API: `CRUD` · `LST` · `VAL` · `REL` · `SEC` (defined in `seed-api-test-case.md`). Each Area's folder: see Area folders below. |
+| **Area** | UI: `Part` (creation and import) · `Detail_View` (detail view tabs) · `Categories` · `ATT` (attributes) · `Unit_measure` · `REV` (revisions) · `Part_Params` (parameters) · `Part_Template` (templates and variants) · `XF` (cross-functional scenarios). API: `CRUD` · `LST` · `VAL` · `REL` · `SEC` (defined in `seed-api-test-case.md`). Each Area's folder: see Area folders below. |
 | **Type** | Positive · Negative · Boundary |
 | **Technique** | The test design technique(s) that produced the case, comma-separated: `Equivalence partitioning` · `Boundary value analysis` · `State transition` · `Decision table` · `Error guessing` · `Exploratory` · `Negative` · `What-if business scenario`. Add the class, boundary, transition or table column in brackets, e.g. `Boundary value analysis (max length + 1)`. |
 | **Priority** | P1 core flow or data integrity · P2 important behaviour · P3 cosmetic or rare edge |
@@ -86,6 +86,7 @@ Each Area has a short value, used in the Area field and in every ID (`UI-ATT-001
 | `REV` | `Revisions` | Revisions |
 | `Part_Params` | `Parameters` | Parameters and templates |
 | `Part_Template` | `Templates_and_Variants` | Template parts and variants |
+| `XF` | `Cross_Functional_Scenarios` | End-to-end flows across several Areas on the same records |
 | `CRUD` (API) | `API_Create_Read_Update_Delete` | Create, read, update, delete on parts and categories |
 | `LST` (API) | `API_Lists_and_Filters` | Lists: pagination, filters, ordering, search |
 | `VAL` (API) | `API_Field_Validation` | Field validation |
