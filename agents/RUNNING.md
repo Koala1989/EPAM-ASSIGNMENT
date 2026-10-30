@@ -99,7 +99,7 @@ Use this to re-run a single stage: re-review a spec after changes, heal a broken
 | Duplicate check | `python tools/dedupe_cases.py --case <ID> [--case <ID> ...]`, or `--dry-run` for a report only |
 | Rule coverage | `python tools/coverage_check.py --area <Area> [--area ...] [--file <case file> ...]` |
 | Rebuild the schema slice (InvenTree running) | `tools/rag/.venv/Scripts/python.exe tools/slice_schema.py` |
-| Build or query the RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py`, then `tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<question>" --top-k 3` |
+| Build or query the RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py`, then `tools/rag/.venv/Scripts/python.exe tools/rag/rag_lookup.py <rule ID> ...` (by rule ID, as test-case-creator does) or `tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<question>" --top-k 3` (free text) |
 | Both suites (from `automation/`) | `npm test` (UI and API), `npm run test:smoke`, `npm run lint`, `npm run typecheck`, `npm run report` |
 | UI suite (from `automation/`) | `npm run test:ui`, `npx playwright test <spec> --project=chromium` |
 | Run against demo.inventree.org (architect only; it runs 1.6.0 dev, not 1.5.6) | from `automation/`: `$env:TEST_ENV='demo-web'; npm run test:smoke`, then `Remove-Item Env:TEST_ENV` to return to `local` |

@@ -1,0 +1,350 @@
+{
+  "description": "Golden dataset for the RAG retrieval eval (evals step 4). Each answerable entry is one rule from a requirements inventory, asked as a paraphrased question; expected_output is the rule, expected_sources are the doc lines it cites (checked against requirements/docs/ on 2026-10-19). Unanswerable entries have no source: the docs do not cover them. 2026-10-24 (step 7): expected_output rewritten as one fact per sentence, without a leading Yes/No, so Contextual Recall scores each fact; 12 unanswerable questions added (G-N4 to G-N15), each checked absent from requirements/docs/ by its key terms, mostly near-topic (the topic is documented, the asked detail is not).",
+  "status": "Changed 2026-10-24 (step 7), pending architect re-approval",
+  "entries": [
+    {
+      "id": "G-01",
+      "rule": "R-Part_Template-03",
+      "question": "What do I have to switch on before I can make variants of a part?",
+      "expected_output": "Variants of a part can be created only once the part's Template option is turned on.",
+      "expected_sources": [
+        {
+          "file": "part-template.md",
+          "lines": [
+            41,
+            41
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-02",
+      "rule": "R-Part_Template-10",
+      "question": "Can a template part pick up BOM lines that were added to one of its variants?",
+      "expected_output": "Inherited BOM line items only flow downwards in the variant chain. A part higher up the chain cannot inherit BOM items from its variants.",
+      "expected_sources": [
+        {
+          "file": "manufacturing-bom.md",
+          "lines": [
+            113,
+            113
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-03",
+      "rule": "R-Unit_measure-09",
+      "question": "Is a lowercase e accepted when entering a value like 1e3?",
+      "expected_output": "Scientific notation is case sensitive. 1E3 is a valid value. 1e3 is not a valid value.",
+      "expected_sources": [
+        {
+          "file": "concepts-units.md",
+          "lines": [
+            43,
+            43
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-04",
+      "rule": "R-Unit_measure-10",
+      "question": "Can I type a length as feet and inches together, for example 3'6\"?",
+      "expected_output": "3' is accepted as 3 feet. 6\" is accepted as 6 inches. Compound measurements such as 3'6\" are not supported.",
+      "expected_sources": [
+        {
+          "file": "concepts-units.md",
+          "lines": [
+            49,
+            52
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-05",
+      "rule": "R-Part_Params-03",
+      "question": "Can two parameter templates share the same name?",
+      "expected_output": "A parameter template's name must be unique.",
+      "expected_sources": [
+        {
+          "file": "concepts-parameters.md",
+          "lines": [
+            34,
+            34
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-06",
+      "rule": "R-Detail_View-47",
+      "question": "What happens if I attach a broken file that has a .png extension?",
+      "expected_output": "A file with an image extension but corrupt image data gets no thumbnail. Its is_image flag stays False.",
+      "expected_sources": [
+        {
+          "file": "concepts-attachments.md",
+          "lines": [
+            43,
+            43
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-07",
+      "rule": "R-Part-19",
+      "question": "Which users are allowed to import parts from a file?",
+      "expected_output": "To import data, the user must be a staff user. The user must also have the change permission for the model being imported.",
+      "expected_sources": [
+        {
+          "file": "concepts-data_import.md",
+          "lines": [
+            28,
+            28
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-08",
+      "rule": "R-Part-03",
+      "question": "Why would a user not see the menu for adding new parts?",
+      "expected_output": "A user without create permission for the Part permission group does not see the Add Parts menu.",
+      "expected_sources": [
+        {
+          "file": "part-create.md",
+          "lines": [
+            21,
+            22
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-09",
+      "rule": "R-REV-07",
+      "question": "Can a part have two revisions with the same revision code?",
+      "expected_output": "Each revision of a given part must have a unique revision code.",
+      "expected_sources": [
+        {
+          "file": "part-revision.md",
+          "lines": [
+            37,
+            37
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-10",
+      "rule": "R-Detail_View-32",
+      "question": "How is the identifier that matches test results to a test template worked out?",
+      "expected_output": "A test key is generated from the test name. The key is generated automatically when the test template is saved. The key contains only lowercase alphanumeric characters. The key is used to match test results to the test template.",
+      "expected_sources": [
+        {
+          "file": "part-test.md",
+          "lines": [
+            31,
+            31
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-11",
+      "rule": "R-ATT-17",
+      "question": "Do I need serial numbers to build an assembly that is not trackable but uses trackable components?",
+      "expected_output": "If the BOM contains trackable sub-components, serial numbers are required when creating build outputs. This applies whether or not the assembled part itself is trackable.",
+      "expected_sources": [
+        {
+          "file": "part-trackable.md",
+          "lines": [
+            56,
+            56
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-12",
+      "rule": "R-ATT-02",
+      "question": "Can I hold stock of a part that represents a service rather than a physical item?",
+      "expected_output": "A virtual part represents a non-physical item. A virtual part cannot have stock items. Stock-related UI elements are hidden on a virtual part's page.",
+      "expected_sources": [
+        {
+          "file": "part-virtual.md",
+          "lines": [
+            15,
+            15
+          ]
+        },
+        {
+          "file": "part-virtual.md",
+          "lines": [
+            27,
+            27
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-13",
+      "rule": "R-ATT-22",
+      "question": "Does completing a build order reduce the stock of consumable parts like glue or solder?",
+      "expected_output": "A consumable part is not allocated to a build order. The stock of a consumable part is not adjusted when the build order is completed. Usage of a consumable part must be recorded manually.",
+      "expected_sources": [
+        {
+          "file": "part-consumable.md",
+          "lines": [
+            48,
+            50
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-14",
+      "rule": "R-ATT-11",
+      "question": "Which kind of part lets me record test results against its stock items?",
+      "expected_output": "A testable part can have test templates defined against it. Test results can be recorded against the stock items of a testable part.",
+      "expected_sources": [
+        {
+          "file": "part-index.md",
+          "lines": [
+            72,
+            72
+          ]
+        },
+        {
+          "file": "part-test.md",
+          "lines": [
+            15,
+            15
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-15",
+      "rule": "R-Part-13",
+      "question": "Is the part name required to be different for every part?",
+      "expected_output": "The part name is a unique text label.",
+      "expected_sources": [
+        {
+          "file": "part-views.md",
+          "lines": [
+            32,
+            32
+          ]
+        }
+      ]
+    },
+    {
+      "id": "G-N1",
+      "rule": null,
+      "question": "How do I sync parts with SAP?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N2",
+      "rule": null,
+      "question": "What is the maximum file size for a part attachment?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N3",
+      "rule": null,
+      "question": "Does InvenTree email the part owner when stock runs low?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N4",
+      "rule": null,
+      "question": "What is the maximum number of variants a template part can have?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N5",
+      "rule": null,
+      "question": "Which barcode formats can be printed for a part?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N6",
+      "rule": null,
+      "question": "In which currency is a part's price shown by default?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N7",
+      "rule": null,
+      "question": "Can a part name contain emoji?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N8",
+      "rule": null,
+      "question": "Does a new part need manager approval before it can be used?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N9",
+      "rule": null,
+      "question": "How long is a deleted part kept before it is removed permanently?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N10",
+      "rule": null,
+      "question": "Is there a maximum length for a part's notes?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N11",
+      "rule": null,
+      "question": "Can a BOM line have a negative quantity?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N12",
+      "rule": null,
+      "question": "Can I get a webhook call when a part is created?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N13",
+      "rule": null,
+      "question": "Can test results be exported to PDF from a part's test templates?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N14",
+      "rule": null,
+      "question": "How many levels deep can part categories be nested?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    },
+    {
+      "id": "G-N15",
+      "rule": null,
+      "question": "Which users are allowed to lock or unlock a part?",
+      "expected_output": "Not covered by the docs.",
+      "expected_sources": []
+    }
+  ]
+}

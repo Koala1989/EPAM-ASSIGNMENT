@@ -1,0 +1,61 @@
+{
+  "description": "Sample of test-case-creator output for the step 5 eval (test_agent_cases.py). Cases are read live from test-cases/; planted controls are copies of a real case with one Expected result replaced in memory (the case files are never changed). Categories for the traceability metric (architect's policy, 2026-10-20): A stated in the cited docs or rule; B generic UI mechanics, no business rule; C flagged as unconfirmed; D anything else (an assumed requirement).",
+  "status": "Draft, pending architect review",
+  "cases": [
+    {
+      "id": "UI-REV-002",
+      "why": "Approved; one result flagged [confirm in app]"
+    },
+    {
+      "id": "UI-REV-006",
+      "why": "Approved; values exactly as the rule allows"
+    },
+    {
+      "id": "UI-Part-003",
+      "why": "Approved; permission rule"
+    },
+    {
+      "id": "UI-Part-012",
+      "why": "Approved; one-step case on import limits"
+    },
+    {
+      "id": "UI-REV-016",
+      "why": "Draft, open question; result marked Proposed, to confirm"
+    },
+    {
+      "id": "UI-Unit_measure-013",
+      "why": "Draft, open question; exact notation rule"
+    },
+    {
+      "id": "UI-Part_Template-008",
+      "why": "Draft, open question; cites two doc sections"
+    },
+    {
+      "id": "UI-Part-047",
+      "why": "Draft, open question; doc says the name is unique"
+    }
+  ],
+  "planted": [
+    {
+      "id": "PLANTED-1-invented",
+      "base": "UI-REV-002",
+      "step": 3,
+      "expected": "The form stays open with the error 'Revision code must be unique for this part' under the Revision field. No part is created.",
+      "defect": "Invents the error text and its field, which the docs do not state, and drops the [confirm in app] flag.",
+      "should": {
+        "Requirement traceability": "fail"
+      }
+    },
+    {
+      "id": "PLANTED-2-contradiction",
+      "base": "UI-REV-006",
+      "step": 3,
+      "expected": "The form stays open with an error: a revision code may contain only letters and digits.",
+      "defect": "Contradicts the cited rule: the Revision field accepts any string.",
+      "should": {
+        "Requirement traceability": "fail"
+      },
+      "note": "Faithfulness was expected to fail this and passed (1.00) with Haiku and Sonnet judges, so it was dropped (2026-10-20)."
+    }
+  ]
+}

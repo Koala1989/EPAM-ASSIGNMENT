@@ -55,7 +55,8 @@ Keep reviewers independent: pass them IDs or paths only, never another agent's r
 | Rule coverage | `python tools/coverage_check.py --area <Area> [--file <case file>]` |
 | Rebuild schema slice | `tools/rag/.venv/Scripts/python.exe tools/slice_schema.py` (InvenTree running) |
 | Build RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py` (after any change to `requirements/docs/`) |
-| Query RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<question>" --top-k 3` |
+| Look up rules in RAG | `tools/rag/.venv/Scripts/python.exe tools/rag/rag_lookup.py <rule ID> ...` (fixed top-k 3, rule wording from the inventory; exit 2 = no match) |
+| Query RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/query_index.py "<question>" --top-k 3` (free-text search, for what the inventory does not cover) |
 | Lint / types / tests | from `automation/`: `npm run lint`, `npm run typecheck`, `npx playwright test <spec>`; suites: `npm run test:ui`, `npm run test:api`, `npm test` (both) |
 | Another environment | `$env:TEST_ENV='<env>'; npm test` (PowerShell), from `automation/`, with `config/environments/<env>.json`, `data/users.<env>.json` and `config/.env.<env>` in place |
 | Stability check | `npx playwright test <spec> --project=chromium --repeat-each=3` (UI) or `--project=api` (API) |

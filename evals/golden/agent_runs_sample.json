@@ -1,0 +1,21 @@
+{
+  "description": "Sample of test-case-creator runs for the step 6 layer 2 TaskCompletion eval (test_agent_task_completion.py). Runs are named by their start time (UTC, as in the transcripts). 'expect' is the verdict the run should get: interrupted runs are natural negative controls, correct stops test whether the judge accepts a justified 'no cases'.",
+  "status": "Draft, pending architect review",
+  "pass_threshold": 0.7,
+  "fail_below": 0.5,
+  "runs": [
+    { "started": "2026-10-13T03:22", "group": "wrote cases", "expect": "pass", "why": "API, 24 cases, CRUD" },
+    { "started": "2026-10-14T06:38", "group": "wrote cases", "expect": "pass", "why": "UI, 29 cases, units of measure; top-k 2 throughout" },
+    { "started": "2026-10-15T07:33", "group": "wrote cases", "expect": "pass", "why": "UI, 35 cases, templates and variants" },
+    { "started": "2026-10-15T11:16", "group": "wrote cases", "expect": "pass", "why": "API, 27 cases, conflict scenarios" },
+    { "started": "2026-10-16T10:09", "group": "wrote cases", "expect": "pass", "why": "UI, 5 cases, required fields" },
+    { "started": "2026-10-13T17:59", "group": "stopped correctly", "expect": "pass", "why": "Request named no functionality ('ATT'); asked which slice" },
+    { "started": "2026-10-15T08:56", "group": "stopped correctly", "expect": "pass", "why": "Already covered by 42 saved cases; wrote nothing" },
+    { "started": "2026-10-16T12:19", "group": "stopped correctly", "expect": "pass", "why": "Already covered by 17 saved cases; wrote nothing" },
+    { "started": "2026-10-13T18:30", "group": "interrupted", "expect": "fail", "why": "No report, no cases" },
+    { "started": "2026-10-14T18:36", "group": "interrupted", "expect": "fail", "why": "No report, no cases" },
+    { "started": "2026-10-15T08:08", "group": "interrupted", "expect": "fail", "why": "No report, no cases" },
+    { "started": "2026-10-15T15:36", "group": "interrupted", "expect": "fail", "why": "48 tool calls, then no report: lots of activity, no outcome" },
+    { "started": "2026-10-16T08:06", "group": "interrupted", "expect": "fail", "why": "No report, no cases" }
+  ]
+}
