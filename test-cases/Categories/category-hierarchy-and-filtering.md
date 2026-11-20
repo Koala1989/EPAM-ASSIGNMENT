@@ -41,7 +41,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: categories `QA-<suffix> Top` > `QA-<suffix> Mid` > `QA-<suffix> Leaf` > `QA-<suffix> Deep`, plus `QA-<suffix> Sibling` and `QA-<suffix> Empty` under `QA-<suffix> Top`; one part in each of Top, Mid, Leaf, Deep and Sibling, named `QA-<suffix> Part Top`, `QA-<suffix> Part Mid`, `QA-<suffix> Part Leaf`, `QA-<suffix> Part Deep`, `QA-<suffix> Part Sib`; all created via the API as `admin`; Pre-steps: log in through the login form, open the *Parts* view. |
 | **Automation** | Yes: core hierarchy rule. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -125,7 +125,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: categories `QA-<suffix> Top` > `QA-<suffix> Mid` > `QA-<suffix> Leaf` > `QA-<suffix> Deep`, plus `QA-<suffix> Sibling` and `QA-<suffix> Empty` under `QA-<suffix> Top`; one part in each of Top, Mid, Leaf, Deep and Sibling, named `QA-<suffix> Part Top`, `QA-<suffix> Part Mid`, `QA-<suffix> Part Leaf`, `QA-<suffix> Part Deep`, `QA-<suffix> Part Sib`; all created via the API as `admin`; Pre-steps: log in through the login form, open the *Parts* view. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -211,7 +211,7 @@
 | **Tags** | Regression, Cross-functional |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: categories `QA-<suffix> Top` > `QA-<suffix> Mid` > `QA-<suffix> Leaf` > `QA-<suffix> Deep`, plus `QA-<suffix> Sibling` and `QA-<suffix> Empty` under `QA-<suffix> Top`; one part in each of Top, Mid, Leaf, Deep and Sibling, named `QA-<suffix> Part Top`, `QA-<suffix> Part Mid`, `QA-<suffix> Part Leaf`, `QA-<suffix> Part Deep`, `QA-<suffix> Part Sib`; all created via the API as `admin`; Pre-steps: log in through the login form, open the *Parts* view. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

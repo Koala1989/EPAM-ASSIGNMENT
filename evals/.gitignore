@@ -2,3 +2,4 @@
 reports/
 .deepeval/
 __pycache__/
+results/hook-errors.log

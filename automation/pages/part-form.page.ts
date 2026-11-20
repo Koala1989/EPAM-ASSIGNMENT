@@ -107,6 +107,16 @@ export class PartFormPage {
     if (fields.mpn !== undefined) await this.form.fillText('initial_supplier.mpn', fields.mpn);
   }
 
+  /** The collapsible "Duplicate Part" section, shown only in the Duplicate Part form. */
+  get duplicateSection(): Locator {
+    return this.form.section('Duplicate Part');
+  }
+
+  /** Closes an open dropdown (e.g. Revision Of) without closing the form, so Cancel is not covered. */
+  async closeDropdown() {
+    await this.form.dismissDropdown();
+  }
+
   async submit() {
     await this.form.submit();
   }

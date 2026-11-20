@@ -57,6 +57,11 @@ export class BasePage {
     await expect(this.navigationMenu).toBeVisible();
   }
 
+  /** Gets the page title. */
+  async getPageTitle() {
+    return await this.page.title();
+  }
+
   /** The open modal form. */
   form(): FormComponent {
     return new FormComponent(this.page);

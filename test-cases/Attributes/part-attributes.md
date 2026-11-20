@@ -208,7 +208,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: part `QA-<suffix> Virtual Edit` (Virtual on, description `Before`) via `POST /api/part/` as `admin`; Pre-steps: log in through the login form; open the part's detail page. |
 | **Automation** | Yes: edit flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -337,7 +337,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: part `QA-<suffix> Assembly Main` (Assembly on) via `POST /api/part/` as `admin`; part `QA-<suffix> Component One` (Component on) via `POST /api/part/` as `admin`; Pre-steps: log in through the login form; open the assembly's *BOM* tab. |
 | **Automation** | Yes: BOM flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -466,7 +466,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: part `QA-<suffix> Testable` (Testable on) via `POST /api/part/` as `admin`; Pre-steps: log in through the login form; open the part's detail page. |
 | **Automation** | Yes: template flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1238,7 +1238,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `allaccess` (full access); Settings: None; Data: part `QA-<suffix> Not Purchaseable` (Purchaseable off) via `POST /api/part/` as `admin`; Pre-steps: log in through the login form; open the part's detail page. |
 | **Automation** | Yes: tab visibility. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1373,7 +1373,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: part `QA-<suffix> Consumable Glue` (Consumable on, Component on) via `POST /api/part/` as `admin`; part `QA-<suffix> Assembly Glue` (Assembly on) via `POST /api/part/` as `admin`; Pre-steps: log in through the login form; open the assembly's *BOM* tab. |
 | **Automation** | Yes: BOM flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1861,7 +1861,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: None; Pre-steps: log in through the login form; open the *Parts* view. |
 | **Automation** | Yes: default state. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

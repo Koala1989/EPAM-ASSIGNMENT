@@ -22,7 +22,7 @@ AI-assisted QA of InvenTree's **Parts module only**: manual UI and API test case
 | `test-cases/Reviews/<Area>_<functionality>-review-<date>.md`, `test-cases/Runs/<Area>/` | test-case-reviewer's reviews; records and screenshots of manual MCP runs. |
 | `references/seed-manual-test-case.md`, `references/seed-api-test-case.md` | The manual case formats: UI, and the API variant with the API Areas (`CRUD`, `LST`, `VAL`, `REL`, `SEC`). |
 | `automation/` | One Playwright + TypeScript project for both suites. UI: `tests/ui/`, `pages/`; API: `tests/api/`, `clients/` (Ajv schema checks against `requirements/openapi-parts.yaml`); shared: `fixtures/`, `utils/`, `config/` (env, environments), `data/` (users); reviews in `reviews/ui/`, `reviews/api/`. Rules: `automation/CONVENTIONS.md` (Shared, UI and API parts). |
-| `tools/` | `dedupe_cases.py` (duplicate check), `coverage_check.py` (rule coverage), `slice_schema.py` (schema slice), `rag/` (index build and query), `llm/` (prompt-caching demo). |
+| `tools/` | `dedupe_cases.py` (duplicate check), `coverage_check.py` (rule coverage), `case_fidelity.py` (UI spec vs its case) and `generator_gate.py` (the PreToolUse hook that runs it on every playwright-test-generator spec write), `slice_schema.py` (schema slice), `rag/` (index build and query), `llm/` (prompt-caching demo). |
 | `.claude/agents/`, `.claude/skills/` | Agents and skills. Submission copies: `agents/configs/`. |
 
 ## Agents and skills
@@ -53,6 +53,7 @@ Keep reviewers independent: pass them IDs or paths only, never another agent's r
 |---|---|
 | Duplicate check | `python tools/dedupe_cases.py --case <ID> ...` |
 | Rule coverage | `python tools/coverage_check.py --area <Area> [--file <case file>]` |
+| Case fidelity (UI specs) | `python tools/case_fidelity.py --all` or `<spec> ...` (exit 1 on a mismatch; the generator's gate runs the same check). Its tests: `python -m unittest discover -s tools/tests` |
 | Rebuild schema slice | `tools/rag/.venv/Scripts/python.exe tools/slice_schema.py` (InvenTree running) |
 | Build RAG index | `tools/rag/.venv/Scripts/python.exe tools/rag/build_index.py` (after any change to `requirements/docs/`) |
 | Look up rules in RAG | `tools/rag/.venv/Scripts/python.exe tools/rag/rag_lookup.py <rule ID> ...` (fixed top-k 3, rule wording from the inventory; exit 2 = no match) |

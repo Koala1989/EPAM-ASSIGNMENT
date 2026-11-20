@@ -228,7 +228,7 @@ Conventions used in every case below. "Token" means the user's token from `GET /
 | **Tags** | Smoke, Regression, Permissions |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: None; Pre-steps: None. |
 | **Automation** | Yes: Phase 2 scope. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -869,7 +869,7 @@ Conventions used in every case below. "Token" means the user's token from `GET /
 | **Tags** | Regression, Permissions |
 | **Prerequisites** | User: `allaccess`; Settings: None; Data: None; Pre-steps: get `allaccess`'s token. |
 | **Automation** | Yes: Phase 2 scope. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

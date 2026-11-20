@@ -599,7 +599,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: template `QA-<suffix> U` with Unique = No uniqueness required (default); parts `QA-<suffix> P1` and `QA-<suffix> P2`; P1 already has the parameter `ABC123` (created as `admin`); Pre-steps: None |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

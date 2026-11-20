@@ -11,9 +11,12 @@ export class PartsPage extends BasePage {
   readonly categoriesTab: Locator;
   readonly partsTable: TableComponent;
   readonly addPartsMenu: ActionsMenuComponent;
+  /** The top-level categories table on the Part Categories panel. */
+  readonly categoriesTable: TableComponent;
 
   constructor(page: Page) {
     super(page);
+    this.categoriesTable = new TableComponent(this.panel('Part Categories'));
     this.partsTab = this.panelTab('partcategory', 'Parts');
     this.categoriesTab = this.panelTab('partcategory', 'Part Categories');
     this.partsTable = new TableComponent(this.panel('Parts'));
@@ -30,6 +33,21 @@ export class PartsPage extends BasePage {
   async openCategory(categoryId: number) {
     await this.goto(`/web/part/category/${categoryId}/parts`);
     await expect(this.partsTable.searchInput).toBeVisible();
+  }
+
+  /** Opens the Part Categories panel of the Parts view (top-level categories table). */
+  async openCategories() {
+    await this.goto('/web/part/');
+    await expect(this.categoriesTable.searchInput).toBeVisible();
+  }
+
+  /** Opens a top-level category by clicking its name in the Part Categories table and waits for its page. */
+  async openCategoryByName(name: string) {
+    const before = this.page.url();
+    // The Name cell comes first; the Path cell of a top-level category repeats the same text.
+    await this.categoriesTable.cell(name, name).first().click();
+    await expect(this.page).not.toHaveURL(before);
+    await expect(this.navigationMenu).toBeVisible();
   }
 
   async addParts(option: AddPartsOption) {
@@ -54,5 +72,13 @@ export class PartsPage extends BasePage {
 
   async searchParts(text: string) {
     await this.partsTable.search(text);
+  }
+
+  async clickPartNameInModal(text:string){
+    await this.page.getByRole ('link',{name:text}).click();
+  }
+
+  async openCategoryFromPartPage(){
+    await this.page.getByRole('row').getByRole('link').first().click();
   }
 }

@@ -30,6 +30,7 @@ automation/
 │   └── .env.example            template for the gitignored .env.<env> (passwords, overrides)
 ├── data/
 │   ├── users.<env>.json        test users per environment: login name, display name, role (no passwords)
+│   ├── partsAndCategories.<env>.json  values that differ per environment, read by `envData`; same keys as the local file
 │   └── <Area>/<name>.json      UI input matrices for data-driven tests
 ├── utils/
 │   ├── names.ts                QA-<8 hex> suffix and test record names
@@ -42,6 +43,7 @@ automation/
 │   ├── pages.fixture.ts        UI: page objects injected into tests
 │   ├── api.fixture.ts          API: `api` (clients as `user`), `apiAs(caller)`
 │   ├── data.fixture.ts         both: `data`, QA test data through the API as admin, cleanup, settings restore
+│   ├── env-data.fixture.ts     both: `envData`, values that differ per environment (data/partsAndCategories.<env>.json)
 │   └── expect.ts               both: Playwright's expect plus toHaveStatus, toMatchSchema
 ├── pages/                      UI page objects; components/ for InvenTree widgets (UI §4)
 ├── clients/                    API clients, one per REST resource (API §4)
@@ -176,6 +178,7 @@ Shared with the API suite (Shared §2). For UI work: `names.ts` (`qaSuffix()`, `
 
 - **Configuration, environments, users and secrets:** Shared §3. `LoginPage` gets the login name and password through `credentialsFor(user)`; specs never contain them.
 - **`data/<Area>/<name>.json`** holds UI test inputs as JSON (or CSV) matrices, e.g. boundary values for a field, one row per case variant with a `label` used in the test title: `data/Part/name-boundaries.json`.
+- **`data/partsAndCategories.<env>.json`** holds values that differ per environment (e.g. an existing record's name). Specs read it through the `envData` fixture, never by importing the file, so `TEST_ENV` picks the right one. The local file sets the keys and the type; every other environment's file needs the same keys. Records named there were not created by the test: read them, never change or delete them.
 
 ### UI 8. Waiting, timing and stability
 

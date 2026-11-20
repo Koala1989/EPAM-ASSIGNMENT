@@ -14,7 +14,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: categories `QA-<suffix> Category A` and `QA-<suffix> Category B` (not structural) created with `POST /api/part/category/`; part `QA-<suffix> Part` created in category A with `POST /api/part/`; Pre-steps: get `engineer`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -165,7 +165,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: category `QA-<suffix> Structural` (`structural` `true`), and `QA-<suffix> Child` (`structural` `false`, `parent` = the structural category `pk`), created with `POST /api/part/category/`; Pre-steps: get `engineer`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -452,7 +452,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: category `QA-<suffix> Parent` (not structural) created with `POST /api/part/category/`; Pre-steps: get `engineer`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -512,7 +512,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: categories `QA-<suffix> Parent A`, `QA-<suffix> Parent B` (top-level), and `QA-<suffix> Child` with `parent` = Parent A, created with `POST /api/part/category/`; Pre-steps: get `engineer`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1159,7 +1159,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: template part `QA-<suffix> Template` created with `POST /api/part/` and `is_template` `true`; Pre-steps: get `engineer`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

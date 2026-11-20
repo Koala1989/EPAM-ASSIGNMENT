@@ -13,7 +13,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Page Cat` and three parts `QA-<suffix> P1`, `QA-<suffix> P2`, `QA-<suffix> P3` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -129,7 +129,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Page Cat` and three parts `QA-<suffix> P1`, `QA-<suffix> P2`, `QA-<suffix> P3` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -216,7 +216,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Page Cat` and three parts `QA-<suffix> P1`, `QA-<suffix> P2`, `QA-<suffix> P3` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -387,7 +387,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Root` and its children `QA-<suffix> Cat Two` (2 parts), `QA-<suffix> Cat One` (1 part) and `QA-<suffix> Cat Zero` (no parts), created with `POST /api/part/category/` and `POST /api/part/` as `admin` (parts named `QA-<suffix> CP1` to `CP3`); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -474,7 +474,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Order Cat` and three parts `QA-<suffix> Banana`, `QA-<suffix> Apple`, `QA-<suffix> Cherry` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -503,7 +503,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Order Cat` and three parts `QA-<suffix> Banana`, `QA-<suffix> Apple`, `QA-<suffix> Cherry` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -746,7 +746,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Search Cat`; part `QA-<suffix> Widget Alpha` (IPN `QA-<suffix>-W1`, description `QA-<suffix> sprocket description`, keywords `qakeyword<suffix>`) and part `QA-<suffix> Other Beta` (no IPN, description `plain`) in it, created with `POST /api/part/` as `admin`; Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -775,7 +775,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Search Cat`; part `QA-<suffix> Widget Alpha` (IPN `QA-<suffix>-W1`, description `QA-<suffix> sprocket description`, keywords `qakeyword<suffix>`) and part `QA-<suffix> Other Beta` (no IPN, description `plain`) in it, created with `POST /api/part/` as `admin`; Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1036,7 +1036,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Order Cat` and three parts `QA-<suffix> Banana`, `QA-<suffix> Apple`, `QA-<suffix> Cherry` in it, created in this order with `POST /api/part/` as `admin` (pks ascending); Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1065,7 +1065,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: categories `QA-<suffix> Root`, `QA-<suffix> Child` (parent Root) and `QA-<suffix> Grand` (parent Child), created with `POST /api/part/category/` as `admin`; parts `QA-<suffix> PR` (in Root), `QA-<suffix> PC` (in Child) and `QA-<suffix> PG` (in Grand), created with `POST /api/part/` as `admin`; Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1094,7 +1094,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: categories `QA-<suffix> Root`, `QA-<suffix> Child` (parent Root) and `QA-<suffix> Grand` (parent Child), created with `POST /api/part/category/` as `admin`; parts `QA-<suffix> PR` (in Root), `QA-<suffix> PC` (in Child) and `QA-<suffix> PG` (in Grand), created with `POST /api/part/` as `admin`; Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -1239,7 +1239,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `reader` (view access); Settings: None; Data: category `QA-<suffix> Active Cat` with part `QA-<suffix> Live` (active) and part `QA-<suffix> Dead` (created, then `PATCH` `active: false`), created as `admin`; Pre-steps: get `reader`'s token with `GET /api/user/me/token/` (basic auth) and send it as `Authorization: Token <token>`. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

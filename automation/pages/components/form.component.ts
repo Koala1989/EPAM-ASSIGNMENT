@@ -29,6 +29,11 @@ export class FormComponent {
     this.requiredMarks = this.root.locator('label span').getByText('*', { exact: true });
   }
 
+  /** Closes an open dropdown by clicking the form heading, which leaves the form open (Escape would close it). */
+  async dismissDropdown() {
+    await this.root.getByRole('heading').click();
+  }
+
   field(kind: FieldKind, name: string): Locator {
     if (kind === 'boolean') return this.root.getByRole('switch', { name: `boolean-field-${name}` });
     return this.root.getByLabel(`${kind}-field-${name}`, { exact: true });

@@ -1,4 +1,4 @@
-"""Reads test-case-creator runs from Claude Code's saved session transcripts (step 6).
+"""Reads subagent runs (test-case-creator, the automation generators) from Claude Code's saved session transcripts.
 
 Claude Code saves each subagent run as ~/.claude/projects/<project>/<session>/subagents/agent-<id>.jsonl, with a
 .meta.json beside it naming the agent type. One run = the task prompt, every tool call with its input, and the
@@ -112,23 +112,44 @@ class Run:
         return sorted(ids | set(self.written_case_ids))
 
 
+def _result_text(content) -> str:
+    if isinstance(content, str):
+        return content
+    return "\n".join(part.get("text", "") for part in content or [] if isinstance(part, dict))
+
+
+def load_run(transcript: Path) -> Run | None:
+    """One subagent run from its agent-<id>.jsonl. Each tool call also gets its result ("output", "error")."""
+    run = None
+    calls_by_id = {}
+    for line in transcript.read_text(encoding="utf-8").splitlines():
+        entry = json.loads(line)
+        message = entry.get("message", {})
+        if run is None and entry.get("type") == "user" and isinstance(message.get("content"), str):
+            run = Run(id=transcript.stem, started=entry["timestamp"], prompt=message["content"])
+        if run and entry.get("type") == "assistant":
+            for part in message.get("content", []):
+                if part.get("type") == "tool_use":
+                    call = {"name": part["name"], "input": part.get("input", {})}
+                    run.tool_calls.append(call)
+                    calls_by_id[part.get("id")] = call
+                    if part["name"] == "SubagentHandback":
+                        run.report = part["input"].get("message", "")
+        if run and entry.get("type") == "user" and isinstance(message.get("content"), list):
+            for part in message["content"]:
+                call = calls_by_id.get(part.get("tool_use_id")) if part.get("type") == "tool_result" else None
+                if call is not None:
+                    call["output"] = _result_text(part.get("content"))
+                    call["error"] = bool(part.get("is_error"))
+    return run
+
+
 def load_runs(agent_type: str = "test-case-creator") -> list[Run]:
     runs = []
     for meta in TRANSCRIPTS.glob("*/subagents/*.meta.json"):
         if json.loads(meta.read_text(encoding="utf-8")).get("agentType") != agent_type:
             continue
-        run = None
-        for line in meta.with_suffix("").with_suffix(".jsonl").read_text(encoding="utf-8").splitlines():
-            entry = json.loads(line)
-            message = entry.get("message", {})
-            if run is None and entry.get("type") == "user" and isinstance(message.get("content"), str):
-                run = Run(id=meta.stem.split(".")[0], started=entry["timestamp"], prompt=message["content"])
-            if run and entry.get("type") == "assistant":
-                for part in message.get("content", []):
-                    if part.get("type") == "tool_use":
-                        run.tool_calls.append({"name": part["name"], "input": part.get("input", {})})
-                        if part["name"] == "SubagentHandback":
-                            run.report = part["input"].get("message", "")
+        run = load_run(meta.with_suffix("").with_suffix(".jsonl"))
         if run:
             runs.append(run)
     return sorted(runs, key=lambda r: r.started)

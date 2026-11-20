@@ -148,6 +148,15 @@ export class TestData {
       const res = (await body(listing, `GET ${endpoint}`)) as { results: ApiRecord[] } | ApiRecord[];
       for (const row of Array.isArray(res) ? res : res.results) await this.remove(`${endpoint}${row.pk}/`);
     }
+    // A part used as a component in a BOM cannot be deleted: remove the BOM lines that use it first.
+    const bomLines = await this.admin.get('bom/', { params: { sub_part: pk, limit: 500 } });
+    if (bomLines.ok()) {
+      const lines = (await bomLines.json()) as { results: ApiRecord[] } | ApiRecord[];
+      // Keep only this part's own lines: never touch BOM lines of records the test did not create.
+      for (const row of (Array.isArray(lines) ? lines : lines.results).filter((line) => line.sub_part === pk)) {
+        await this.remove(`bom/${row.pk}/`);
+      }
+    }
     await this.admin.patch(`part/${pk}/`, { data: { active: false } });
     await this.remove(`part/${pk}/`);
   }

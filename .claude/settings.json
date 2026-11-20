@@ -6,10 +6,60 @@
       "mcp__playwright__browser_find",
       "mcp__playwright__browser_fill_form",
       "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_press_key"
+      "mcp__playwright__browser_press_key",
+      "mcp__playwright-test__browser_evaluate"
     ],
     "additionalDirectories": [
       "C:\\Users\\btech\\AppData\\Local\\Temp\\claude\\c--EPAM-Assignment\\71e523c9-5afd-4612-b136-1e58914b9b3f\\scratchpad"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "OTEL_LOGS_EXPORTER": "otlp",
+    "OTEL_EXPORTER_OTLP_PROTOCOL": "grpc",
+    "OTEL_EXPORTER_OTLP_ENDPOINT": "http://localhost:4317",
+    "OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE": "cumulative",
+    "OTEL_METRIC_EXPORT_INTERVAL": "10000",
+    "OTEL_LOG_TOOL_DETAILS": "1",
+    "OTEL_RESOURCE_ATTRIBUTES": "project=epam-inventree,env=local",
+    "CLAUDE_CODE_ENHANCED_TELEMETRY_BETA": "1",
+    "OTEL_TRACES_EXPORTER": "otlp"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__playwright-test__generator_write_test|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONUTF8=1 \"$CLAUDE_PROJECT_DIR/evals/.venv/Scripts/python.exe\" \"$CLAUDE_PROJECT_DIR/tools/generator_gate.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "playwright-test-generator|api-test-generator",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONUTF8=1 \"$CLAUDE_PROJECT_DIR/evals/.venv/Scripts/python.exe\" \"$CLAUDE_PROJECT_DIR/evals/automation_task_completion.py\" --hook",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "playwright-test-reviewer|api-test-reviewer",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PYTHONUTF8=1 \"$CLAUDE_PROJECT_DIR/evals/.venv/Scripts/python.exe\" \"$CLAUDE_PROJECT_DIR/evals/automation_review_score.py\" --hook",
+            "async": true
+          }
+        ]
+      }
     ]
   }
 }

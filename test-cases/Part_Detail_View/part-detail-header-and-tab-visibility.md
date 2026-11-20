@@ -153,7 +153,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `allaccess` (full access); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> AllOn` with Template, Assembly, Component, Salable and Purchaseable on, created via `POST /api/part/` as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> AllOn`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -181,7 +181,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Regression |
 | **Prerequisites** | User: `allaccess` (full access); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> AllOff` with Template, Assembly, Component, Salable and Purchaseable all off, created via `POST /api/part/` as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> AllOff`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -208,7 +208,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (part management; view parts); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> Template` with Template on, created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Template`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -236,7 +236,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (part management; view parts); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> NoTemplate` with Template off, created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> NoTemplate`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -555,7 +555,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (part management; view parts); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> Asm` with Assembly on, created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Asm`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -582,7 +582,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (part management; view parts); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> NoAsm` with Assembly off (Component on), created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> NoAsm`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -873,7 +873,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Regression |
 | **Prerequisites** | User: `allaccess` (full access); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> Buy` with Purchaseable on, created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> Buy`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -900,7 +900,7 @@ Header toggle, creation details and the conditional tabs (Variants, Allocated, B
 | **Tags** | Regression |
 | **Prerequisites** | User: `allaccess` (full access); Settings: None; Data: category `QA-<suffix> Category`, part `QA-<suffix> NoBuy` with Purchaseable off, created via API as `admin`; Pre-steps: log in through the login form, open `QA-<suffix> NoBuy`. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

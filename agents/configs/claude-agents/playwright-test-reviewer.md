@@ -52,6 +52,8 @@ Build a traceability table from the manual case:
 
 Verdict per row: **Covered** (asserted as specific as the case states), **Weakened** (asserted less specifically, e.g. `toBeVisible` where the case states a value, `toContainText` where it states exact text, `not.toHaveCount(0)` where it states a count), **Missing** (no assertion), **Extra** (asserts or does something the case does not state).
 
+A Weakened row is **Weakened, caught later** when the step's own assertion is weak, but another assertion in the same test, or the built-in wait of the page object method the step calls, fails whenever this Expected result is false. Ask: "if this Expected result were false, which line fails?" Name that line (file:line) in the row; if you cannot name one, the row stays Weakened. It is a Major, not a Blocker, because a failure would be reported at a later step; for the verdict, the Expected result counts as covered. A Missing row never qualifies.
+
 Also check:
 - **Order and titles:** one `test.step` per case step, in order, titled `<n>. <case action>`.
 - **Prerequisites:** user (`test.use({ user })` matches the case; a user change in a step uses `switchUser`, never saved sessions or a second browser context), settings (`data.setSetting` for each one stated), data (each record created through `data`, names via `data.name`), pre-steps.
@@ -89,8 +91,8 @@ Apply each principle to the spec and the page objects and components it uses:
 
 | Severity | Meaning |
 |---|---|
-| **Blocker** | Spec does not test its case (Missing or Weakened Expected result, wrong user or setting), breaks a layer boundary, fails lint or type check, or covers a case that is not Approved. |
-| **Major** | Will cause flakiness or maintenance cost: fragile locator, hidden wait, duplication of a page object method, missing cleanup, SOLID violation in a page object. |
+| **Blocker** | Spec does not test its case (Missing or Weakened Expected result, except Weakened, caught later; wrong user or setting), breaks a layer boundary, fails lint or type check, or covers a case that is not Approved. |
+| **Major** | Will cause flakiness or maintenance cost: fragile locator, hidden wait, duplication of a page object method, missing cleanup, SOLID violation in a page object. Also an Expected result that is Weakened, caught later (section B). |
 | **Minor** | Naming, step title wording, readability, small style issues. |
 | **Info** | Observations and suggestions that need no change, or points you are unsure about. |
 

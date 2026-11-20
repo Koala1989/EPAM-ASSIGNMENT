@@ -129,7 +129,7 @@ The part *Attachments* tab: listing, uploading files, adding external links, vie
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: parts `QA-<suffix> Attach A` and `QA-<suffix> Attach B` created via `POST /api/part/` as `admin`; local file `QA-<suffix>-datasheet.pdf`; Pre-steps: log in, open part A's *Attachments* tab. |
 | **Automation** | Yes. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 

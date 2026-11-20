@@ -29,8 +29,34 @@ export class PartDetailPage extends BasePage {
   /** Stock tab: the add stock item button. */
   readonly addStockItemButton: Locator;
 
+  /** Attachments tab: the attachments table. */
+  readonly attachmentsTable: TableComponent;
+  /** Attachments tab: the "No attachments found" message of an empty table. */
+  readonly noAttachmentsMessage: Locator;
+  /** Attachments tab: the Add attachment button. */
+  readonly addAttachmentButton: Locator;
+  /** Upload Attachment form: the file field (shows the chosen file name). */
+  readonly attachmentFileField: Locator;
+
+  /** Bill of Materials tab: the BOM table. */
+  readonly bomTable: TableComponent;
+  /** Bill of Materials tab: the button that switches the BOM to editing. */
+  readonly editBomButton: Locator;
+  /** Bill of Materials tab (editing): the Add BOM Items menu. */
+  readonly addBomItemsMenu: ActionsMenuComponent;
+  /** Used In tab: the table of assemblies that use this part. */
+  readonly usedInTable: TableComponent;
+
   constructor(page: Page) {
     super(page);
+    this.bomTable = new TableComponent(this.panel('Bill of Materials'));
+    this.editBomButton = this.panel('Bill of Materials').getByRole('button', { name: 'action-button-edit-bom' });
+    this.addBomItemsMenu = this.actionsMenu('add-bom-items');
+    this.usedInTable = new TableComponent(this.panel('Used In'));
+    this.attachmentsTable = new TableComponent(this.panel('Attachments'));
+    this.noAttachmentsMessage = this.panel('Attachments').getByText('No attachments found');
+    this.addAttachmentButton = this.panel('Attachments').getByRole('button', { name: 'action-button-add-attachment' });
+    this.attachmentFileField = this.form().root.getByRole('button', { name: 'file-field-attachment' });
     this.stockSummary = page.getByText(/^In Stock: /);
     this.parametersTable = new TableComponent(this.panel('Parameters'));
     this.addParametersMenu = this.actionsMenu('add-parameters');
@@ -91,10 +117,31 @@ export class PartDetailPage extends BasePage {
     await expect(this.form().submitButton).toBeVisible();
   }
 
+  /** Bill of Materials tab: switches the BOM to editing, opens Add BOM Items and selects Add BOM Item; waits for the form. */
+  async addBomItem() {
+    await this.editBomButton.click();
+    await this.addBomItemsMenu.choose('Add BOM Item');
+    await expect(this.form().submitButton).toBeVisible();
+  }
+
   /** Stock tab: presses the add stock item button and waits for the Add Stock Item form. */
   async addStockItem() {
     await this.addStockItemButton.click();
     await expect(this.form().submitButton).toBeVisible();
+  }
+
+  /** Attachments tab: the link to an uploaded file in the attachments table, by file name. */
+  attachmentLink(fileName: string): Locator {
+    return this.panel('Attachments').getByRole('link', { name: fileName, exact: true });
+  }
+
+  /** Attachments tab: opens Add attachment and chooses a file (name and text content) in the Upload Attachment form; does not submit. */
+  async addAttachment(fileName: string, content: string) {
+    await this.addAttachmentButton.click();
+    await expect(this.attachmentFileField).toBeVisible();
+    const chooser = this.page.waitForEvent('filechooser');
+    await this.attachmentFileField.click();
+    await (await chooser).setFiles({ name: fileName, mimeType: 'application/pdf', buffer: Buffer.from(content) });
   }
 
   /** Switches to another revision of this part with the revision selector, e.g. selectRevision('B'). */

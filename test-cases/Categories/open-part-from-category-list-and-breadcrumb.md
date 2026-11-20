@@ -13,7 +13,7 @@
 | **Tags** | Smoke, Regression |
 | **Prerequisites** | User: `engineer` (manage parts); Settings: None; Data: category `QA-<suffix> Parent` and part `QA-<suffix> Part A` in it, created via the API as `admin`; Pre-steps: log in through the login form, open the *Parts* view. |
 | **Automation** | Yes: core navigation flow. |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
@@ -41,7 +41,7 @@
 | **Tags** | Regression |
 | **Prerequisites** | User: `engineer`; Settings: None; Data: category `QA-<suffix> Parent`, sub-category `QA-<suffix> Child` under it, part `QA-<suffix> Part B` in `QA-<suffix> Child` only, created via the API as `admin`; Pre-steps: log in, open the *Parts* view. |
 | **Automation** | Yes |
-| **Review** | Draft |
+| **Review** | Approved · 2026-11-05 · bulk approval by the architect; expected results not yet executed |
 
 **Steps**
 
