@@ -4,7 +4,7 @@ import { test, expect } from '../../../fixtures';
 test.use({ user: 'engineer' });
 
 test.describe('category 001',()=>{
-    test('Ui-category-001: verify that user can opena category ',{tag:['@smoke','@regression']},async({data,partsPage,envData})=>{
+    test('Ui-category-001: verify that user can opena category',{tag:['@smoke','@regression']},async({partsPage,envData})=>{
     
     await   test.step('1. open the part page and click on the part name',async()=>{
         await partsPage.open();

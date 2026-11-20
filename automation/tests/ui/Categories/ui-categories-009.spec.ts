@@ -37,7 +37,7 @@ test.describe('Category hierarchy and filtering', () => {
       await test.step('2. Read the category\'s part list', async () => {
         await categoryPage.openPartsTab();
         for (const name of partNames) {
-          await expect(categoryPage.partsTable.row(name)).toBeVisible;
+          await expect(categoryPage.partsTable.row(name)).toBeVisible();
         }
       });
     });

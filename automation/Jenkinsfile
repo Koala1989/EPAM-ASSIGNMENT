@@ -21,8 +21,8 @@ pipeline {
     }
 
     parameters {
-        string(name: 'GREP', defaultValue: '',
-               description: 'Optional Playwright --grep filter, e.g. @smoke or UI-Part-002. Empty runs the whole UI suite.')
+        string(name: 'GREP', defaultValue: '@smoke',
+               description: 'Playwright --grep filter: a tag (@smoke, @regression) or a case ID (UI-Part-002). Empty runs the whole UI suite.')
         string(name: 'INVENTREE_PROXY', defaultValue: 'inventree-proxy',
                description: 'Name of the running InvenTree proxy container whose network the tests join.')
     }
@@ -63,12 +63,19 @@ pipeline {
             steps {
                 dir('automation') {
                     script {
+                        // A new job's first build runs before Jenkins has registered the parameters (params.GREP is
+                        // null), so it falls back to the same default: @smoke. An empty value runs the whole suite.
+                        String grep = params.GREP == null ? '@smoke' : params.GREP
+                        echo "Test filter: ${grep ?: '(none: whole UI suite)'}"
                         // Failed tests make the build UNSTABLE (yellow). A run that produced no report fails it (red),
                         // in post, where junit finds no results file.
-                        int code = sh(returnStatus: true, script: '''
-                            if [ -n "$GREP" ]; then set -- --grep "$GREP"; fi
-                            npx playwright test --project=chromium --reporter=list,junit,html "$@"
-                        ''')
+                        int code
+                        withEnv(["PW_GREP=${grep}"]) {
+                            code = sh(returnStatus: true, script: '''
+                                if [ -n "$PW_GREP" ]; then set -- --grep "$PW_GREP"; fi
+                                npx playwright test --project=chromium --reporter=list,junit,html "$@"
+                            ''')
+                        }
                         if (code != 0) {
                             unstable("Playwright exited with code ${code}: see Test Result and the Playwright report")
                         }
