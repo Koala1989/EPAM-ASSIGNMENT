@@ -1,0 +1,96 @@
+// Jenkins pipeline: the Playwright UI suite (project chromium) against the local InvenTree 1.5.6 Docker instance.
+//
+// Where the tests run: Jenkins itself runs in Docker, where "localhost" is the Jenkins container, not InvenTree.
+// So the tests run in the official Playwright image, started inside the network namespace of the InvenTree proxy
+// container (--network container:<proxy>). There, http://localhost (the baseURL in config/environments/local.json)
+// is the proxy itself, and the Host header stays "localhost", the only host the proxy and InvenTree
+// (INVENTREE_SITE_URL) accept. No URL or credential is set here: config/env.ts still decides both.
+//
+// Needs: the Docker Pipeline plugin, the Docker socket mounted into the Jenkins container, InvenTree running.
+// Job: Pipeline script from SCM, this repository, Script Path automation/Jenkinsfile.
+
+pipeline {
+    agent {
+        docker {
+            // Must match @playwright/test in package-lock.json: the image carries the browsers for that version only.
+            image 'mcr.microsoft.com/playwright:v1.64.0-noble'
+            // --ipc=host: Chromium can run out of shared memory without it. --init: reaps browser processes.
+            // The ?: default covers a job's first build, before Jenkins has registered the parameters.
+            args "--network container:${params.INVENTREE_PROXY ?: 'inventree-proxy'} --ipc=host --init"
+        }
+    }
+
+    parameters {
+        string(name: 'GREP', defaultValue: '',
+               description: 'Optional Playwright --grep filter, e.g. @smoke or UI-Part-002. Empty runs the whole UI suite.')
+        string(name: 'INVENTREE_PROXY', defaultValue: 'inventree-proxy',
+               description: 'Name of the running InvenTree proxy container whose network the tests join.')
+    }
+
+    options {
+        // The suite runs serially on purpose (playwright.config.ts): UI tests change global InvenTree settings,
+        // so two builds at once would break each other.
+        disableConcurrentBuilds()
+        timeout(time: 60, unit: 'MINUTES')
+        timestamps()
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+    }
+
+    environment {
+        // playwright.config.ts reads CI: test.only fails the run, and a failing UI test gets one retry (reported as flaky).
+        CI = 'true'
+        PLAYWRIGHT_JUNIT_OUTPUT_FILE = 'results/junit.xml'
+    }
+
+    stages {
+        stage('Install') {
+            steps {
+                dir('automation') {
+                    sh 'npm ci --no-audit --no-fund'
+                }
+            }
+        }
+
+        stage('Lint and type check') {
+            steps {
+                dir('automation') {
+                    sh 'npm run lint && npm run typecheck'
+                }
+            }
+        }
+
+        stage('UI tests') {
+            steps {
+                dir('automation') {
+                    script {
+                        // Failed tests make the build UNSTABLE (yellow). A run that produced no report fails it (red),
+                        // in post, where junit finds no results file.
+                        int code = sh(returnStatus: true, script: '''
+                            if [ -n "$GREP" ]; then set -- --grep "$GREP"; fi
+                            npx playwright test --project=chromium --reporter=list,junit,html "$@"
+                        ''')
+                        if (code != 0) {
+                            unstable("Playwright exited with code ${code}: see Test Result and the Playwright report")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit testResults: 'automation/results/junit.xml'
+            // Traces and screenshots of failed tests (test-results) and the HTML report, for download.
+            archiveArtifacts artifacts: 'automation/playwright-report/**, automation/test-results/**', allowEmptyArchive: true
+            publishHTML(target: [
+                reportName: 'Playwright report',
+                reportDir: 'automation/playwright-report',
+                reportFiles: 'index.html',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true,
+            ])
+        }
+    }
+}
