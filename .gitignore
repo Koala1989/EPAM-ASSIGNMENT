@@ -19,6 +19,9 @@ __pycache__/
 /automation/playwright-report/
 /automation/blob-report/
 /automation/playwright/.cache/
+/automation/results/
+/automation/allure-results/
+/automation/allure-report/
 
 # Local RAG index and its venv (rebuildable: see tools/rag/requirements.txt)
 /requirements/.rag-index/

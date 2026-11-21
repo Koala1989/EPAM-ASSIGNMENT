@@ -14,7 +14,7 @@
 | API | `api` | `api-smoke`: every demo user gets a token; the schema validator self-check | `tests/api/` | `npm run test:api` |
 
 - `npm test` runs both; `npm run test:smoke` runs `@smoke` only; `npx playwright test <spec>` runs one spec with its setup project.
-- **Serial (`workers: 1`, `fullyParallel: false`) for both suites:** UI tests change global InvenTree settings that a parallel test would see (UI §8), and concurrent part or category deletes deadlock InvenTree's tree rebuild (API §8).
+- **Serial (`workers: 1`, `fullyParallel: false`) for both suites:** UI tests change global InvenTree settings that a parallel test would see (UI §8), and concurrent part or category deletes deadlock InvenTree's tree rebuild (API §8). One exception, the architect's choice (2026-11-20): the Jenkins pipeline (`automation/Jenkinsfile`) runs the UI suite with `--workers=3` (its `WORKERS` parameter), accepting that risk. Local runs, agents' runs and the API suite stay serial.
 - The API project opens no browser, so an API-only run needs no browser install.
 
 ### Shared 2. Folder layout

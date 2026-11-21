@@ -6,23 +6,24 @@
 // is the proxy itself, and the Host header stays "localhost", the only host the proxy and InvenTree
 // (INVENTREE_SITE_URL) accept. No URL or credential is set here: config/env.ts still decides both.
 //
-// Needs: the Docker Pipeline plugin, the Docker socket mounted into the Jenkins container, InvenTree running.
+// Reports are published by Jenkins itself, outside that container: the Allure plugin generates its report with
+// Java, which the Jenkins container has and the Playwright image does not.
+//
+// Needs: the Docker Pipeline, HTML Publisher and Allure plugins, an Allure Commandline tool (Manage Jenkins > Tools),
+// the Docker socket mounted into the Jenkins container, and InvenTree running.
 // Job: Pipeline script from SCM, this repository, Script Path automation/Jenkinsfile.
 
 pipeline {
-    agent {
-        docker {
-            // Must match @playwright/test in package-lock.json: the image carries the browsers for that version only.
-            image 'mcr.microsoft.com/playwright:v1.64.0-noble'
-            // --ipc=host: Chromium can run out of shared memory without it. --init: reaps browser processes.
-            // The ?: default covers a job's first build, before Jenkins has registered the parameters.
-            args "--network container:${params.INVENTREE_PROXY ?: 'inventree-proxy'} --ipc=host --init"
-        }
-    }
+    // Checkout and publishing run on the Jenkins node; the stages below run in the Playwright container.
+    agent any
 
     parameters {
         string(name: 'GREP', defaultValue: '@smoke',
                description: 'Playwright --grep filter: a tag (@smoke, @regression) or a case ID (UI-Part-002). Empty runs the whole UI suite.')
+        // playwright.config.ts runs serially (CONVENTIONS.md Shared §1). 3 workers is the architect's choice for CI,
+        // accepting the risk: concurrent deletes can deadlock InvenTree (HTTP 500), and settings tests can interfere.
+        choice(name: 'WORKERS', choices: ['3', '1', '2', '4'],
+               description: 'Parallel Playwright workers. 1 is the safe serial run; more than 4 exceeds InvenTree\'s 4 server workers.')
         string(name: 'INVENTREE_PROXY', defaultValue: 'inventree-proxy',
                description: 'Name of the running InvenTree proxy container whose network the tests join.')
     }
@@ -43,41 +44,59 @@ pipeline {
     }
 
     stages {
-        stage('Install') {
-            steps {
-                dir('automation') {
-                    sh 'npm ci --no-audit --no-fund'
+        stage('Playwright container') {
+            agent {
+                docker {
+                    // Must match @playwright/test in package-lock.json: the image carries the browsers for that version only.
+                    image 'mcr.microsoft.com/playwright:v1.64.0-noble'
+                    // --ipc=host: Chromium can run out of shared memory without it. --init: reaps browser processes.
+                    // The ?: default covers a job's first build, before Jenkins has registered the parameters.
+                    args "--network container:${params.INVENTREE_PROXY ?: 'inventree-proxy'} --ipc=host --init"
+                    // Same workspace as the checkout, so the reports stay where post (on the Jenkins node) finds them.
+                    reuseNode true
                 }
             }
-        }
-
-        stage('Lint and type check') {
-            steps {
-                dir('automation') {
-                    sh 'npm run lint && npm run typecheck'
-                }
-            }
-        }
-
-        stage('UI tests') {
-            steps {
-                dir('automation') {
-                    script {
-                        // A new job's first build runs before Jenkins has registered the parameters (params.GREP is
-                        // null), so it falls back to the same default: @smoke. An empty value runs the whole suite.
-                        String grep = params.GREP == null ? '@smoke' : params.GREP
-                        echo "Test filter: ${grep ?: '(none: whole UI suite)'}"
-                        // Failed tests make the build UNSTABLE (yellow). A run that produced no report fails it (red),
-                        // in post, where junit finds no results file.
-                        int code
-                        withEnv(["PW_GREP=${grep}"]) {
-                            code = sh(returnStatus: true, script: '''
-                                if [ -n "$PW_GREP" ]; then set -- --grep "$PW_GREP"; fi
-                                npx playwright test --project=chromium --reporter=list,junit,html "$@"
-                            ''')
+            stages {
+                stage('Install') {
+                    steps {
+                        dir('automation') {
+                            // Results from an earlier build would mix into this build's Allure report.
+                            sh 'rm -rf allure-results && npm ci --no-audit --no-fund'
                         }
-                        if (code != 0) {
-                            unstable("Playwright exited with code ${code}: see Test Result and the Playwright report")
+                    }
+                }
+
+                stage('Lint and type check') {
+                    steps {
+                        dir('automation') {
+                            sh 'npm run lint && npm run typecheck'
+                        }
+                    }
+                }
+
+                stage('UI tests') {
+                    steps {
+                        dir('automation') {
+                            script {
+                                // A new job's first build runs before Jenkins has registered the parameters (params are
+                                // null), so it falls back to the same defaults. An empty GREP runs the whole suite.
+                                String grep = params.GREP == null ? '@smoke' : params.GREP
+                                String workers = params.WORKERS ?: '3'
+                                echo "Test filter: ${grep ?: '(none: whole UI suite)'}, workers: ${workers}"
+                                // Failed tests make the build UNSTABLE (yellow). A run that produced no report fails
+                                // it (red), in post, where junit finds no results file.
+                                int code
+                                withEnv(["PW_GREP=${grep}", "PW_WORKERS=${workers}"]) {
+                                    code = sh(returnStatus: true, script: '''
+                                        if [ -n "$PW_GREP" ]; then set -- --grep "$PW_GREP"; fi
+                                        npx playwright test --project=chromium --workers="$PW_WORKERS" \
+                                            --reporter=list,junit,html,allure-playwright "$@"
+                                    ''')
+                                }
+                                if (code != 0) {
+                                    unstable("Playwright exited with code ${code}: see Test Result and the reports")
+                                }
+                            }
                         }
                     }
                 }
@@ -87,7 +106,6 @@ pipeline {
 
     post {
         always {
-            junit testResults: 'automation/results/junit.xml'
             // Traces and screenshots of failed tests (test-results) and the HTML report, for download.
             archiveArtifacts artifacts: 'automation/playwright-report/**, automation/test-results/**', allowEmptyArchive: true
             publishHTML(target: [
@@ -98,6 +116,14 @@ pipeline {
                 alwaysLinkToLastBuild: true,
                 allowMissing: true,
             ])
+            script {
+                // No results when the build stopped before the tests (install or lint failed).
+                if (fileExists('automation/allure-results')) {
+                    allure results: [[path: 'automation/allure-results']], reportBuildPolicy: 'ALWAYS'
+                }
+            }
+            // Last: when it finds no results file (no test ran), it fails the build and ends post.
+            junit testResults: 'automation/results/junit.xml'
         }
     }
 }
