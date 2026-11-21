@@ -18,6 +18,7 @@ export default defineConfig({
     baseURL: env.baseURL,
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure'
   },
   projects: [
     {

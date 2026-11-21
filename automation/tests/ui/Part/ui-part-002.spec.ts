@@ -17,5 +17,12 @@ test.describe('Part creation flow', () => {
         await expect(partsPage.addPartsMenu.item('Create Part')).toBeVisible();
         await expect(partsPage.addPartsMenu.item('Import from File')).toBeVisible();
       });
+
+      // TEMPORARY (2026-11-21): deliberate failure to check that Jenkins keeps the video, trace and screenshot of a
+      // failed test. Not part of the case. Remove this step after the check.
+      await test.step('TEMPORARY: deliberate failure (CI artifact check)', async () => {
+        await expect(partsPage.addPartsMenu.item('Deliberate failure: no such option'),
+          'Deliberate failure to check CI artifacts').toBeVisible({ timeout: 5_000 });
+      });
     });
 });
